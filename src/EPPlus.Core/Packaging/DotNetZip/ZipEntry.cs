@@ -39,7 +39,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
     [Interop.GuidAttribute("ebc25cf6-9120-4283-b972-0e5520d00004")]
     [Interop.ComVisible(true)]
-#if !NETCF
+#if !NETCF && !COREFX
     [Interop.ClassInterface(Interop.ClassInterfaceType.AutoDispatch)]  // AutoDual
 #endif
     internal partial class ZipEntry
@@ -57,7 +57,13 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             _CompressionLevel = Ionic.Zlib.CompressionLevel.Default;
             _Encryption = EncryptionAlgorithm.None;
             _Source = ZipEntrySource.None;
-            AlternateEncoding = System.Text.Encoding.GetEncoding("IBM437");
+            AlternateEncoding =
+#if COREFX
+            System.Text.Encoding.GetEncoding("UTF-8");
+#else
+            System.Text.Encoding.GetEncoding("IBM437");
+#endif
+
             AlternateEncodingUsage = ZipOption.Never;
         }
 
@@ -2717,7 +2723,13 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         private bool _skippedDuringSave;
         private UInt32 _diskNumber;
 
-        private static System.Text.Encoding ibm437 = System.Text.Encoding.GetEncoding("IBM437");
+        private static System.Text.Encoding ibm437 =
+#if COREFX
+            System.Text.Encoding.GetEncoding("UTF-8");
+#else
+            System.Text.Encoding.GetEncoding("IBM437");
+#endif
+
         //private System.Text.Encoding _provisionalAlternateEncoding = System.Text.Encoding.GetEncoding("IBM437");
         private System.Text.Encoding _actualEncoding;
 

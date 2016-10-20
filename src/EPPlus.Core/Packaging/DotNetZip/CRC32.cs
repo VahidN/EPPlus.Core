@@ -44,7 +44,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
 
     [Interop.GuidAttribute("ebc25cf6-9120-4283-b972-0e5520d0000C")]
     [Interop.ComVisible(true)]
-#if !NETCF
+#if !NETCF&& !COREFX
     [Interop.ClassInterface(Interop.ClassInterfaceType.AutoDispatch)]
 #endif
     internal class CRC32
@@ -802,13 +802,23 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
         /// <summary>
         /// Closes the stream.
         /// </summary>
+#if !COREFX
         public override void Close()
+#else
+        public void Close()
         {
+#if !COREFX
             base.Close();
             if (!_leaveOpen)
                 _innerStream.Close();
-        }
+#else
+            base.Dispose();
+            if (!_leaveOpen)
+                _innerStream.Dispose();
+#endif
 
+        }
+#endif
     }
 
-}
+    }

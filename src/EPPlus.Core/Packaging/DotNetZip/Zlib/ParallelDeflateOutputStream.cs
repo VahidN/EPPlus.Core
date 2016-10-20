@@ -729,7 +729,6 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             _Flush(false);
         }
 
-
         /// <summary>
         /// Close the stream.
         /// </summary>
@@ -737,7 +736,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         /// You must call Close on the stream to guarantee that all of the data written in has
         /// been compressed, and the compressed data has been written out.
         /// </remarks>
+#if !COREFX
         public override void Close()
+#else
+        public void Close()
+#endif
         {
             TraceOutput(TraceBits.Session, "Close {0:X8}", this.GetHashCode());
 
@@ -755,13 +758,19 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             if (_isClosed) return;
 
             _Flush(true);
-
+#if !COREFX
             if (!_leaveOpen)
+            {
                 _outStream.Close();
-
-            _isClosed= true;
+            }
+#else
+            if (!_leaveOpen)
+            {
+                _outStream.Dispose();
+            }
+#endif
+            _isClosed = true;
         }
-
 
 
         // workitem 10030 - implement a new Dispose method

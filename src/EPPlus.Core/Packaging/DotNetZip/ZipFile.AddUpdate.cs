@@ -1136,7 +1136,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </example>
         public ZipEntry AddEntry(string entryName, string content)
         {
-#if SILVERLIGHT
+#if SILVERLIGHT || COREFX
             return AddEntry(entryName, content, System.Text.Encoding.UTF8);
 #else
             return AddEntry(entryName, content, System.Text.Encoding.Default);
@@ -1661,7 +1661,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         ///
         public ZipEntry UpdateEntry(string entryName, string content)
         {
-#if SILVERLIGHT
+#if SILVERLIGHT || COREFX
             return UpdateEntry(entryName, content, System.Text.Encoding.UTF8);
 #else
             return UpdateEntry(entryName, content, System.Text.Encoding.Default);

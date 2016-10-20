@@ -1,13 +1,59 @@
-﻿{
-  "version": "1.0.0-*",
+{
+    "version": "1.0.0-*",
 
-  "dependencies": {
-    "NETStandard.Library": "1.6.0"
-  },
+    "authors": [ "Vahid Nasiri" ],
+    "packOptions": {
+        "owners": [ "Vahid Nasiri" ],
+        "tags": [
+            "EPPlus",
+            "aspnetcore",
+            "Excel",
+            "Export",
+            "Report",
+            "Reporting",
+            "OOXML"
+        ],
+        "licenseUrl": "https://github.com/VahidN/EPPlus.Core/blob/master/LICENSE.md",
+        "projectUrl": "https://github.com/VahidN/EPPlus.Core"
+    },
+    "description": "EPPlus.Core is an unofficial port of the EPPlus library to .NET Core.",
 
-  "frameworks": {
-    "netstandard1.6": {
-      "imports": "dnxcore50"
+
+    "dependencies": {
+        "NETStandard.Library": "1.6.0",
+        "CoreCompat.System.Drawing": "1.0.0-beta006",
+        "System.Xml.XmlDocument": "4.0.1",
+        "System.Data.Common": "4.1.0",
+        "System.Threading.Thread": "4.0.0",
+        "System.Xml.XPath.XmlDocument": "4.0.1",
+        "System.Security.Cryptography.Pkcs": "4.0.0",
+        "System.Security.Cryptography.X509Certificates": "4.1.0",
+        "System.Security.Claims": "4.0.1",
+        "System.Reflection": "4.1.0",
+        "System.Collections.NonGeneric": "4.0.1",
+        "System.Threading.ThreadPool": "4.0.10"
+    },
+    "frameworks": {
+        "netstandard1.6": {
+            "imports": "dnxcore50"
+        }
+    },
+    "buildOptions": {
+        "xmlDoc": true,
+        "define": [ "COREFX", "NO_SFX" ],
+        "nowarn": [ "1591" ] // 1591: missing xml comment for publicly visible type or member
+    },
+    "configurations": {
+        "Release": {
+            "buildOptions": {
+                "optimize": true,
+                "platform": "anycpu"
+            }
+        }
+    },
+    "scripts": {
+        "postcompile": [
+            "dotnet pack --no-build --configuration %compile:Configuration%"
+        ]
     }
-  }
 }

@@ -13,7 +13,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
         {
             ValidateArguments(arguments, 1, eErrorType.Value);
             var dateSerial = ArgToDecimal(arguments, 0);
-            var date = System.DateTime.FromOADate(dateSerial);
+            var date = DateTimeExtensions.FromOADate(dateSerial);
             var startDay = DayOfWeek.Sunday;
             if (arguments.Count() > 1)
             {
@@ -43,7 +43,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
                         startDay = DayOfWeek.Saturday;
                         break;
                     default:
-                        // Not supported 
+                        // Not supported
                         ThrowExcelErrorValueException(eErrorType.Num);
                         break;
                 }
@@ -57,7 +57,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
                                                                              startDay);
             return CreateResult(week, DataType.Integer);
         }
-        
-        
+
+
     }
 }

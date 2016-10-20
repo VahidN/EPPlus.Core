@@ -13,17 +13,17 @@
 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
  * The GNU Lesser General Public License can be viewed at http://www.opensource.org/licenses/lgpl-license.php
  * If you unfamiliar with this license or have questions about it, here is an http://www.gnu.org/licenses/gpl-faq.html
  *
- * All code and executables are provided "as is" with no warranty either express or implied. 
+ * All code and executables are provided "as is" with no warranty either express or implied.
  * The author accepts no liability for any damage or loss of business that this product may cause.
  *
  * Code change notes:
- * 
+ *
  * Author				Change						Date
  * ******************************************************************************
  * Richard Tallent		Initial Release				2012-08-13
@@ -43,7 +43,7 @@ namespace OfficeOpenXml.Style
 		/// HTML support is limited, and does not include font colors, sizes, or typefaces at this time,
 		/// and also does not support CSS style attributes. It does support line breaks using the BR tag.
 		///
-		/// This routine parses the HTML into RegEx pairings of an HTML tag and the text until the NEXT 
+		/// This routine parses the HTML into RegEx pairings of an HTML tag and the text until the NEXT
 		/// tag (if any). The tag is parsed to determine the setting change to be applied to the last set
 		/// of settings, and if the text is not blank, a new block is added to rich text.
 		/// </summary>
@@ -189,10 +189,14 @@ namespace OfficeOpenXml.Style
 
 		private static string CleanText(string s)
 		{
-			// Need to convert HTML entities (named or numbered) into actual Unicode characters
-			s = System.Web.HttpUtility.HtmlDecode(s);
-			// Remove any non-breaking spaces, kills Excel
-			s = s.Replace("\u00A0", " ");
+            // Need to convert HTML entities (named or numbered) into actual Unicode characters
+#if COREFX
+            s = System.Net.WebUtility.HtmlDecode(s);
+#else
+            s = System.Web.HttpUtility.HtmlDecode(s);
+#endif
+            // Remove any non-breaking spaces, kills Excel
+            s = s.Replace("\u00A0", " ");
 			return s;
 		}
 

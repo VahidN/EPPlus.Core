@@ -1,10 +1,10 @@
-/*******************************************************************************
+ï»¿/*******************************************************************************
  * You may amend and distribute as you like, but don't remove this header!
  *
  * EPPlus provides server-side generation of Excel 2007/2010 spreadsheets.
  * See http://www.codeplex.com/EPPlus for details.
  *
- * Copyright (C) 2011  Jan Källman
+ * Copyright (C) 2011  Jan KÙ†llman
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -13,21 +13,21 @@
 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
  * The GNU Lesser General Public License can be viewed at http://www.opensource.org/licenses/lgpl-license.php
  * If you unfamiliar with this license or have questions about it, here is an http://www.gnu.org/licenses/gpl-faq.html
  *
- * All code and executables are provided "as is" with no warranty either express or implied. 
+ * All code and executables are provided "as is" with no warranty either express or implied.
  * The author accepts no liability for any damage or loss of business that this product may cause.
  *
  * Code change notes:
- * 
+ *
  * Author							Change						Date
  * ******************************************************************************
- * Jan Källman		    Initial Release		        2009-10-01
- * Jan Källman		    License changed GPL-->LGPL 2011-12-27
+ * Jan KÙ†llman		    Initial Release		        2009-10-01
+ * Jan KÙ†llman		    License changed GPL-->LGPL 2011-12-27
  *******************************************************************************/
 using System;
 using System.Xml;
@@ -62,7 +62,7 @@ namespace OfficeOpenXml
         internal int _nextDfxNumFmtID = 164;
         internal ExcelStyles(XmlNamespaceManager NameSpaceManager, XmlDocument xml, ExcelWorkbook wb) :
             base(NameSpaceManager, xml)
-        {       
+        {
             _styleXml=xml;
             _wb = wb;
             _nameSpaceManager = NameSpaceManager;
@@ -373,7 +373,7 @@ namespace OfficeOpenXml
                     }
                 }
 
-                //Update individual cells 
+                //Update individual cells
                 var cse2 = new CellsStoreEnumerator<ExcelCoreValue>(ws._values, address._fromRow, address._fromCol, address._toRow, address._toCol);
                 while (cse2.Next())
                 {
@@ -505,9 +505,9 @@ namespace OfficeOpenXml
                 {
                     if (ws.ExistsStyleInner(0, col, ref v))
                     {
-                        return v; 
+                        return v;
                     }
-                    else 
+                    else
                     {
                         int r=0,c=col;
                         if(ws._values.PrevCell(ref r,ref c))
@@ -530,10 +530,10 @@ namespace OfficeOpenXml
                             return 0;
                         }
                     }
-                        
+
                 }
             }
-            
+
         }
         /// <summary>
         /// Handles property changes on Named styles.
@@ -571,7 +571,7 @@ namespace OfficeOpenXml
         public ExcelStyleCollection<ExcelXfs> CellXfs = new ExcelStyleCollection<ExcelXfs>();
         public ExcelStyleCollection<ExcelNamedStyleXml> NamedStyles = new ExcelStyleCollection<ExcelNamedStyleXml>();
         public ExcelStyleCollection<ExcelDxfStyleConditionalFormatting> Dxfs = new ExcelStyleCollection<ExcelDxfStyleConditionalFormatting>();
-        
+
         internal string Id
         {
             get { return ""; }
@@ -624,7 +624,7 @@ namespace OfficeOpenXml
             CellXfs[xfid].XfId = styleXfId;
             style.Style = new ExcelStyle(this, NamedStylePropertyChange, positionID, name, styleXfId);
             style.StyleXfId = styleXfId;
-            
+
             style.Name = name;
             int ix =_wb.Styles.NamedStyles.Add(style.Name, style);
             style.Style.SetIndex(ix);
@@ -644,7 +644,7 @@ namespace OfficeOpenXml
             }
             else
             {
-                nfNode.RemoveAll();                
+                nfNode.RemoveAll();
             }
 
             int count = 0;
@@ -695,7 +695,7 @@ namespace OfficeOpenXml
             count = 0;
             XmlNode fillsNode = _styleXml.SelectSingleNode(FillsPath, _nameSpaceManager);
             fillsNode.RemoveAll();
-            Fills[0].useCnt = 1;    //Must exist (none);  
+            Fills[0].useCnt = 1;    //Must exist (none);
             Fills[1].useCnt = 1;    //Must exist (gray125);
             foreach (ExcelFillXml fill in Fills)
             {
@@ -753,7 +753,7 @@ namespace OfficeOpenXml
             }
             foreach (ExcelNamedStyleXml style in NamedStyles)
             {
-                if (!style.Name.Equals("normal", StringComparison.InvariantCultureIgnoreCase))
+                if (!style.Name.Equals("normal", StringComparisonEx.InvariantCultureIgnoreCase))
                 {
                     AddNamedStyle(count++, styleXfsNode, cellXfsNode, style);
                 }
@@ -869,7 +869,7 @@ namespace OfficeOpenXml
                 {
                     if (xf.FontId >= 0) Fonts[xf.FontId].useCnt++;
                     if (xf.FillId >= 0) Fills[xf.FillId].useCnt++;
-                    if (xf.BorderId >= 0) Borders[xf.BorderId].useCnt++;                    
+                    if (xf.BorderId >= 0) Borders[xf.BorderId].useCnt++;
                 }
             }
         }
@@ -896,7 +896,7 @@ namespace OfficeOpenXml
             else
             {
                 return 0;
-                //throw(new Exception("Named style does not exist"));        	         
+                //throw(new Exception("Named style does not exist"));
             }
         }
    #region XmlHelpFunctions

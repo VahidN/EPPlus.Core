@@ -25,7 +25,10 @@
 
 using System;
 using System.IO;
+
+#if !COREFX
 using System.Security.Permissions;
+#endif
 
 namespace OfficeOpenXml.Packaging.Ionic.Zip
 {
@@ -159,7 +162,12 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         }
 
 
-        static System.Text.Encoding ibm437 = System.Text.Encoding.GetEncoding("IBM437");
+        static System.Text.Encoding ibm437 =
+#if COREFX
+            System.Text.Encoding.GetEncoding("UTF-8");
+#else
+            System.Text.Encoding.GetEncoding("IBM437");
+#endif
         static System.Text.Encoding utf8 = System.Text.Encoding.GetEncoding("UTF-8");
 
         internal static byte[] StringToByteArray(string value, System.Text.Encoding encoding)
@@ -590,7 +598,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         {
             int n = 0;
             bool done = false;
-#if !NETCF && !SILVERLIGHT
+#if !NETCF && !SILVERLIGHT && !COREFX
             int retries = 0;
 #endif
             do
@@ -600,7 +608,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                     n = s.Read(buffer, offset, count);
                     done = true;
                 }
-#if NETCF || SILVERLIGHT
+#if NETCF || SILVERLIGHT || COREFX
                 catch (System.IO.IOException)
                 {
                     throw;

@@ -1,20 +1,20 @@
 // ZlibCodec.cs
 // ------------------------------------------------------------------
 //
-// Copyright (c) 2009 Dino Chiesa and Microsoft Corporation.  
+// Copyright (c) 2009 Dino Chiesa and Microsoft Corporation.
 // All rights reserved.
 //
 // This code module is part of DotNetZip, a zipfile class library.
 //
 // ------------------------------------------------------------------
 //
-// This code is licensed under the Microsoft Public License. 
+// This code is licensed under the Microsoft Public License.
 // See the file License.txt for the license details.
 // More info on: http://dotnetzip.codeplex.com
 //
 // ------------------------------------------------------------------
 //
-// last saved (in emacs): 
+// last saved (in emacs):
 // Time-stamp: <2009-November-03 15:40:51>
 //
 // ------------------------------------------------------------------
@@ -28,22 +28,22 @@
 // is included below.
 //
 // ------------------------------------------------------------------
-// 
+//
 // Copyright (c) 2000,2001,2002,2003 ymnk, JCraft,Inc. All rights reserved.
-// 
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
-// 
+//
 // 1. Redistributions of source code must retain the above copyright notice,
 // this list of conditions and the following disclaimer.
-// 
-// 2. Redistributions in binary form must reproduce the above copyright 
-// notice, this list of conditions and the following disclaimer in 
+//
+// 2. Redistributions in binary form must reproduce the above copyright
+// notice, this list of conditions and the following disclaimer in
 // the documentation and/or other materials provided with the distribution.
-// 
+//
 // 3. The names of the authors may not be used to endorse or promote products
 // derived from this software without specific prior written permission.
-// 
+//
 // THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES,
 // INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
 // FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL JCRAFT,
@@ -54,7 +54,7 @@
 // LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 // NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-// 
+//
 // -----------------------------------------------------------------------
 //
 // This program is based on zlib-1.1.3; credit to authors
@@ -81,7 +81,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
     /// </remarks>
     [Interop.GuidAttribute("ebc25cf6-9120-4283-b972-0e5520d0000D")]
     [Interop.ComVisible(true)]
-#if !NETCF    
+#if !NETCF && !COREFX
     [Interop.ClassInterface(Interop.ClassInterfaceType.AutoDispatch)]
 #endif
     sealed public class ZlibCodec
@@ -92,15 +92,15 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         public byte[] InputBuffer;
 
         /// <summary>
-        /// An index into the InputBuffer array, indicating where to start reading. 
+        /// An index into the InputBuffer array, indicating where to start reading.
         /// </summary>
         public int NextIn;
 
         /// <summary>
-        /// The number of bytes available in the InputBuffer, starting at NextIn. 
+        /// The number of bytes available in the InputBuffer, starting at NextIn.
         /// </summary>
         /// <remarks>
-        /// Generally you should set this to InputBuffer.Length before the first Inflate() or Deflate() call. 
+        /// Generally you should set this to InputBuffer.Length before the first Inflate() or Deflate() call.
         /// The class will update this number as calls to Inflate/Deflate are made.
         /// </remarks>
         public int AvailableBytesIn;
@@ -116,15 +116,15 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         public byte[] OutputBuffer;
 
         /// <summary>
-        /// An index into the OutputBuffer array, indicating where to start writing. 
+        /// An index into the OutputBuffer array, indicating where to start writing.
         /// </summary>
         public int NextOut;
 
         /// <summary>
-        /// The number of bytes available in the OutputBuffer, starting at NextOut. 
+        /// The number of bytes available in the OutputBuffer, starting at NextOut.
         /// </summary>
         /// <remarks>
-        /// Generally you should set this to OutputBuffer.Length before the first Inflate() or Deflate() call. 
+        /// Generally you should set this to OutputBuffer.Length before the first Inflate() or Deflate() call.
         /// The class will update this number as calls to Inflate/Deflate are made.
         /// </remarks>
         public int AvailableBytesOut;
@@ -150,13 +150,13 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         public CompressionLevel CompressLevel = CompressionLevel.Default;
 
         /// <summary>
-        /// The number of Window Bits to use.  
+        /// The number of Window Bits to use.
         /// </summary>
         /// <remarks>
-        /// This gauges the size of the sliding window, and hence the 
-        /// compression effectiveness as well as memory consumption. It's best to just leave this 
+        /// This gauges the size of the sliding window, and hence the
+        /// compression effectiveness as well as memory consumption. It's best to just leave this
         /// setting alone if you don't know what it is.  The maximum value is 15 bits, which implies
-        /// a 32k window.  
+        /// a 32k window.
         /// </remarks>
         public int WindowBits = ZlibConstants.WindowBitsDefault;
 
@@ -186,9 +186,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         /// Create a ZlibCodec.
         /// </summary>
         /// <remarks>
-        /// If you use this default constructor, you will later have to explicitly call 
-        /// InitializeInflate() or InitializeDeflate() before using the ZlibCodec to compress 
-        /// or decompress. 
+        /// If you use this default constructor, you will later have to explicitly call
+        /// InitializeInflate() or InitializeDeflate() before using the ZlibCodec to compress
+        /// or decompress.
         /// </remarks>
         public ZlibCodec() { }
 
@@ -214,10 +214,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         }
 
         /// <summary>
-        /// Initialize the inflation state. 
+        /// Initialize the inflation state.
         /// </summary>
         /// <remarks>
-        /// It is not necessary to call this before using the ZlibCodec to inflate data; 
+        /// It is not necessary to call this before using the ZlibCodec to inflate data;
         /// It is implicitly called when you call the constructor.
         /// </remarks>
         /// <returns>Z_OK if everything goes well.</returns>
@@ -250,20 +250,20 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         }
 
         /// <summary>
-        /// Initialize the ZlibCodec for inflation, with the specified number of window bits. 
+        /// Initialize the ZlibCodec for inflation, with the specified number of window bits.
         /// </summary>
-        /// <param name="windowBits">The number of window bits to use. If you need to ask what that is, 
+        /// <param name="windowBits">The number of window bits to use. If you need to ask what that is,
         /// then you shouldn't be calling this initializer.</param>
         /// <returns>Z_OK if all goes well.</returns>
         public int InitializeInflate(int windowBits)
         {
-            this.WindowBits = windowBits;            
+            this.WindowBits = windowBits;
             return InitializeInflate(windowBits, true);
         }
 
         /// <summary>
         /// Initialize the inflation state with an explicit flag to govern the handling of
-        /// RFC1950 header bytes. 
+        /// RFC1950 header bytes.
         /// </summary>
         ///
         /// <remarks>
@@ -275,9 +275,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         /// false.
         /// </remarks>
         ///
-        /// <param name="expectRfc1950Header">whether to expect an RFC1950 header byte pair when reading 
+        /// <param name="expectRfc1950Header">whether to expect an RFC1950 header byte pair when reading
         /// the stream of data to be inflated.</param>
-        /// <param name="windowBits">The number of window bits to use. If you need to ask what that is, 
+        /// <param name="windowBits">The number of window bits to use. If you need to ask what that is,
         /// then you shouldn't be calling this initializer.</param>
         /// <returns>Z_OK if everything goes well.</returns>
         public int InitializeInflate(int windowBits, bool expectRfc1950Header)
@@ -292,7 +292,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         /// Inflate the data in the InputBuffer, placing the result in the OutputBuffer.
         /// </summary>
         /// <remarks>
-        /// You must have set InputBuffer and OutputBuffer, NextIn and NextOut, and AvailableBytesIn and 
+        /// You must have set InputBuffer and OutputBuffer, NextIn and NextOut, and AvailableBytesIn and
         /// AvailableBytesOut  before calling this method.
         /// </remarks>
         /// <example>
@@ -302,48 +302,48 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         ///     int bufferSize = 1024;
         ///     byte[] buffer = new byte[bufferSize];
         ///     ZlibCodec decompressor = new ZlibCodec();
-        /// 
+        ///
         ///     Console.WriteLine("\n============================================");
         ///     Console.WriteLine("Size of Buffer to Inflate: {0} bytes.", CompressedBytes.Length);
         ///     MemoryStream ms = new MemoryStream(DecompressedBytes);
-        /// 
+        ///
         ///     int rc = decompressor.InitializeInflate();
-        /// 
+        ///
         ///     decompressor.InputBuffer = CompressedBytes;
         ///     decompressor.NextIn = 0;
         ///     decompressor.AvailableBytesIn = CompressedBytes.Length;
-        /// 
+        ///
         ///     decompressor.OutputBuffer = buffer;
-        /// 
-        ///     // pass 1: inflate 
+        ///
+        ///     // pass 1: inflate
         ///     do
         ///     {
         ///         decompressor.NextOut = 0;
         ///         decompressor.AvailableBytesOut = buffer.Length;
         ///         rc = decompressor.Inflate(FlushType.None);
-        /// 
+        ///
         ///         if (rc != ZlibConstants.Z_OK &amp;&amp; rc != ZlibConstants.Z_STREAM_END)
         ///             throw new Exception("inflating: " + decompressor.Message);
-        /// 
+        ///
         ///         ms.Write(decompressor.OutputBuffer, 0, buffer.Length - decompressor.AvailableBytesOut);
         ///     }
         ///     while (decompressor.AvailableBytesIn &gt; 0 || decompressor.AvailableBytesOut == 0);
-        /// 
+        ///
         ///     // pass 2: finish and flush
         ///     do
         ///     {
         ///         decompressor.NextOut = 0;
         ///         decompressor.AvailableBytesOut = buffer.Length;
         ///         rc = decompressor.Inflate(FlushType.Finish);
-        /// 
+        ///
         ///         if (rc != ZlibConstants.Z_STREAM_END &amp;&amp; rc != ZlibConstants.Z_OK)
         ///             throw new Exception("inflating: " + decompressor.Message);
-        /// 
+        ///
         ///         if (buffer.Length - decompressor.AvailableBytesOut &gt; 0)
         ///             ms.Write(buffer, 0, buffer.Length - decompressor.AvailableBytesOut);
         ///     }
         ///     while (decompressor.AvailableBytesIn &gt; 0 || decompressor.AvailableBytesOut == 0);
-        /// 
+        ///
         ///     decompressor.EndInflate();
         /// }
         ///
@@ -360,10 +360,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
 
 
         /// <summary>
-        /// Ends an inflation session. 
+        /// Ends an inflation session.
         /// </summary>
         /// <remarks>
-        /// Call this after successively calling Inflate().  This will cause all buffers to be flushed. 
+        /// Call this after successively calling Inflate().  This will cause all buffers to be flushed.
         /// After calling this you cannot call Inflate() without a intervening call to one of the
         /// InitializeInflate() overloads.
         /// </remarks>
@@ -399,32 +399,32 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         ///  int bufferSize = 40000;
         ///  byte[] CompressedBytes = new byte[bufferSize];
         ///  byte[] DecompressedBytes = new byte[bufferSize];
-        ///  
+        ///
         ///  ZlibCodec compressor = new ZlibCodec();
-        ///  
+        ///
         ///  compressor.InitializeDeflate(CompressionLevel.Default);
-        ///  
+        ///
         ///  compressor.InputBuffer = System.Text.ASCIIEncoding.ASCII.GetBytes(TextToCompress);
         ///  compressor.NextIn = 0;
         ///  compressor.AvailableBytesIn = compressor.InputBuffer.Length;
-        ///  
+        ///
         ///  compressor.OutputBuffer = CompressedBytes;
         ///  compressor.NextOut = 0;
         ///  compressor.AvailableBytesOut = CompressedBytes.Length;
-        ///  
+        ///
         ///  while (compressor.TotalBytesIn != TextToCompress.Length &amp;&amp; compressor.TotalBytesOut &lt; bufferSize)
         ///  {
         ///    compressor.Deflate(FlushType.None);
         ///  }
-        ///  
+        ///
         ///  while (true)
         ///  {
         ///    int rc= compressor.Deflate(FlushType.Finish);
         ///    if (rc == ZlibConstants.Z_STREAM_END) break;
         ///  }
-        ///  
+        ///
         ///  compressor.EndDeflate();
-        ///   
+        ///
         /// </code>
         /// </example>
         /// <returns>Z_OK if all goes well. You generally don't need to check the return code.</returns>
@@ -450,7 +450,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
 
 
         /// <summary>
-        /// Initialize the ZlibCodec for deflation operation, using the specified CompressionLevel, 
+        /// Initialize the ZlibCodec for deflation operation, using the specified CompressionLevel,
         /// and the explicit flag governing whether to emit an RFC1950 header byte pair.
         /// </summary>
         /// <remarks>
@@ -458,7 +458,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         /// If you want to generate a zlib stream, you should specify true for
         /// wantRfc1950Header. In this case, the library will emit a ZLIB
         /// header, as defined in <see href="http://www.ietf.org/rfc/rfc1950.txt">RFC
-        /// 1950</see>, in the compressed stream.  
+        /// 1950</see>, in the compressed stream.
         /// </remarks>
         /// <param name="level">The compression level for the codec.</param>
         /// <param name="wantRfc1950Header">whether to emit an initial RFC1950 byte pair in the compressed stream.</param>
@@ -471,8 +471,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
 
 
         /// <summary>
-        /// Initialize the ZlibCodec for deflation operation, using the specified CompressionLevel, 
-        /// and the specified number of window bits. 
+        /// Initialize the ZlibCodec for deflation operation, using the specified CompressionLevel,
+        /// and the specified number of window bits.
         /// </summary>
         /// <remarks>
         /// The codec will use the specified number of window bits and the specified CompressionLevel.
@@ -526,59 +526,59 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
         ///     int bufferSize = 1024;
         ///     byte[] buffer = new byte[bufferSize];
         ///     ZlibCodec compressor = new ZlibCodec();
-        /// 
+        ///
         ///     Console.WriteLine("\n============================================");
         ///     Console.WriteLine("Size of Buffer to Deflate: {0} bytes.", UncompressedBytes.Length);
         ///     MemoryStream ms = new MemoryStream();
-        /// 
+        ///
         ///     int rc = compressor.InitializeDeflate(level);
-        /// 
+        ///
         ///     compressor.InputBuffer = UncompressedBytes;
         ///     compressor.NextIn = 0;
         ///     compressor.AvailableBytesIn = UncompressedBytes.Length;
-        /// 
+        ///
         ///     compressor.OutputBuffer = buffer;
-        /// 
-        ///     // pass 1: deflate 
+        ///
+        ///     // pass 1: deflate
         ///     do
         ///     {
         ///         compressor.NextOut = 0;
         ///         compressor.AvailableBytesOut = buffer.Length;
         ///         rc = compressor.Deflate(FlushType.None);
-        /// 
+        ///
         ///         if (rc != ZlibConstants.Z_OK &amp;&amp; rc != ZlibConstants.Z_STREAM_END)
         ///             throw new Exception("deflating: " + compressor.Message);
-        /// 
+        ///
         ///         ms.Write(compressor.OutputBuffer, 0, buffer.Length - compressor.AvailableBytesOut);
         ///     }
         ///     while (compressor.AvailableBytesIn &gt; 0 || compressor.AvailableBytesOut == 0);
-        /// 
+        ///
         ///     // pass 2: finish and flush
         ///     do
         ///     {
         ///         compressor.NextOut = 0;
         ///         compressor.AvailableBytesOut = buffer.Length;
         ///         rc = compressor.Deflate(FlushType.Finish);
-        /// 
+        ///
         ///         if (rc != ZlibConstants.Z_STREAM_END &amp;&amp; rc != ZlibConstants.Z_OK)
         ///             throw new Exception("deflating: " + compressor.Message);
-        /// 
+        ///
         ///         if (buffer.Length - compressor.AvailableBytesOut &gt; 0)
         ///             ms.Write(buffer, 0, buffer.Length - compressor.AvailableBytesOut);
         ///     }
         ///     while (compressor.AvailableBytesIn &gt; 0 || compressor.AvailableBytesOut == 0);
-        /// 
+        ///
         ///     compressor.EndDeflate();
-        /// 
+        ///
         ///     ms.Seek(0, SeekOrigin.Begin);
         ///     CompressedBytes = new byte[compressor.TotalBytesOut];
         ///     ms.Read(CompressedBytes, 0, CompressedBytes.Length);
         /// }
         /// </code>
         /// </example>
-        /// <param name="flush">whether to flush all data as you deflate. Generally you will want to 
-        /// use Z_NO_FLUSH here, in a series of calls to Deflate(), and then call EndDeflate() to 
-        /// flush everything. 
+        /// <param name="flush">whether to flush all data as you deflate. Generally you will want to
+        /// use Z_NO_FLUSH here, in a series of calls to Deflate(), and then call EndDeflate() to
+        /// flush everything.
         /// </param>
         /// <returns>Z_OK if all goes well.</returns>
         public int Deflate(FlushType flush)

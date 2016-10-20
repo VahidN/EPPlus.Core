@@ -13,17 +13,17 @@
 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
  * The GNU Lesser General Public License can be viewed at http://www.opensource.org/licenses/lgpl-license.php
  * If you unfamiliar with this license or have questions about it, here is an http://www.gnu.org/licenses/gpl-faq.html
  *
- * All code and executables are provided "as is" with no warranty either express or implied. 
+ * All code and executables are provided "as is" with no warranty either express or implied.
  * The author accepts no liability for any damage or loss of business that this product may cause.
  *
  * Code change notes:
- * 
+ *
  * Author							Change						Date
  * ******************************************************************************
  * Jan Källman		Added		21-MAR-2011
@@ -37,7 +37,7 @@ using System.Globalization;
 
 namespace OfficeOpenXml.Table.PivotTable
 {
-    
+
     /// <summary>
     /// Defines the axis for a PivotTable
     /// </summary>
@@ -52,8 +52,8 @@ namespace OfficeOpenXml.Table.PivotTable
         /// </summary>
         Column,
         /// <summary>
-        /// Page axis (Include Count Filter) 
-        /// 
+        /// Page axis (Include Count Filter)
+        ///
         /// </summary>
         Page,
         /// <summary>
@@ -63,7 +63,7 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <summary>
         /// Values axis
         /// </summary>
-        Values 
+        Values
     }
     /// <summary>
     /// Build-in table row functions
@@ -95,19 +95,19 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <summary>
         /// Indicates the field is shown as the "index.
         /// </summary>
-        Index, 
+        Index,
         /// <summary>
         /// Indicates that the field is shown as its normal datatype.
         /// </summary>
-        Normal, 
+        Normal,
         /// <summary>
         /// /Indicates the field is show as the "percentage of" a value
         /// </summary>
-        Percent, 
+        Percent,
         /// <summary>
         /// Indicates the field is shown as the "percentage difference from" a value.
         /// </summary>
-        PercentDiff, 
+        PercentDiff,
         /// <summary>
         /// Indicates the field is shown as the percentage of column.
         /// </summary>
@@ -115,34 +115,34 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <summary>
         /// Indicates the field is shown as the percentage of row
         /// </summary>
-        PercentOfRow, 
+        PercentOfRow,
         /// <summary>
         /// Indicates the field is shown as percentage of total.
         /// </summary>
-        PercentOfTotal, 
+        PercentOfTotal,
         /// <summary>
         /// Indicates the field is shown as running total in the table.
         /// </summary>
-        RunTotal,        
+        RunTotal,
     }
       /// <summary>
      /// Built-in subtotal functions
      /// </summary>
-    [Flags] 
-    public enum eSubTotalFunctions 
+    [Flags]
+    public enum eSubTotalFunctions
      {
          None=1,
-         Count=2, 
-         CountA=4, 
-         Avg=8, 
-         Default=16, 
-         Min=32, 
-         Max=64, 
-         Product=128, 
-         StdDev=256, 
-         StdDevP=512, 
-         Sum=1024, 
-         Var=2048, 
+         Count=2,
+         CountA=4,
+         Avg=8,
+         Default=16,
+         Min=32,
+         Max=64,
+         Product=128,
+         StdDev=256,
+         StdDevP=512,
+         Sum=1024,
+         Var=2048,
          VarP=4096
      }
     /// <summary>
@@ -194,8 +194,8 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <summary>
         /// Name of the field
         /// </summary>
-        public string Name 
-        { 
+        public string Name
+        {
             get
             {
                 string v = GetXmlNodeString("@name");
@@ -217,7 +217,7 @@ namespace OfficeOpenXml.Table.PivotTable
         /// Compact mode
         /// </summary>
         public bool Compact
-        { 
+        {
             get
             {
                 return GetXmlNodeBool("@compact");
@@ -230,8 +230,8 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <summary>
         /// A boolean that indicates whether the items in this field should be shown in Outline form
         /// </summary>
-        public bool Outline 
-        { 
+        public bool Outline
+        {
             get
             {
                 return GetXmlNodeBool("@outline");
@@ -244,8 +244,8 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <summary>
         /// The custom text that is displayed for the subtotals label
         /// </summary>
-        public bool SubtotalTop 
-        { 
+        public bool SubtotalTop
+        {
             get
             {
                 return GetXmlNodeBool("@subtotalTop");
@@ -258,8 +258,8 @@ namespace OfficeOpenXml.Table.PivotTable
         /// <summary>
         /// A boolean that indicates whether to show all items for this field
         /// </summary>
-        public bool ShowAll 
-        { 
+        public bool ShowAll
+        {
             get
             {
                 return GetXmlNodeBool("@showAll");
@@ -295,7 +295,7 @@ namespace OfficeOpenXml.Table.PivotTable
         /// A boolean that indicates whether manual filter is in inclusive mode
         /// </summary>
         public bool IncludeNewItemsInFilter
-        { 
+        {
             get
             {
                 return GetXmlNodeBool("@includeNewItemsInFilter");
@@ -340,7 +340,7 @@ namespace OfficeOpenXml.Table.PivotTable
                  }
 
 
-                 // remove old attribute                 
+                 // remove old attribute
                  XmlNodeList nl = TopNode.SelectNodes("d:items/d:item/@t", NameSpaceManager);
                  if (nl.Count > 0)
                  {
@@ -350,8 +350,8 @@ namespace OfficeOpenXml.Table.PivotTable
                          item.OwnerElement.ParentNode.RemoveChild(item.OwnerElement);
                      }
                  }
-                 
- 
+
+
                  if (value==eSubTotalFunctions.None)
                  {
                      // for no subtotals, set defaultSubtotal to off
@@ -367,7 +367,7 @@ namespace OfficeOpenXml.Table.PivotTable
                         if ((value & e) == e)
                         {
                             var newTotalType = e.ToString();
-                            var totalType = char.ToLower(newTotalType[0], CultureInfo.InvariantCulture) + newTotalType.Substring(1);
+                            var totalType = newTotalType[0].ToString().ToLowerInvariant() + newTotalType.Substring(1);
                             // add new attribute
                             SetXmlNodeBool("@" + totalType + "Subtotal", true);
                             innerXml += "<item t=\"" + totalType + "\" />";
@@ -420,7 +420,7 @@ namespace OfficeOpenXml.Table.PivotTable
                         break;
                 }
             }
-        }        
+        }
         /// <summary>
         /// If the field is a row field
         /// </summary>
@@ -566,9 +566,9 @@ namespace OfficeOpenXml.Table.PivotTable
         }
         ExcelPivotTableFieldGroup _grouping=null;
         /// <summary>
-        /// Grouping settings. 
+        /// Grouping settings.
         /// Null if the field has no grouping otherwise ExcelPivotTableFieldNumericGroup or ExcelPivotTableFieldNumericGroup.
-        /// </summary>        
+        /// </summary>
         public ExcelPivotTableFieldGroup Grouping
         {
             get
@@ -926,7 +926,7 @@ namespace OfficeOpenXml.Table.PivotTable
             }
             ValidateGrouping();
 
-            bool firstField = true;            
+            bool firstField = true;
             List<ExcelPivotTableField> fields=new List<ExcelPivotTableField>();
             //Seconds
             if ((groupBy & eDateGroupBy.Seconds) == eDateGroupBy.Seconds)
@@ -1044,7 +1044,7 @@ namespace OfficeOpenXml.Table.PivotTable
                 {
                     _table.ColumnFields.Insert(field, index);
                 }
-                
+
                 _table.Fields.AddInternal(field);
 
                 AddCacheField(field, startDate, endDate, interval);

@@ -1,10 +1,10 @@
-/*******************************************************************************
+ï»¿/*******************************************************************************
  * You may amend and distribute as you like, but don't remove this header!
  *
  * EPPlus provides server-side generation of Excel 2007/2010 spreadsheets.
  * See http://www.codeplex.com/EPPlus for details.
  *
- * Copyright (C) 2011  Jan Källman
+ * Copyright (C) 2011  Jan KÙ†llman
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -13,21 +13,21 @@
 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
  * The GNU Lesser General Public License can be viewed at http://www.opensource.org/licenses/lgpl-license.php
  * If you unfamiliar with this license or have questions about it, here is an http://www.gnu.org/licenses/gpl-faq.html
  *
- * All code and executables are provided "as is" with no warranty either express or implied. 
+ * All code and executables are provided "as is" with no warranty either express or implied.
  * The author accepts no liability for any damage or loss of business that this product may cause.
  *
  * Code change notes:
- * 
+ *
  * Author							Change						Date
  * ******************************************************************************
- * Jan Källman		    Initial Release		       2011-01-01
- * Jan Källman		    License changed GPL-->LGPL 2011-12-27
+ * Jan KÙ†llman		    Initial Release		       2011-01-01
+ * Jan KÙ†llman		    License changed GPL-->LGPL 2011-12-27
  * Richard Tallent		Fix escaping of quotes					2012-10-31
  *******************************************************************************/
 using System;
@@ -43,6 +43,7 @@ using OfficeOpenXml.FormulaParsing.LexicalAnalysis;
 using OfficeOpenXml.Packaging.Ionic.Zip;
 using System.Drawing;
 using OfficeOpenXml.Style;
+using System.Reflection;
 
 namespace OfficeOpenXml
 {
@@ -53,8 +54,8 @@ namespace OfficeOpenXml
 	public enum ExcelCalcMode
 	{
 		/// <summary>
-		/// Indicates that calculations in the workbook are performed automatically when cell values change. 
-		/// The application recalculates those cells that are dependent on other cells that contain changed values. 
+		/// Indicates that calculations in the workbook are performed automatically when cell values change.
+		/// The application recalculates those cells that are dependent on other cells that contain changed values.
 		/// This mode of calculation helps to avoid unnecessary calculations.
 		/// </summary>
 		Automatic,
@@ -63,14 +64,14 @@ namespace OfficeOpenXml
 		/// </summary>
 		AutomaticNoTable,
 		/// <summary>
-		/// Indicates that calculations in the workbook be triggered manually by the user. 
+		/// Indicates that calculations in the workbook be triggered manually by the user.
 		/// </summary>
 		Manual
 	}
 	#endregion
 
 	/// <summary>
-	/// Represents the Excel workbook and provides access to all the 
+	/// Represents the Excel workbook and provides access to all the
 	/// document properties and worksheets within the workbook.
 	/// </summary>
 	public sealed class ExcelWorkbook : XmlHelper, IDisposable
@@ -150,12 +151,12 @@ namespace OfficeOpenXml
                 //Delete the shared string part, it will be recreated when the package is saved.
                 foreach (var rel in Part.GetRelationships())
                 {
-                    if (rel.TargetUri.OriginalString.EndsWith("sharedstrings.xml", StringComparison.InvariantCultureIgnoreCase))
+                    if (rel.TargetUri.OriginalString.EndsWith("sharedstrings.xml", StringComparisonEx.InvariantCultureIgnoreCase))
                     {
                         Part.DeleteRelationship(rel.Id);
                         break;
                     }
-                }                
+                }
                 _package.Package.DeletePart(SharedStringsUri); //Remove the part, it is recreated when saved.
 			}
 		}
@@ -165,7 +166,7 @@ namespace OfficeOpenXml
 			if (nl != null)
 			{
 				foreach (XmlElement elem in nl)
-				{ 
+				{
 					string fullAddress = elem.InnerText;
 
 					int localSheetID;
@@ -214,7 +215,7 @@ namespace OfficeOpenXml
 						{
 							namedRange = nameWorksheet.Names.Add(elem.GetAttribute("name"), range);
 						}
-						
+
 						if (Utils.ConvertUtil._invariantCompareInfo.IsPrefix(fullAddress, "\"")) //String value
 						{
 							namedRange.NameValue = fullAddress.Substring(1,fullAddress.Length-2);
@@ -261,7 +262,7 @@ namespace OfficeOpenXml
 				}
 			}
 		}
-		#region Worksheets
+#region Worksheets
 		/// <summary>
 		/// Provides access to all the worksheets in the workbook.
 		/// </summary>
@@ -276,13 +277,13 @@ namespace OfficeOpenXml
 					{
 						sheetsNode = CreateNode("d:sheets");
 					}
-					
+
 					_worksheets = new ExcelWorksheets(_package, _namespaceManager, sheetsNode);
 				}
 				return (_worksheets);
 			}
 		}
-		#endregion
+#endregion
 
 		/// <summary>
 		/// Provides access to named ranges
@@ -294,7 +295,7 @@ namespace OfficeOpenXml
 				return _names;
 			}
 		}
-		#region Workbook Properties
+#region Workbook Properties
 		decimal _standardFontWidth = decimal.MinValue;
         string _fontID = "";
         internal FormulaParser FormulaParser
@@ -324,7 +325,7 @@ namespace OfficeOpenXml
 		/// Max font width for the workbook
         /// <remarks>This method uses GDI. If you use Asure or another environment that does not support GDI, you have to set this value manually if you don't use the standard Calibri font</remarks>
 		/// </summary>
-		public decimal MaxFontWidth 
+		public decimal MaxFontWidth
 		{
 			get
 			{
@@ -413,7 +414,7 @@ namespace OfficeOpenXml
 				}
 				return _protection;
 			}
-		}        
+		}
 		ExcelWorkbookView _view = null;
 		/// <summary>
 		/// Access to workbook view properties
@@ -460,7 +461,7 @@ namespace OfficeOpenXml
             {
                 throw (new InvalidOperationException("VBA project already exists."));
             }
-                        
+
             _vba = new ExcelVbaProject(this);
             _vba.Create();
 #endif
@@ -484,8 +485,8 @@ namespace OfficeOpenXml
 		/// Returns a reference to the workbook's part within the package
 		/// </summary>
 		internal Packaging.ZipPackagePart Part { get { return (_package.Package.GetPart(WorkbookUri)); } }
-		
-		#region WorkbookXml
+
+#region WorkbookXml
 		private XmlDocument _workbookXml;
 		/// <summary>
 		/// Provides access to the XML data representing the workbook in the package.
@@ -565,8 +566,8 @@ namespace OfficeOpenXml
                 SetXmlNodeBool(date1904Path, value, false);
             }
         }
-     
-       
+
+
 		/// <summary>
 		/// Create or read the XML for the workbook.
 		/// </summary>
@@ -580,8 +581,8 @@ namespace OfficeOpenXml
 				Packaging.ZipPackagePart partWorkbook = _package.Package.CreatePart(WorkbookUri, @"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml", _package.Compression);
 
 				// create the workbook
-				_workbookXml = new XmlDocument(namespaceManager.NameTable);                
-				
+				_workbookXml = new XmlDocument(namespaceManager.NameTable);
+
 				_workbookXml.PreserveWhitespace = ExcelPackage.preserveWhitespace;
 				// create the workbook element
 				XmlElement wbElem = _workbookXml.CreateElement("workbook", ExcelPackage.schemaMain);
@@ -604,11 +605,11 @@ namespace OfficeOpenXml
 				_package.Package.Flush();
 			}
 		}
-		#endregion
-		#region StylesXml
+#endregion
+#region StylesXml
 		private XmlDocument _stylesXml;
 		/// <summary>
-		/// Provides access to the XML data representing the styles in the package. 
+		/// Provides access to the XML data representing the styles in the package.
 		/// </summary>
 		public XmlDocument StylesXml
 		{
@@ -634,10 +635,10 @@ namespace OfficeOpenXml
 						xml.Append("<cellStyles><cellStyle name=\"Normal\" xfId=\"0\" builtinId=\"0\" /></cellStyles>");
                         xml.Append("<dxfs count=\"0\" />");
                         xml.Append("</styleSheet>");
-						
+
 						_stylesXml = new XmlDocument();
 						_stylesXml.LoadXml(xml.ToString());
-						
+
 						//Save it to the package
 						StreamWriter stream = new StreamWriter(part.GetStream(FileMode.Create, FileAccess.Write));
 
@@ -671,28 +672,28 @@ namespace OfficeOpenXml
 				return _styles;
 			}
 		}
-		#endregion
+#endregion
 
-		#region Office Document Properties
+#region Office Document Properties
 		/// <summary>
 		/// The office document properties
 		/// </summary>
 		public OfficeProperties Properties
 		{
-			get 
+			get
 			{
 				if (_properties == null)
 				{
-					//  Create a NamespaceManager to handle the default namespace, 
-					//  and create a prefix for the default namespace:                   
+					//  Create a NamespaceManager to handle the default namespace,
+					//  and create a prefix for the default namespace:
 					_properties = new OfficeProperties(_package, NameSpaceManager);
 				}
 				return _properties;
 			}
 		}
-		#endregion
+#endregion
 
-		#region CalcMode
+#region CalcMode
 		private string CALC_MODE_PATH = "d:calcPr/@calcMode";
 		/// <summary>
 		/// Calculation mode for the workbook.
@@ -710,7 +711,7 @@ namespace OfficeOpenXml
 						return ExcelCalcMode.Manual;
 					default:
 						return ExcelCalcMode.Automatic;
-                        
+
 				}
 			}
 			set
@@ -729,7 +730,7 @@ namespace OfficeOpenXml
 
 				}
 			}
-			#endregion
+#endregion
 		}
 
         private const string FULL_CALC_ON_LOAD_PATH = "d:calcPr/@fullCalcOnLoad";
@@ -741,17 +742,17 @@ namespace OfficeOpenXml
 	    {
 	        get
 	        {
-                return GetXmlNodeBool(FULL_CALC_ON_LOAD_PATH);   
+                return GetXmlNodeBool(FULL_CALC_ON_LOAD_PATH);
 	        }
 	        set
 	        {
                 SetXmlNodeBool(FULL_CALC_ON_LOAD_PATH, value);
 	        }
 	    }
-		#endregion
-		#region Workbook Private Methods
-			
-		#region Save // Workbook Save
+#endregion
+#region Workbook Private Methods
+
+#region Save // Workbook Save
 		/// <summary>
 		/// Saves the workbook and all its components to the package.
 		/// For internal use only!
@@ -777,7 +778,7 @@ namespace OfficeOpenXml
                     Part.ContentType = ExcelPackage.contentTypeWorkbookMacroEnabled;
                 }
             }
-			
+
             UpdateDefinedNamesXml();
 
 			// save the workbook
@@ -822,7 +823,7 @@ namespace OfficeOpenXml
 
             part.SaveHandler = SaveSharedStringHandler;
             //UpdateSharedStringsXml();
-			
+
 			// Data validation
 			ValidateDataValidations();
 
@@ -884,7 +885,7 @@ namespace OfficeOpenXml
             stream.CompressionLevel = (OfficeOpenXml.Packaging.Ionic.Zlib.CompressionLevel)compressionLevel;
             stream.PutNextEntry(fileName);
 
-            var cache = new StringBuilder();            
+            var cache = new StringBuilder();
             var sw = new StreamWriter(stream);
             cache.AppendFormat("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?><sst xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" count=\"{0}\" uniqueCount=\"{0}\">", _sharedStrings.Count);
 			foreach (string t in _sharedStrings.Keys)
@@ -913,7 +914,7 @@ namespace OfficeOpenXml
                 if (cache.Length > 0x600000)
                 {
                     sw.Write(cache.ToString());
-                    cache = new StringBuilder();            
+                    cache = new StringBuilder();
                 }
 			}
             cache.Append("</sst>");
@@ -983,9 +984,15 @@ namespace OfficeOpenXml
 			{
 				if (string.IsNullOrEmpty(name.NameFormula))
 				{
-					if ((name.NameValue.GetType().IsPrimitive || name.NameValue is double || name.NameValue is decimal))
+					if ((
+#if COREFX
+                        name.NameValue.GetType().GetTypeInfo().IsPrimitive
+#else
+                        name.NameValue.GetType().IsPrimitive
+#endif
+                        || name.NameValue is double || name.NameValue is decimal))
 					{
-						elem.InnerText = Convert.ToDouble(name.NameValue, CultureInfo.InvariantCulture).ToString("R15", CultureInfo.InvariantCulture); 
+						elem.InnerText = Convert.ToDouble(name.NameValue, CultureInfo.InvariantCulture).ToString("R15", CultureInfo.InvariantCulture);
 					}
 					else if (name.NameValue is DateTime)
 					{
@@ -994,7 +1001,7 @@ namespace OfficeOpenXml
 					else
 					{
 						elem.InnerText = "\"" + name.NameValue.ToString() + "\"";
-					}                                
+					}
 				}
 				else
 				{
@@ -1028,10 +1035,10 @@ namespace OfficeOpenXml
 				return true;
 			}
 			return false;
-		}        
-		#endregion
+		}
+#endregion
 
-		#endregion
+#endregion
 		internal bool ExistsTableName(string Name)
 		{
 			foreach (var ws in Worksheets)
@@ -1079,7 +1086,7 @@ namespace OfficeOpenXml
 					var rel = Part.GetRelationship(rID);
 					var part = _package.Package.GetPart(UriHelper.ResolvePartUri(rel.SourceUri, rel.TargetUri));
 					XmlDocument xmlExtRef = new XmlDocument();
-                    LoadXmlSafe(xmlExtRef, part.GetStream()); 
+                    LoadXmlSafe(xmlExtRef, part.GetStream());
 
 					XmlElement book=xmlExtRef.SelectSingleNode("//d:externalBook", NameSpaceManager) as XmlElement;
 					if(book!=null)
@@ -1120,7 +1127,7 @@ namespace OfficeOpenXml
             {
                 _formulaParser.Dispose();
                 _formulaParser = null;
-            }   
+            }
         }
 
         internal void ReadAllTables()

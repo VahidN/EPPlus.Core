@@ -25,8 +25,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
                 functionArguments[1] = functionArguments[0];
                 functionArguments[0] = fa;
             }
-            var date1 = System.DateTime.FromOADate(date1Num);
-            var date2 = System.DateTime.FromOADate(date2Num);
+            var date1 = DateTimeExtensions.FromOADate(date1Num);
+            var date2 = DateTimeExtensions.FromOADate(date2Num);
 
             var basis = 0;
             if (functionArguments.Count() > 2)
@@ -44,7 +44,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
                     if (date1.Month == 2 && date2.Day==31)
                     {
                         var daysInFeb = calendar.IsLeapYear(date1.Year) ? 29 : 28;
-                        if (date1.Day == daysInFeb) d360Result++;  
+                        if (date1.Day == daysInFeb) d360Result++;
                     }
                     return CreateResult(d360Result / 360d, DataType.Decimal);
                 case 1:
@@ -83,7 +83,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
                 else if (dt2.Month == 2 && dt2.Day == 29)
                     perYear = 366;
             }
-            return perYear/(double) nYears;  
+            return perYear/(double) nYears;
         }
     }
 }

@@ -7,17 +7,17 @@
 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
  * The GNU Lesser General Public License can be viewed at http://www.opensource.org/licenses/lgpl-license.php
  * If you unfamiliar with this license or have questions about it, here is an http://www.gnu.org/licenses/gpl-faq.html
  *
- * All code and executables are provided "as is" with no warranty either express or implied. 
+ * All code and executables are provided "as is" with no warranty either express or implied.
  * The author accepts no liability for any damage or loss of business that this product may cause.
  *
  * Code change notes:
- * 
+ *
  * Author							Change						Date
  *******************************************************************************
  * Mats Alm   		                Added		                2013-12-03
@@ -32,6 +32,7 @@ using System.Globalization;
 using OfficeOpenXml.FormulaParsing.Utilities;
 using OfficeOpenXml.FormulaParsing.Exceptions;
 using System.Collections;
+using System.Reflection;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions
 {
@@ -47,7 +48,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         }
 
         public ExcelFunction(
-            ArgumentCollectionUtil argumentCollectionUtil, 
+            ArgumentCollectionUtil argumentCollectionUtil,
             ArgumentParsers argumentParsers,
             CompileResultValidators compileResultValidators)
         {
@@ -61,7 +62,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         private readonly CompileResultValidators _compileResultValidators;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="arguments">Arguments to the function, each argument can contain primitive types, lists or <see cref="ExcelDataProvider.IRangeInfo">Excel ranges</see></param>
         /// <param name="context">The <see cref="ParsingContext"/> contains various data that can be useful in functions.</param>
@@ -74,12 +75,12 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         /// <param name="context"></param>
         public virtual void BeforeInvoke(ParsingContext context) { }
 
-        public virtual bool IsLookupFuction 
-        { 
-            get 
-            { 
-                return false; 
-            } 
+        public virtual bool IsLookupFuction
+        {
+            get
+            {
+                return false;
+            }
         }
 
         public virtual bool IsErrorHandlingFunction
@@ -89,7 +90,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
                 return false;
             }
         }
-        
+
         /// <summary>
         /// Used for some Lookupfunctions to indicate that function arguments should
         /// not be compiled before the function is called.
@@ -306,7 +307,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         protected bool IsNumeric(object val)
         {
             if (val == null) return false;
-            return (val.GetType().IsPrimitive || val is double || val is decimal  || val is System.DateTime || val is TimeSpan);
+            return (
+#if COREFX
+                        val.GetType().GetTypeInfo().IsPrimitive
+#else
+                        val.GetType().IsPrimitive
+#endif
+                || val is double || val is decimal  || val is System.DateTime || val is TimeSpan);
         }
 
         //protected virtual bool IsNumber(object obj)
@@ -376,7 +383,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
         }
 
         /// <summary>
-        /// Use this method to create a result to return from Excel functions. 
+        /// Use this method to create a result to return from Excel functions.
         /// </summary>
         /// <param name="result"></param>
         /// <param name="dataType"></param>

@@ -18,7 +18,7 @@ namespace OfficeOpenXml.FormulaParsing.Logging
         private Dictionary<string, long> _funcPerformance = new Dictionary<string, long>();
         internal TextFileLogger(FileInfo fileInfo)
         {
-            _sw = new StreamWriter(fileInfo.FullName);
+            _sw = new StreamWriter(File.Open(fileInfo.FullName, FileMode.Create, FileAccess.Write, FileShare.Delete | FileShare.Read));
         }
 
         private void WriteSeparatorAndTimeStamp()
@@ -105,7 +105,6 @@ namespace OfficeOpenXml.FormulaParsing.Logging
 
         public void Dispose()
         {
-            _sw.Close(); 
             _sw.Dispose();
         }
     }

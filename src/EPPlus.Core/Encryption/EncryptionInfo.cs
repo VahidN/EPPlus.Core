@@ -13,17 +13,17 @@
 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
  * The GNU Lesser General Public License can be viewed at http://www.opensource.org/licenses/lgpl-license.php
  * If you unfamiliar with this license or have questions about it, here is an http://www.gnu.org/licenses/gpl-faq.html
  *
- * All code and executables are provided "as is" with no warranty either express or implied. 
+ * All code and executables are provided "as is" with no warranty either express or implied.
  * The author accepts no liability for any damage or loss of business that this product may cause.
  *
  * Code change notes:
- * 
+ *
  * Author							Change						Date
  * ******************************************************************************
  * Jan Källman		    Added       		        2013-01-05
@@ -77,7 +77,7 @@ namespace OfficeOpenXml.Encryption
         /// </summary>
         RC2,
         /// <summary>
-        /// RC4. 
+        /// RC4.
         /// </summary>
         RC4,
         /// <summary>
@@ -89,11 +89,11 @@ namespace OfficeOpenXml.Encryption
         /// </summary>
         DESX,
         /// <summary>
-        /// 3DES. MUST conform to the [RFC1851] algorithm. 
+        /// 3DES. MUST conform to the [RFC1851] algorithm.
         /// </summary>
         TRIPLE_DES,
-        /// 3DES_112 MUST conform to the [RFC1851] algorithm. 
-        TRIPLE_DES_112        
+        /// 3DES_112 MUST conform to the [RFC1851] algorithm.
+        TRIPLE_DES_112
     }
     internal enum eChainingMode
     {
@@ -233,7 +233,7 @@ namespace OfficeOpenXml.Encryption
                         return "RIPEMD-160";
                     case eHashAlogorithm.SHA1:
                         return "SHA-1";
-                    default: 
+                    default:
                         return value.ToString();
                 }
             }
@@ -295,7 +295,7 @@ namespace OfficeOpenXml.Encryption
                     case eCipherAlgorithm.TRIPLE_DES:
                         return "3DES";
                     case eCipherAlgorithm.TRIPLE_DES_112:
-                        return "3DES_112";                    
+                        return "3DES_112";
                     default:
                         return alg.ToString();
                 }
@@ -466,7 +466,7 @@ namespace OfficeOpenXml.Encryption
                       <p:encryptedKey spinCount="100000" saltSize="16" blockSize="16" keyBits="256" hashSize="64" cipherAlgorithm="AES" cipherChaining="ChainingModeCBC" hashAlgorithm="SHA512" saltValue="u2BNFAuHYn3M/WRja3/uPg==" encryptedVerifierHashInput="M0V+fRolJMRgFyI9w+AVxQ==" encryptedVerifierHashValue="V/6l9pFH7AaXFqEbsnFBfHe7gMOqFeRwaNMjc7D3LNdw6KgZzOOQlt5sE8/oG7GPVBDGfoQMTxjQydVPVy4qng==" encryptedKeyValue="B0/rbSQRiIKG5CQDH6AKYSybdXzxgKAfX1f+S5k7mNE=" />
                    </keyEncryptor></keyEncryptors></encryption>
         */
-        
+
         /***
          * <?xml version="1.0" encoding="UTF-8" standalone="true"?>
             <encryption xmlns:c="http://schemas.microsoft.com/office/2006/keyEncryptor/certificate" xmlns:p="http://schemas.microsoft.com/office/2006/keyEncryptor/password" xmlns="http://schemas.microsoft.com/office/2006/encryption">
@@ -554,14 +554,14 @@ namespace OfficeOpenXml.Encryption
             Verifier.SaltSize = (uint)BitConverter.ToInt32(data, pos);
             Verifier.Salt = new byte[Verifier.SaltSize];
 
-            Array.Copy(data, pos + 4, Verifier.Salt, 0, Verifier.SaltSize);
+            Array.Copy(data, pos + 4, Verifier.Salt, 0, (int)Verifier.SaltSize);
 
             Verifier.EncryptedVerifier = new byte[16];
             Array.Copy(data, pos + 20, Verifier.EncryptedVerifier, 0, 16);
 
             Verifier.VerifierHashSize = (uint)BitConverter.ToInt32(data, pos + 36);
             Verifier.EncryptedVerifierHash = new byte[Verifier.VerifierHashSize];
-            Array.Copy(data, pos + 40, Verifier.EncryptedVerifierHash, 0, Verifier.VerifierHashSize);
+            Array.Copy(data, pos + 40, Verifier.EncryptedVerifierHash, 0, (int)Verifier.VerifierHashSize);
         }
         internal byte[] WriteBinary()
         {

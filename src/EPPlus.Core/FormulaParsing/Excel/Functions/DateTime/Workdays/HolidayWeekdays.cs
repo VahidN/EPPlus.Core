@@ -13,7 +13,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime.Workdays
         public HolidayWeekdays()
             :this(DayOfWeek.Saturday, DayOfWeek.Sunday)
         {
-            
+
         }
 
         public int NumberOfWorkdaysPerWeek => 7 - _holidayDays.Count;
@@ -43,7 +43,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime.Workdays
                     if (ConvertUtil.IsNumeric(arg.Value))
                     {
                         var dateSerial = ConvertUtil.GetValueDouble(arg.Value);
-                        var holidayDate = System.DateTime.FromOADate(dateSerial);
+                        var holidayDate = DateTimeExtensions.FromOADate(dateSerial);
                         if (!IsHolidayWeekday(holidayDate))
                         {
                             resultDate = resultDate.AddDays(1);
@@ -61,7 +61,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime.Workdays
                         if (ConvertUtil.IsNumeric(cell.Value))
                         {
                             var dateSerial = ConvertUtil.GetValueDouble(cell.Value);
-                            var holidayDate = System.DateTime.FromOADate(dateSerial);
+                            var holidayDate = DateTimeExtensions.FromOADate(dateSerial);
                             if (!IsHolidayWeekday(holidayDate))
                             {
                                 resultDate = resultDate.AddDays(1);

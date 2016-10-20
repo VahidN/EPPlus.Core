@@ -13,17 +13,17 @@
 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
  * The GNU Lesser General Public License can be viewed at http://www.opensource.org/licenses/lgpl-license.php
  * If you unfamiliar with this license or have questions about it, here is an http://www.gnu.org/licenses/gpl-faq.html
  *
- * All code and executables are provided "as is" with no warranty either express or implied. 
+ * All code and executables are provided "as is" with no warranty either express or implied.
  * The author accepts no liability for any damage or loss of business that this product may cause.
  *
  * Code change notes:
- * 
+ *
  * Author							Change						Date
  * ******************************************************************************
  * Jan Källman		                Initial Release		        2009-12-22
@@ -78,10 +78,10 @@ namespace OfficeOpenXml.Drawing
         internal Packaging.ZipPackageRelationship _drawingRelation = null;
         internal ExcelDrawings(ExcelPackage xlPackage, ExcelWorksheet sheet)
         {
-                _drawingsXml = new XmlDocument();                
+                _drawingsXml = new XmlDocument();
                 _drawingsXml.PreserveWhitespace = false;
                 _drawings = new List<ExcelDrawing>();
-                _drawingNames = new Dictionary<string,int>(StringComparer.InvariantCultureIgnoreCase);
+                _drawingNames = new Dictionary<string,int>(StringComparerEx.InvariantCultureIgnoreCase);
                 _package = xlPackage;
                 Worksheet = sheet;
                 XmlNode node = sheet.WorksheetXml.SelectSingleNode("//d:drawing", sheet.NameSpaceManager);
@@ -92,7 +92,7 @@ namespace OfficeOpenXml.Drawing
                     _uriDrawing = UriHelper.ResolvePartUri(sheet.WorksheetUri, _drawingRelation.TargetUri);
 
                     _part = xlPackage.Package.GetPart(_uriDrawing);
-                    XmlHelper.LoadXmlSafe(_drawingsXml, _part.GetStream()); 
+                    XmlHelper.LoadXmlSafe(_drawingsXml, _part.GetStream());
 
                     AddDrawings();
                 }
@@ -115,18 +115,18 @@ namespace OfficeOpenXml.Drawing
             // The code below currently pretends that loading all Choice alternative drawings doesn't cause a problem
             // elsewhere. This seems to be ok for the time being as encountered drawing files so far only seem to have
             // one Choice node (and no Fallback) underneath the AlternativeContent node. (Excel 2013 that is.)
-            // This change prevents CodePlex issue #15028 from occurring. 
+            // This change prevents CodePlex issue #15028 from occurring.
             // (the drawing xml part (that ONLY contained AlternativeContent nodes) was incorrectly being garbage collected when the package was saved)
             XmlNodeList list = _drawingsXml.SelectNodes("//*[self::xdr:twoCellAnchor or self::xdr:oneCellAnchor or self::xdr:absoluteAnchor]", NameSpaceManager);
 
             foreach (XmlNode node in list)
             {
-                
+
                 ExcelDrawing dr;
                 switch(node.LocalName)
                 {
                     case "oneCellAnchor":
-                        //dr = new ExcelDrawing(this, node, "xdr:sp/xdr:nvSpPr/xdr:cNvPr/@name");                        
+                        //dr = new ExcelDrawing(this, node, "xdr:sp/xdr:nvSpPr/xdr:cNvPr/@name");
                         dr = ExcelDrawing.GetDrawing(this, node); //Issue 15373
                         break;
                     case "twoCellAnchor":
@@ -153,7 +153,7 @@ namespace OfficeOpenXml.Drawing
 
         #region NamespaceManager
         /// <summary>
-        /// Creates the NamespaceManager. 
+        /// Creates the NamespaceManager.
         /// </summary>
         private void CreateNSM()
         {
@@ -192,7 +192,7 @@ namespace OfficeOpenXml.Drawing
         #endregion
 
         /// <summary>
-        /// Returns the drawing at the specified position.  
+        /// Returns the drawing at the specified position.
         /// </summary>
         /// <param name="PositionID">The position of the drawing. 0-base</param>
         /// <returns></returns>
@@ -243,7 +243,7 @@ namespace OfficeOpenXml.Drawing
             get
             {
                 return _part;
-            }        
+            }
         }
         Uri _uriDrawing=null;
         public Uri UriDrawing
@@ -257,11 +257,11 @@ namespace OfficeOpenXml.Drawing
         #region Add functions
             /// <summary>
             /// Add a new chart to the worksheet.
-            /// Do not support Bubble-, Radar-, Stock- or Surface charts. 
+            /// Do not support Bubble-, Radar-, Stock- or Surface charts.
             /// </summary>
             /// <param name="Name"></param>
             /// <param name="ChartType">Type of chart</param>
-            /// <param name="PivotTableSource">The pivottable source for a pivotchart</param>    
+            /// <param name="PivotTableSource">The pivottable source for a pivotchart</param>
             /// <returns>The chart</returns>
             public ExcelChart AddChart(string Name, eChartType ChartType, ExcelPivotTable PivotTableSource)
             {
@@ -278,7 +278,7 @@ namespace OfficeOpenXml.Drawing
                 }
                 if (Worksheet is ExcelChartsheet && _drawings.Count > 0)
                 {
-                    throw new InvalidOperationException("Chart Worksheets can't have more than one chart");                
+                    throw new InvalidOperationException("Chart Worksheets can't have more than one chart");
                 }
                 XmlElement drawNode = CreateDrawingXml();
 
@@ -290,7 +290,7 @@ namespace OfficeOpenXml.Drawing
             }
             /// <summary>
             /// Add a new chart to the worksheet.
-            /// Do not support Bubble-, Radar-, Stock- or Surface charts. 
+            /// Do not support Bubble-, Radar-, Stock- or Surface charts.
             /// </summary>
             /// <param name="Name"></param>
             /// <param name="ChartType">Type of chart</param>
@@ -380,7 +380,7 @@ namespace OfficeOpenXml.Drawing
         /// <param name="Name">Name</param>
         /// <param name="Style">Shape style</param>
         /// <returns>The shape object</returns>
-    
+
         public ExcelShape AddShape(string Name, eShapeStyle Style)
             {
                 if (Worksheet is ExcelChartsheet && _drawings.Count > 0)
@@ -438,7 +438,7 @@ namespace OfficeOpenXml.Drawing
 
                     StreamWriter streamChart = new StreamWriter(_part.GetStream(FileMode.Create, FileAccess.Write));
                     DrawingXml.Save(streamChart);
-                    streamChart.Close();
+                    streamChart.Dispose();
                     package.Flush();
 
                     _drawingRelation = Worksheet.Part.CreateRelationship(UriHelper.GetRelativeUri(Worksheet.WorksheetUri, _uriDrawing), Packaging.TargetMode.Internal, ExcelPackage.schemaRelationships + "/drawing");
@@ -446,7 +446,7 @@ namespace OfficeOpenXml.Drawing
                     e.SetAttribute("id",ExcelPackage.schemaRelationships, _drawingRelation.Id);
 
                     Worksheet.WorksheetXml.DocumentElement.AppendChild(e);
-                    package.Flush();                    
+                    package.Flush();
                 }
                 XmlNode colNode = _drawingsXml.SelectSingleNode("//xdr:wsDr", NameSpaceManager);
                 XmlElement drawNode;
@@ -555,7 +555,7 @@ namespace OfficeOpenXml.Drawing
                             d.SetPixelLeft(pos[ix, 0]);
                         }
                         d.SetPixelWidth(pos[ix, 1]);
-                        
+
                     }
                     ix++;
                 }

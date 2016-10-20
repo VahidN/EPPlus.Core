@@ -13,17 +13,17 @@
 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
  * The GNU Lesser General Public License can be viewed at http://www.opensource.org/licenses/lgpl-license.php
  * If you unfamiliar with this license or have questions about it, here is an http://www.gnu.org/licenses/gpl-faq.html
  *
- * All code and executables are provided "as is" with no warranty either express or implied. 
+ * All code and executables are provided "as is" with no warranty either express or implied.
  * The author accepts no liability for any damage or loss of business that this product may cause.
  *
  * Code change notes:
- * 
+ *
  * Author							Change						Date
  * ******************************************************************************
  * Jan Källman		                Initial Release		        2009-10-01
@@ -44,9 +44,9 @@ namespace OfficeOpenXml.Style
     {
         eStyleClass _cls;
         StyleBase _parent;
-        internal ExcelColor(ExcelStyles styles, OfficeOpenXml.XmlHelper.ChangedEventHandler ChangedEvent, int worksheetID, string address, eStyleClass cls, StyleBase parent) : 
+        internal ExcelColor(ExcelStyles styles, OfficeOpenXml.XmlHelper.ChangedEventHandler ChangedEvent, int worksheetID, string address, eStyleClass cls, StyleBase parent) :
             base(styles, ChangedEvent, worksheetID, address)
-            
+
         {
             _parent = parent;
             _cls = cls;
@@ -119,7 +119,7 @@ namespace OfficeOpenXml.Style
 
         internal override string Id
         {
-            get 
+            get
             {
                 return Theme + Tint + Rgb + Indexed;
             }
@@ -255,7 +255,7 @@ namespace OfficeOpenXml.Style
             {
                 // coloring by shades of grey (-1 -> 0)
                 iTint = ((int)(theColor.Tint * 160) + 0x80);
-                translatedRGB = ((int)(decimal.Round(theColor.Tint * -512))).ToString("X");
+                translatedRGB = ((int)(Math.Round(theColor.Tint * -512))).ToString("X");
                 translatedRGB = "#FF" + translatedRGB + translatedRGB + translatedRGB;
             }
 

@@ -13,17 +13,17 @@
 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
  * The GNU Lesser General Public License can be viewed at http://www.opensource.org/licenses/lgpl-license.php
  * If you unfamiliar with this license or have questions about it, here is an http://www.gnu.org/licenses/gpl-faq.html
  *
- * All code and executables are provided "as is" with no warranty either express or implied. 
+ * All code and executables are provided "as is" with no warranty either express or implied.
  * The author accepts no liability for any damage or loss of business that this product may cause.
  *
  * Code change notes:
- * 
+ *
  * Author							Change						Date
  * ******************************************************************************
  * Jan Källman		                Initial Release		        2009-10-01
@@ -123,7 +123,7 @@ namespace OfficeOpenXml.Drawing
             _image = Image.FromStream(imagestream);
             ImageConverter ic = new ImageConverter();
             var img = (byte[])ic.ConvertTo(_image, typeof(byte[]));
-            imagestream.Close();
+            imagestream.Dispose();
 
             UriPic = GetNewUri(package, "/xl/media/{0}" + imageFile.Name);
             var ii = _drawings._package.AddImage(img, UriPic, ContentType);
@@ -237,7 +237,7 @@ namespace OfficeOpenXml.Drawing
 
             //Set the Image and save it to the package.
             RelPic = _drawings.Part.CreateRelationship(UriHelper.GetRelativeUri(_drawings.UriDrawing, UriPic), Packaging.TargetMode.Internal, ExcelPackage.schemaRelationships + "/image");
-            
+
             //AddNewPicture(img, picRelation.Id);
             _drawings._hashes.Add(ii.Hash, RelPic.Id);
 
@@ -253,9 +253,9 @@ namespace OfficeOpenXml.Drawing
         private string PicStartXml()
         {
             StringBuilder xml = new StringBuilder();
-            
+
             xml.Append("<xdr:nvPicPr>");
-            
+
             if (_hyperlink == null)
             {
                 xml.AppendFormat("<xdr:cNvPr id=\"{0}\" descr=\"\" />", _id);
@@ -279,7 +279,7 @@ namespace OfficeOpenXml.Drawing
                }
                xml.Append("</xdr:cNvPr>");
             }
-           
+
             xml.Append("<xdr:cNvPicPr><a:picLocks noChangeAspect=\"1\" /></xdr:cNvPicPr></xdr:nvPicPr><xdr:blipFill><a:blip xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" r:embed=\"\" cstate=\"print\" /><a:stretch><a:fillRect /> </a:stretch> </xdr:blipFill> <xdr:spPr> <a:xfrm> <a:off x=\"0\" y=\"0\" />  <a:ext cx=\"0\" cy=\"0\" /> </a:xfrm> <a:prstGeom prst=\"rect\"> <a:avLst /> </a:prstGeom> </xdr:spPr>");
 
             return xml.ToString();
@@ -290,7 +290,7 @@ namespace OfficeOpenXml.Drawing
         /// <summary>
         /// The Image
         /// </summary>
-        public Image Image 
+        public Image Image
         {
             get
             {
@@ -307,7 +307,7 @@ namespace OfficeOpenXml.Drawing
 
                         //Create relationship
                         TopNode.SelectSingleNode("xdr:pic/xdr:blipFill/a:blip/@r:embed", NameSpaceManager).Value = relID;
-                        //_image.Save(Part.GetStream(FileMode.Create, FileAccess.Write), _imageFormat);   //Always JPEG here at this point. 
+                        //_image.Save(Part.GetStream(FileMode.Create, FileAccess.Write), _imageFormat);   //Always JPEG here at this point.
                     }
                     catch(Exception ex)
                     {
@@ -421,7 +421,7 @@ namespace OfficeOpenXml.Drawing
             base.Dispose();
             _hyperlink = null;
             _image.Dispose();
-            _image = null;            
+            _image = null;
         }
     }
 }

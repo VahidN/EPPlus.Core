@@ -33,7 +33,7 @@ namespace OfficeOpenXml
         /// <summary>
         /// Specifies that the RIPEMD-160 algorithm, as defined by ISO/IEC10118-3:2004 shall be used.
         /// </summary>
-        RIPEMD160, 
+        RIPEMD160,
         /// <summary>
         /// Specifies that the SHA-1 algorithm, as defined by ISO/IEC 10118-3:2004 shall be used.
         /// </summary>
@@ -41,7 +41,7 @@ namespace OfficeOpenXml
         /// <summary>
         /// Specifies that the SHA-256 algorithm, as defined by ISO/IEC10118-3:2004 shall be used.
         /// </summary>
-        SHA256, 
+        SHA256,
         /// <summary>
         /// Specifies that the SHA-384 algorithm, as defined by ISO/IEC 10118-3:2004 shall be used.
         /// </summary>
@@ -49,7 +49,7 @@ namespace OfficeOpenXml
         /// <summary>
         /// Specifies that the SHA-512 algorithm, as defined by ISO/IEC10118-3:2004 shall be used.
         /// </summary>
-        SHA512, 
+        SHA512,
         /// <summary>
         /// Specifies that the WHIRLPOOL algorithm, as defined by ISO/IEC 10118-3:2004 shall be used.
         /// </summary>
@@ -69,8 +69,8 @@ namespace OfficeOpenXml
             }
         }
         ExcelAddress _address=null;
-        public ExcelAddress Address 
-        { 
+        public ExcelAddress Address
+        {
             get
             {
                 if(_address==null)
@@ -102,13 +102,18 @@ namespace OfficeOpenXml
             var rnd = RandomNumberGenerator.Create();
             var bySalt=new byte[16];
             rnd.GetBytes(bySalt);
-            
+
             //Default SHA512 and 10000 spins
             Algorithm=eProtectedRangeAlgorithm.SHA512;
             SpinCount = SpinCount < 100000 ? 100000 : SpinCount;
-            
+
             //Combine salt and password and calculate the initial hash
-            var hp=new SHA512CryptoServiceProvider();
+            var hp =
+#if COREFX
+                SHA512.Create();
+#else
+                new SHA512CryptoServiceProvider();
+#endif
             var buffer=new byte[byPwd.Length + bySalt.Length];
             Array.Copy(bySalt, buffer, bySalt.Length);
             Array.Copy(byPwd, 0, buffer, 16, byPwd.Length);
@@ -123,7 +128,7 @@ namespace OfficeOpenXml
                 hash = hp.ComputeHash(buffer);
             }
             Salt = Convert.ToBase64String(bySalt);
-            Hash = Convert.ToBase64String(hash);            
+            Hash = Convert.ToBase64String(hash);
         }
         public string SecurityDescriptor
         {

@@ -13,17 +13,17 @@
 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
  * The GNU Lesser General Public License can be viewed at http://www.opensource.org/licenses/lgpl-license.php
  * If you unfamiliar with this license or have questions about it, here is an http://www.gnu.org/licenses/gpl-faq.html
  *
- * All code and executables are provided "as is" with no warranty either express or implied. 
+ * All code and executables are provided "as is" with no warranty either express or implied.
  * The author accepts no liability for any damage or loss of business that this product may cause.
  *
  * Code change notes:
- * 
+ *
  * Author							Change						Date
  *******************************************************************************
  * Jan Källman		Added		26-MAR-2012
@@ -60,7 +60,7 @@ namespace OfficeOpenXml.VBA
     internal delegate void ModuleNameChange(string value);
 
     /// <summary>
-    /// A VBA code module. 
+    /// A VBA code module.
     /// </summary>
     public class ExcelVBAModule
     {
@@ -78,8 +78,8 @@ namespace OfficeOpenXml.VBA
         /// <summary>
         /// The name of the module
         /// </summary>
-        public string Name 
-        {   
+        public string Name
+        {
             get
             {
                 return _name;
@@ -108,7 +108,7 @@ namespace OfficeOpenXml.VBA
         private string _code="";
         /// <summary>
         /// The code without any module level attributes.
-        /// <remarks>Can contain function level attributes.</remarks> 
+        /// <remarks>Can contain function level attributes.</remarks>
         /// </summary>
         public string Code {
             get
@@ -117,7 +117,7 @@ namespace OfficeOpenXml.VBA
             }
             set
             {
-                if(value.StartsWith("Attribute",StringComparison.InvariantCultureIgnoreCase) || value.StartsWith("VERSION",StringComparison.InvariantCultureIgnoreCase))
+                if(value.StartsWith("Attribute", StringComparisonEx.InvariantCultureIgnoreCase) || value.StartsWith("VERSION", StringComparisonEx.InvariantCultureIgnoreCase))
                 {
                     throw(new InvalidOperationException("Code can't start with an Attribute or VERSION keyword. Attributes can be accessed through the Attributes collection."));
                 }

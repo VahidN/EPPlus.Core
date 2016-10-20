@@ -35,7 +35,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
     /// </summary>
     [System.Runtime.InteropServices.GuidAttribute("ebc25cf6-9120-4283-b972-0e5520d0000F")]
     [System.Runtime.InteropServices.ComVisible(true)]
-#if !NETCF
+#if !NETCF && !COREFX
     [System.Runtime.InteropServices.ClassInterface(System.Runtime.InteropServices.ClassInterfaceType.AutoDispatch)]
 #endif
 

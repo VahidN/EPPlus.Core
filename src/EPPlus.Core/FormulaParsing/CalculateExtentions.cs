@@ -13,20 +13,20 @@
 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
  * The GNU Lesser General Public License can be viewed at http://www.opensource.org/licenses/lgpl-license.php
  * If you unfamiliar with this license or have questions about it, here is an http://www.gnu.org/licenses/gpl-faq.html
  *
- * All code and executables are provided "as is" with no warranty either express or implied. 
+ * All code and executables are provided "as is" with no warranty either express or implied.
  * The author accepts no liability for any damage or loss of business that this product may cause.
  *
  * Code change notes:
- * 
+ *
  * Author							Change						Date
  * ******************************************************************************
- * Jan Källman                      Added                       2012-03-04  
+ * Jan Källman                      Added                       2012-03-04
  *******************************************************************************/
 
 using System.Threading;
@@ -57,9 +57,9 @@ namespace OfficeOpenXml
                 workbook.FormulaParser.Logger.Log(msg);
             }
 
-            //TODO: Remove when tests are done. Outputs the dc to a text file. 
+            //TODO: Remove when tests are done. Outputs the dc to a text file.
             //var fileDc = new System.IO.StreamWriter("c:\\temp\\dc.txt");
-                        
+
             //for (int i = 0; i < dc.list.Count; i++)
             //{
             //    fileDc.WriteLine(i.ToString() + "," + dc.list[i].Column.ToString() + "," + dc.list[i].Row.ToString() + "," + (dc.list[i].ws==null ? "" : dc.list[i].ws.Name) + "," + dc.list[i].Formula);
@@ -86,7 +86,7 @@ namespace OfficeOpenXml
         public static void Calculate(this ExcelWorksheet worksheet, ExcelCalculationOption options)
         {
             Init(worksheet.Workbook);
-            //worksheet.Workbook._formulaParser = null; TODO:Cant reset. Don't work with userdefined or overrided worksheet functions            
+            //worksheet.Workbook._formulaParser = null; TODO:Cant reset. Don't work with userdefined or overrided worksheet functions
             var dc = DependencyChainFactory.Create(worksheet, options);
             var parser = worksheet.Workbook.FormulaParser;
             parser.InitNewCalc();
@@ -157,7 +157,7 @@ namespace OfficeOpenXml
                 {
                     throw (fe);
                 }
-                catch(Exception e)
+                catch(Exception)
                 {
                     var error = ExcelErrorValue.Parse(ExcelErrorValue.Values.Value);
                     SetValue(wb, item, error);

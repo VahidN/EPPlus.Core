@@ -13,17 +13,17 @@
 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
  * The GNU Lesser General Public License can be viewed at http://www.opensource.org/licenses/lgpl-license.php
  * If you unfamiliar with this license or have questions about it, here is an http://www.gnu.org/licenses/gpl-faq.html
  *
- * All code and executables are provided "as is" with no warranty either express or implied. 
+ * All code and executables are provided "as is" with no warranty either express or implied.
  * The author accepts no liability for any damage or loss of business that this product may cause.
  *
  * Code change notes:
- * 
+ *
  * Author							Change						Date
  * ******************************************************************************
  * Jan Källman		Added this class		        2010-01-24
@@ -49,17 +49,7 @@ namespace OfficeOpenXml
         {
             OriginalUri = (Uri)this;
         }
-        /// <summary>
-        /// A new hyperlink with the specified URI. This syntax is obsolete
-        /// </summary>
-        /// <param name="uriString">The URI</param>
-        /// <param name="dontEscape"></param>
-        [Obsolete("base constructor 'System.Uri.Uri(string, bool)' is obsolete: 'The constructor has been deprecated. Please use new ExcelHyperLink(string). The dontEscape parameter is deprecated and is always false.")]
-        public ExcelHyperLink(string uriString, bool dontEscape) :
-            base(uriString, dontEscape)
-        {
-            OriginalUri = (Uri)this;
-        }
+
         /// <summary>
         /// A new hyperlink with the specified URI and kind
         /// </summary>
@@ -150,7 +140,7 @@ namespace OfficeOpenXml
             }
         }
         /// <summary>
-        /// Used to handle non absolute URI's. 
+        /// Used to handle non absolute URI's.
         /// Is used if IsAblsoluteUri is true. The base URI will have a dummy value of xl://nonAbsolute.
         /// </summary>
         public Uri OriginalUri

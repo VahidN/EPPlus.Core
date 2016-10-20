@@ -13,17 +13,17 @@
 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
  * The GNU Lesser General Public License can be viewed at http://www.opensource.org/licenses/lgpl-license.php
  * If you unfamiliar with this license or have questions about it, here is an http://www.gnu.org/licenses/gpl-faq.html
  *
- * All code and executables are provided "as is" with no warranty either express or implied. 
+ * All code and executables are provided "as is" with no warranty either express or implied.
  * The author accepts no liability for any damage or loss of business that this product may cause.
  *
  * Code change notes:
- * 
+ *
  * Author							Change						Date
  * ******************************************************************************
  * Jan Källman		Added		21-MAR-2011
@@ -102,7 +102,7 @@ namespace OfficeOpenXml.Table.PivotTable
             {
                 foreach (var field in _list)
                 {
-                    if (field.Name.Equals(name,StringComparison.InvariantCultureIgnoreCase))
+                    if (field.Name.Equals(name,StringComparisonEx.InvariantCultureIgnoreCase))
                     {
                         return field;
                     }
@@ -143,7 +143,7 @@ namespace OfficeOpenXml.Table.PivotTable
         }
     }
     /// <summary>
-    /// Collection class for Row and column fields in a Pivottable 
+    /// Collection class for Row and column fields in a Pivottable
     /// </summary>
     public class ExcelPivotTableRowColumnFieldCollection : ExcelPivotTableFieldCollectionBase<ExcelPivotTableField>
     {
@@ -210,7 +210,7 @@ namespace OfficeOpenXml.Table.PivotTable
                     field.Axis = ePivotFieldAxis.Page;
                     break;
                 case "dataFields":
-                    
+
                     break;
             }
         }
@@ -224,8 +224,8 @@ namespace OfficeOpenXml.Table.PivotTable
             {
                 throw new ArgumentException("Field not in collection");
             }
-            SetFlag(Field, false);            
-            _list.Remove(Field);            
+            SetFlag(Field, false);
+            _list.Remove(Field);
         }
         /// <summary>
         /// Remove a field at a specific position
@@ -238,11 +238,11 @@ namespace OfficeOpenXml.Table.PivotTable
                 throw(new IndexOutOfRangeException());
             }
             SetFlag(_list[Index], false);
-            _list.RemoveAt(Index);      
+            _list.RemoveAt(Index);
         }
     }
     /// <summary>
-    /// Collection class for data fields in a Pivottable 
+    /// Collection class for data fields in a Pivottable
     /// </summary>
     public class ExcelPivotTableDataFieldCollection : ExcelPivotTableFieldCollectionBase<ExcelPivotTableDataField>
     {
@@ -297,8 +297,8 @@ namespace OfficeOpenXml.Table.PivotTable
         {
             foreach (var df in _list)
             {
-                if (((!string.IsNullOrEmpty(df.Name) && df.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase) ||
-                     (string.IsNullOrEmpty(df.Name) && df.Field.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase)))) && datafield != df)
+                if (((!string.IsNullOrEmpty(df.Name) && df.Name.Equals(name, StringComparisonEx.InvariantCultureIgnoreCase) ||
+                     (string.IsNullOrEmpty(df.Name) && df.Field.Name.Equals(name, StringComparisonEx.InvariantCultureIgnoreCase)))) && datafield != df)
                 {
                     return true;
                 }

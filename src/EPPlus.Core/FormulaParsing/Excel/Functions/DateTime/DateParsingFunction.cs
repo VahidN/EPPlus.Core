@@ -18,7 +18,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
             else
             {
                 var d = ArgToDecimal(arguments, 0);
-                date = System.DateTime.FromOADate(d);
+                date = DateTimeExtensions.FromOADate(d);
             }
             return date;
         }

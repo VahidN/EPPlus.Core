@@ -13,17 +13,17 @@
 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
  * The GNU Lesser General Public License can be viewed at http://www.opensource.org/licenses/lgpl-license.php
  * If you unfamiliar with this license or have questions about it, here is an http://www.gnu.org/licenses/gpl-faq.html
  *
- * All code and executables are provided "as is" with no warranty either express or implied. 
+ * All code and executables are provided "as is" with no warranty either express or implied.
  * The author accepts no liability for any damage or loss of business that this product may cause.
  *
  * Code change notes:
- * 
+ *
  * Author							Change						Date
  *******************************************************************************
  * Jan Källman		Added		25-Oct-2012
@@ -36,13 +36,17 @@ using Ionic.Zip;
 using System.IO;
 using System.Xml;
 using OfficeOpenXml.Packaging.Ionic.Zlib;
+
+#if !COREFX
 using System.Web;
+#endif
+
 namespace OfficeOpenXml.Packaging
 {
     public abstract class ZipPackageRelationshipBase
     {
         protected ZipPackageRelationshipCollection _rels = new ZipPackageRelationshipCollection();
-        protected internal 
+        protected internal
         int maxRId = 1;
         internal void DeleteRelationship(string id)
         {
@@ -99,7 +103,7 @@ namespace OfficeOpenXml.Packaging
                 var rel = new ZipPackageRelationship();
                 rel.Id = c.GetAttribute("Id");
                 rel.RelationshipType = c.GetAttribute("Type");
-                rel.TargetMode = c.GetAttribute("TargetMode").Equals("external",StringComparison.InvariantCultureIgnoreCase) ? TargetMode.External : TargetMode.Internal;
+                rel.TargetMode = c.GetAttribute("TargetMode").Equals("external", StringComparisonEx.InvariantCultureIgnoreCase) ? TargetMode.External : TargetMode.Internal;
                 try
                 {
                     rel.TargetUri = new Uri(c.GetAttribute("Target"), UriKind.RelativeOrAbsolute);
@@ -113,7 +117,7 @@ namespace OfficeOpenXml.Packaging
                 {
                     rel.SourceUri = new Uri(source, UriKind.Relative);
                 }
-                if (rel.Id.StartsWith("rid", StringComparison.InvariantCultureIgnoreCase))
+                if (rel.Id.StartsWith("rid", StringComparisonEx.InvariantCultureIgnoreCase))
                 {
                     int id;
                     if (int.TryParse(rel.Id.Substring(3), out id))

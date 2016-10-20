@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Utilities
@@ -27,7 +28,13 @@ namespace OfficeOpenXml.FormulaParsing.Utilities
         public static bool IsNumeric(this object obj)
         {
             if (obj == null) return false;
-            return (obj.GetType().IsPrimitive || obj is double || obj is decimal || obj is System.DateTime || obj is TimeSpan);
+            return (
+#if COREFX
+                        obj.GetType().GetTypeInfo().IsPrimitive
+#else
+                        obj.GetType().IsPrimitive
+#endif
+                || obj is double || obj is decimal || obj is System.DateTime || obj is TimeSpan);
         }
     }
 }

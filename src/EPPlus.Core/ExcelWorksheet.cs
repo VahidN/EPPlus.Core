@@ -1,10 +1,10 @@
-/*******************************************************************************
+ï»¿/*******************************************************************************
  * You may amend and distribute as you like, but don't remove this header!
  *
  * EPPlus provides server-side generation of Excel 2007/2010 spreadsheets.
  * See http://www.codeplex.com/EPPlus for details.
  *
- * Copyright (C) 2011  Jan Källman
+ * Copyright (C) 2011  Jan KÙ†llman
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -13,22 +13,22 @@
 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
  * The GNU Lesser General Public License can be viewed at http://www.opensource.org/licenses/lgpl-license.php
  * If you unfamiliar with this license or have questions about it, here is an http://www.gnu.org/licenses/gpl-faq.html
  *
- * All code and executables are provided "as is" with no warranty either express or implied. 
+ * All code and executables are provided "as is" with no warranty either express or implied.
  * The author accepts no liability for any damage or loss of business that this product may cause.
  *
  * Code change notes:
- * 
+ *
  * Author							Change						Date
  * ******************************************************************************
- * Jan Källman		    Initial Release		        2011-11-02
- * Jan Källman          Total rewrite               2010-03-01
- * Jan Källman		    License changed GPL-->LGPL  2011-12-27
+ * Jan KÙ†llman		    Initial Release		        2011-11-02
+ * Jan KÙ†llman          Total rewrite               2010-03-01
+ * Jan KÙ†llman		    License changed GPL-->LGPL  2011-12-27
  *******************************************************************************/
 using System;
 using System.Collections.Generic;
@@ -53,7 +53,11 @@ using OfficeOpenXml.Table.PivotTable;
 using OfficeOpenXml.Utils;
 
 using System.Linq;
+using System.Reflection;
 
+#if COREFX
+using XmlTextReader = System.Xml.XmlReader;
+#endif
 
 namespace OfficeOpenXml
 {
@@ -107,7 +111,7 @@ namespace OfficeOpenXml
             base(ns, pck, relID, uriWorksheet, sheetName, sheetID, positionID, hidden)
         {
         }
-        public ExcelChart Chart 
+        public ExcelChart Chart
         {
             get
             {
@@ -171,9 +175,9 @@ namespace OfficeOpenXml
             {
                 var formulas = new Formulas(this._tokenizer);
                 formulas.Index = this.Index;
-                formulas.Address = (string)this.Address.Clone();
+                formulas.Address = (string)this.Address;
                 formulas.IsArray = this.IsArray;
-                formulas.Formula = (string)this.Formula.Clone();
+                formulas.Formula = (string)this.Formula;
                 formulas.StartRow = this.StartRow;
                 formulas.StartCol = this.StartCol;
                 return formulas;
@@ -304,23 +308,23 @@ namespace OfficeOpenXml
             {
                 _list.Remove(Item);
             }
-            #region IEnumerable<string> Members
+#region IEnumerable<string> Members
 
             public IEnumerator<string> GetEnumerator()
             {
                 return _list.GetEnumerator();
             }
 
-            #endregion
+#endregion
 
-            #region IEnumerable Members
+#region IEnumerable Members
 
             System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
             {
                 return _list.GetEnumerator();
             }
 
-            #endregion
+#endregion
             internal void Clear(ExcelAddressBase Destination)
             {
                 var cse = new CellsStoreEnumerator<int>(_cells, Destination._fromRow, Destination._fromCol, Destination._toRow, Destination._toCol);
@@ -360,7 +364,7 @@ namespace OfficeOpenXml
         internal Dictionary<int, Formulas> _sharedFormulas = new Dictionary<int, Formulas>();
         internal int _minCol = ExcelPackage.MaxColumns;
         internal int _maxCol = 0;
-        #region Worksheet Private Properties
+#region Worksheet Private Properties
         internal ExcelPackage _package;
         private Uri _worksheetUri;
         private string _name;
@@ -370,8 +374,8 @@ namespace OfficeOpenXml
         private XmlDocument _worksheetXml;
         internal ExcelWorksheetView _sheetView;
         internal ExcelHeaderFooter _headerFooter;
-        #endregion
-        #region ExcelWorksheet Constructor
+#endregion
+#region ExcelWorksheet Constructor
         /// <summary>
         /// A worksheet
         /// </summary>
@@ -412,7 +416,7 @@ namespace OfficeOpenXml
             TopNode = _worksheetXml.DocumentElement;
         }
 
-        #endregion
+#endregion
         /// <summary>
         /// The Uri to the worksheet within the package
         /// </summary>
@@ -433,14 +437,14 @@ namespace OfficeOpenXml
         /// The position of the worksheet.
         /// </summary>
         internal int PositionID { get { return (_positionID); } set { _positionID = value; } }
-        #region Worksheet Public Properties
+#region Worksheet Public Properties
         /// <summary>
         /// The index in the worksheets collection
         /// </summary>
         public int Index { get { return (_positionID); } }
         /// <summary>
         /// Address for autofilter
-        /// <seealso cref="ExcelRangeBase.AutoFilter" />        
+        /// <seealso cref="ExcelRangeBase.AutoFilter" />
         /// </summary>
         public ExcelAddressBase AutoFilterAddress
         {
@@ -512,7 +516,7 @@ namespace OfficeOpenXml
                 value = _package.Workbook.Worksheets.ValidateFixSheetName(value);
                 foreach (var ws in Workbook.Worksheets)
                 {
-                    if (ws.PositionID != PositionID && ws.Name.Equals(value, StringComparison.InvariantCultureIgnoreCase))
+                    if (ws.PositionID != PositionID && ws.Name.Equals(value, StringComparisonEx.InvariantCultureIgnoreCase))
                     {
                         throw (new ArgumentException("Worksheet name must be unique"));
                     }
@@ -696,7 +700,7 @@ namespace OfficeOpenXml
         /** <outlinePr applyStyles="1" summaryBelow="0" summaryRight="0" /> **/
         const string outLineSummaryBelowPath = "d:sheetPr/d:outlinePr/@summaryBelow";
         /// <summary>
-        /// Summary rows below details 
+        /// Summary rows below details
         /// </summary>
         public bool OutLineSummaryBelow
         {
@@ -798,10 +802,10 @@ namespace OfficeOpenXml
                 }
             }
         }
-        #region WorksheetXml
+#region WorksheetXml
         /// <summary>
         /// The XML document holding the worksheet data.
-        /// All column, row, cell, pagebreak, merged cell and hyperlink-data are loaded into memory and removed from the document when loading the document.        
+        /// All column, row, cell, pagebreak, merged cell and hyperlink-data are loaded into memory and removed from the document when loading the document.
         /// </summary>
         public XmlDocument WorksheetXml
         {
@@ -874,9 +878,14 @@ namespace OfficeOpenXml
             _package.DoAdjustDrawings = false;
             Stream stream = packPart.GetStream();
 
+#if COREFX
+            XmlTextReader xr = XmlReader.Create(stream, new XmlReaderSettings() { DtdProcessing = DtdProcessing.Prohibit, IgnoreWhitespace = true });
+#else
             XmlTextReader xr = new XmlTextReader(stream);
             xr.ProhibitDtd = true;
             xr.WhitespaceHandling = WhitespaceHandling.None;
+#endif
+
             LoadColumns(xr);    //columnXml
             long start = stream.Position;
             LoadCells(xr);
@@ -892,11 +901,10 @@ namespace OfficeOpenXml
             xml = GetWorkSheetXml(stream, start, end, out encoding);
 
             // now release stream buffer (already converted whole Xml into XmlDocument Object and String)
-            stream.Close();
             stream.Dispose();
             packPart.Stream = new MemoryStream();
 
-            //first char is invalid sometimes?? 
+            //first char is invalid sometimes??
             if (xml[0] != '<')
                 LoadXmlSafe(_worksheetXml, xml.Substring(1, xml.Length - 1), encoding);
             else
@@ -994,7 +1002,7 @@ namespace OfficeOpenXml
         const int BLOCKSIZE = 8192;
         /// <summary>
         /// Extracts the workbook XML without the sheetData-element (containing all cell data).
-        /// Xml-Cell data can be extreemly large (GB), so we find the sheetdata element in the streem (position start) and 
+        /// Xml-Cell data can be extreemly large (GB), so we find the sheetdata element in the streem (position start) and
         /// then tries to find the &lt;/sheetData&gt; element from the end-parameter.
         /// This approach is to avoid out of memory exceptions reading large packages
         /// </summary>
@@ -1019,7 +1027,7 @@ namespace OfficeOpenXml
                 sb.Append(block, 0, pos);
                 length += size;
             }
-            while (length < start + 20 && length < end);    //the  start-pos contains the stream position of the sheetData element. Add 20 (with some safty for whitespace, streampointer diff etc, just so be sure). 
+            while (length < start + 20 && length < end);    //the  start-pos contains the stream position of the sheetData element. Add 20 (with some safty for whitespace, streampointer diff etc, just so be sure).
             startmMatch = Regex.Match(sb.ToString(), string.Format("(<[^>]*{0}[^>]*>)", "sheetData"));
             if (!startmMatch.Success) //Not found
             {
@@ -1157,7 +1165,11 @@ namespace OfficeOpenXml
                 if (xr.LocalName == nodeText || xr.LocalName == altNode) return true;
             }
             while (xr.Read());
+#if COREFX
+            xr.Dispose();
+#else
             xr.Close();
+#endif
             return false;
         }
         /// <summary>
@@ -1281,7 +1293,7 @@ namespace OfficeOpenXml
                     if (xr.GetAttribute("t") != null)
                     {
                         type = xr.GetAttribute("t");
-                        //_types.SetValue(address._fromRow, address._fromCol, type); 
+                        //_types.SetValue(address._fromRow, address._fromCol, type);
                     }
                     else
                     {
@@ -1501,7 +1513,7 @@ namespace OfficeOpenXml
                         }
                         if (res >= -657435.0 && res < 2958465.9999999)
                         {
-                            SetValueInner(row, col, DateTime.FromOADate(res));
+                            SetValueInner(row, col, DateTimeExtensions.FromOADate(res));
                         }
                         else
                         {
@@ -1558,10 +1570,10 @@ namespace OfficeOpenXml
         //        retValue = stringNode.InnerText;
         //    return (retValue);
         //}
-        #endregion
-        #region HeaderFooter
+#endregion
+#region HeaderFooter
         /// <summary>
-        /// A reference to the header and footer class which allows you to 
+        /// A reference to the header and footer class which allows you to
         /// set the header and footer for all odd, even and first pages of the worksheet
         /// </summary>
         /// <remarks>
@@ -1590,9 +1602,9 @@ namespace OfficeOpenXml
                 return (_headerFooter);
             }
         }
-        #endregion
+#endregion
 
-        #region "PrinterSettings"
+#region "PrinterSettings"
         /// <summary>
         /// Printer settings
         /// </summary>
@@ -1605,25 +1617,25 @@ namespace OfficeOpenXml
                 return ps;
             }
         }
-        #endregion
+#endregion
 
-        #endregion // END Worksheet Public Properties
+#endregion // END Worksheet Public Properties
 
-        #region Worksheet Public Methods
+#region Worksheet Public Methods
 
         ///// <summary>
         ///// Provides access to an individual cell within the worksheet.
         ///// </summary>
         ///// <param name="row">The row number in the worksheet</param>
         ///// <param name="col">The column number in the worksheet</param>
-        ///// <returns></returns>		
+        ///// <returns></returns>
         //internal ExcelCell Cell(int row, int col)
         //{
         //    return new ExcelCell(_values, row, col);
         //}
         /// <summary>
         /// Provides access to a range of cells
-        /// </summary>  
+        /// </summary>
         public ExcelRange Cells
         {
             get
@@ -1634,7 +1646,7 @@ namespace OfficeOpenXml
         }
         /// <summary>
         /// Provides access to the selected range of cells
-        /// </summary>  
+        /// </summary>
         public ExcelRange SelectedRange
         {
             get
@@ -1829,9 +1841,9 @@ namespace OfficeOpenXml
             View.ActiveCell = ExcelCellBase.GetAddress(Address.Start.Row, Address.Start.Column);
         }
 
-        #region InsertRow
+#region InsertRow
         /// <summary>
-        /// Inserts a new row into the spreadsheet.  Existing rows below the position are 
+        /// Inserts a new row into the spreadsheet.  Existing rows below the position are
         /// shifted down.  All formula are updated to take account of the new row.
         /// </summary>
         /// <param name="rowFrom">The position of the new row</param>
@@ -1841,7 +1853,7 @@ namespace OfficeOpenXml
             InsertRow(rowFrom, rows, 0);
         }
         /// <summary>
-		/// Inserts a new row into the spreadsheet.  Existing rows below the position are 
+		/// Inserts a new row into the spreadsheet.  Existing rows below the position are
 		/// shifted down.  All formula are updated to take account of the new row.
 		/// </summary>
         /// <param name="rowFrom">The position of the new row</param>
@@ -1934,17 +1946,17 @@ namespace OfficeOpenXml
             }
         }
         /// <summary>
-        /// Inserts a new column into the spreadsheet.  Existing columns below the position are 
+        /// Inserts a new column into the spreadsheet.  Existing columns below the position are
         /// shifted down.  All formula are updated to take account of the new column.
         /// </summary>
         /// <param name="columnFrom">The position of the new column</param>
-        /// <param name="columns">Number of columns to insert</param>        
+        /// <param name="columns">Number of columns to insert</param>
         public void InsertColumn(int columnFrom, int columns)
         {
             InsertColumn(columnFrom, columns, 0);
         }
         ///<summary>
-        /// Inserts a new column into the spreadsheet.  Existing column to the left are 
+        /// Inserts a new column into the spreadsheet.  Existing column to the left are
         /// shifted.  All formula are updated to take account of the new column.
         /// </summary>
         /// <param name="columnFrom">The position of the new column</param>
@@ -2057,7 +2069,7 @@ namespace OfficeOpenXml
                         copyStylesFromColumn += columns;
                     }
 
-                    //Get styles to a cached list, 
+                    //Get styles to a cached list,
                     var l = new List<int[]>();
                     var sce = new CellsStoreEnumerator<ExcelCoreValue>(_values, 0, copyStylesFromColumn, ExcelPackage.MaxRows, copyStylesFromColumn);
                     lock (sce)
@@ -2121,7 +2133,7 @@ namespace OfficeOpenXml
                     sheet.UpdateCrossSheetReferences(this.Name, 0, 0, columnFrom, columns);
                 }
             }
-        } 
+        }
         private static void InsertTableColumns(int columnFrom, int columns, ExcelTable tbl)
         {
             var node = tbl.Columns[0].TopNode.ParentNode;
@@ -2146,7 +2158,7 @@ namespace OfficeOpenXml
         /// Adds a value to the row of merged cells to fix for inserts or deletes
         /// </summary>
         /// <param name="row"></param>
-        /// <param name="rows"></param> 
+        /// <param name="rows"></param>
         /// <param name="delete"></param>
         private void FixMergedCellsRow(int row, int rows, bool delete)
         {
@@ -2209,7 +2221,7 @@ namespace OfficeOpenXml
             }
             else
             {
-                _mergedCells._cells.Insert(0, column, 0, columns);                
+                _mergedCells._cells.Insert(0, column, 0, columns);
             }
             List<int> removeIndex = new List<int>();
             for (int i = 0; i < _mergedCells.Count; i++)
@@ -2295,7 +2307,7 @@ namespace OfficeOpenXml
                     else
                     {
                         //Cells[f.Address].SetSharedFormulaID(int.MinValue);
-                        if (position <= fromRow && position + Math.Abs(rows) > toRow)  //Delete the formula 
+                        if (position <= fromRow && position + Math.Abs(rows) > toRow)  //Delete the formula
                         {
                             deleted.Add(f);
                         }
@@ -2312,7 +2324,7 @@ namespace OfficeOpenXml
                             //f.StartRow = fromRow;
 
                             //f.Formula = ExcelCell.UpdateFormulaReferences(f.Formula, rows, 0, position, 0);
-                       
+
                         }
                     }
                 }
@@ -2457,9 +2469,9 @@ namespace OfficeOpenXml
                 newFormulas[newFormulas.Count - 1].Address = ExcelCellBase.GetAddress(newFormulas[newFormulas.Count - 1].StartRow, newFormulas[newFormulas.Count - 1].StartCol, toRow, toCol);
             }
         }
-        #endregion
+#endregion
 
-        #region DeleteRow
+#region DeleteRow
         /// <summary>
         /// Delete the specified row from the worksheet.
         /// </summary>
@@ -2532,7 +2544,7 @@ namespace OfficeOpenXml
                 var col = GetValueInner(0, columnFrom) as ExcelColumn;
                 if (col == null)
                 {
-                    var r = 0; 
+                    var r = 0;
                     var c = columnFrom;
                     if(_values.PrevCell(ref r,ref c))
                     {
@@ -2560,7 +2572,7 @@ namespace OfficeOpenXml
                 FixMergedCellsColumn(columnFrom, columns, true);
 
                 var csec = new CellsStoreEnumerator<ExcelCoreValue>(_values, 0, columnFrom, 0, ExcelPackage.MaxColumns);
-                foreach (var val in csec)    
+                foreach (var val in csec)
                 {
                     var column = val._value;
                     if (column is ExcelColumn)
@@ -2586,7 +2598,7 @@ namespace OfficeOpenXml
                             {
                                 node.RemoveChild(node.ChildNodes[ix]);
                             }
-                        } 
+                        }
                         tbl._cols = new ExcelTableColumnCollection(tbl);
                     }
 
@@ -2695,7 +2707,7 @@ namespace OfficeOpenXml
 		{
             DeleteRow(rowFrom, rows);
         }
-		#endregion
+#endregion
         /// <summary>
         /// Get the cell value from thw worksheet
         /// </summary>
@@ -2736,7 +2748,7 @@ namespace OfficeOpenXml
         {
             CheckSheetType();
             //ulong cellID=ExcelCellBase.GetCellID(SheetID, Row, Column);
-            var v = GetValueInner(Row, Column);           
+            var v = GetValueInner(Row, Column);
             if (v==null)
             {
                 return default(T);
@@ -2761,7 +2773,13 @@ namespace OfficeOpenXml
             }
             Type fromType = v.GetType();
             Type toType = typeof(T);
-            Type toType2 = (toType.IsGenericType && toType.GetGenericTypeDefinition().Equals(typeof(Nullable<>)))
+            Type toType2 = (
+#if COREFX
+                toType.GetTypeInfo().IsGenericType
+#else
+                toType.IsGenericType
+#endif
+                && toType.GetGenericTypeDefinition().Equals(typeof(Nullable<>)))
                 ? Nullable.GetUnderlyingType(toType)
                 : null;
             if (fromType == toType || fromType == toType2)
@@ -2792,7 +2810,7 @@ namespace OfficeOpenXml
                 {
                     if (cnv.CanConvertTo(typeof(double)))
                     {
-                        return (T)(object)(DateTime.FromOADate((double)cnv.ConvertTo(v, typeof(double))));
+                        return (T)(object)(DateTimeExtensions.FromOADate((double)cnv.ConvertTo(v, typeof(double))));
                     }
                     else
                     {
@@ -2823,14 +2841,14 @@ namespace OfficeOpenXml
                     if (cnv.CanConvertTo(typeof(double)))
                     {
 
-                        return (T)(object)(new TimeSpan(DateTime.FromOADate((double)cnv.ConvertTo(v, typeof(double))).Ticks));
+                        return (T)(object)(new TimeSpan(DateTimeExtensions.FromOADate((double)cnv.ConvertTo(v, typeof(double))).Ticks));
                     }
                     else
                     {
                         try
                         {
                             // Issue 14682 -- "GetValue<decimal>() won't convert strings"
-                            // As suggested, after all special cases, all .NET to do it's 
+                            // As suggested, after all special cases, all .NET to do it's
                             // preferred conversion rather than simply returning the default
                             return (T)Convert.ChangeType(v, typeof(T));
                         }
@@ -2886,7 +2904,7 @@ namespace OfficeOpenXml
             if (Row < 1 || Column < 1 || Row > ExcelPackage.MaxRows && Column > ExcelPackage.MaxColumns)
             {
                 throw new ArgumentOutOfRangeException("Row or Column out of range");
-            }            
+            }
             SetValueInner(Row, Column, Value);
         }
         /// <summary>
@@ -2903,10 +2921,10 @@ namespace OfficeOpenXml
             {
                 throw new ArgumentOutOfRangeException("Address is invalid or out of range");
             }
-            SetValueInner(row, col, Value);           
+            SetValueInner(row, col, Value);
         }
 
-        #region MergeCellId
+#region MergeCellId
 
         /// <summary>
         /// Get MergeCell Index No
@@ -2934,10 +2952,10 @@ namespace OfficeOpenXml
             return 0;
         }
 
-        #endregion
-        #endregion // END Worksheet Public Methods
+#endregion
+#endregion // END Worksheet Public Methods
 
-        #region Worksheet Private Methods
+#region Worksheet Private Methods
         private void UpdateCrossSheetReferences(string sheetWhoseReferencesShouldBeUpdated, int rowFrom, int rows, int columnFrom, int columns)
         {
           lock (this)
@@ -2979,7 +2997,7 @@ namespace OfficeOpenXml
             }
           }
         }
-        #region Worksheet Save
+#region Worksheet Save
         internal void Save()
         {
                 DeletePrinterSettings();
@@ -3020,9 +3038,9 @@ namespace OfficeOpenXml
                 if (Drawings.UriDrawing!=null)
                 {
                     if (Drawings.Count == 0)
-                    {                                            
+                    {
                         Part.DeleteRelationship(Drawings._drawingRelation.Id);
-                        _package.Package.DeletePart(Drawings.UriDrawing);                    
+                        _package.Package.DeletePart(Drawings.UriDrawing);
                     }
                     else
                     {
@@ -3047,11 +3065,11 @@ namespace OfficeOpenXml
                     stream.CompressionLevel = (OfficeOpenXml.Packaging.Ionic.Zlib.CompressionLevel)compressionLevel;
                     stream.PutNextEntry(fileName);
 
-                    
+
                     SaveXml(stream);
         }
 
-        
+
 
         ///// <summary>
         ///// Saves the worksheet to the package.
@@ -3062,7 +3080,7 @@ namespace OfficeOpenXml
 
         //    if (_worksheetXml != null)
         //    {
-                
+
         //        // save the header & footer (if defined)
         //        if (_headerFooter != null)
         //            HeaderFooter.Save();
@@ -3076,7 +3094,7 @@ namespace OfficeOpenXml
         //        {
         //            this.SetXmlNodeString("d:dimension/@ref", d.Address);
         //        }
-                
+
 
         //        if (_drawings != null && _drawings.Count == 0)
         //        {
@@ -3090,13 +3108,13 @@ namespace OfficeOpenXml
         //        SavePivotTables();
         //        SaveXml();
         //    }
-            
+
         //    if (Drawings.UriDrawing!=null)
         //    {
         //        if (Drawings.Count == 0)
-        //        {                    
+        //        {
         //            Part.DeleteRelationship(Drawings._drawingRelation.Id);
-        //            _package.Package.DeletePart(Drawings.UriDrawing);                    
+        //            _package.Package.DeletePart(Drawings.UriDrawing);
         //        }
         //        else
         //        {
@@ -3149,7 +3167,7 @@ namespace OfficeOpenXml
                     if (_comments.Uri != null)
                     {
                         Part.DeleteRelationship(_comments.RelId);
-                        _package.Package.DeletePart(_comments.Uri);                        
+                        _package.Package.DeletePart(_comments.Uri);
                     }
                     RemoveLegacyDrawingRel(VmlDrawingsComments.RelId);
                 }
@@ -3157,7 +3175,7 @@ namespace OfficeOpenXml
                 {
                     if (_comments.Uri == null)
                     {
-                        _comments.Uri=new Uri(string.Format(@"/xl/comments{0}.xml", SheetID), UriKind.Relative);                        
+                        _comments.Uri=new Uri(string.Format(@"/xl/comments{0}.xml", SheetID), UriKind.Relative);
                     }
                     if(_comments.Part==null)
                     {
@@ -3207,7 +3225,7 @@ namespace OfficeOpenXml
                     int colNum = tbl.Address._fromCol;
                     var colVal = new HashSet<string>();
                     foreach (var col in tbl.Columns)
-                    {                        
+                    {
                         string n=col.Name.ToLower(CultureInfo.InvariantCulture);
                         if (tbl.ShowHeader)
                         {
@@ -3227,11 +3245,11 @@ namespace OfficeOpenXml
                         {
                             n = col.Name.ToLower(CultureInfo.InvariantCulture);
                         }
-                    
+
                         if(colVal.Contains(n))
                         {
                             throw(new InvalidDataException(string.Format("Table {0} Column {1} does not have a unique name.", tbl.Name, col.Name)));
-                        }                        
+                        }
                         colVal.Add(n);
                         if (!string.IsNullOrEmpty(col.CalculatedColumnFormula))
                         {
@@ -3240,11 +3258,11 @@ namespace OfficeOpenXml
                             for (int row = fromRow; row <= toRow; row++)
                             {
                                 SetFormula(row, colNum, col.CalculatedColumnFormula);
-                            }                            
+                            }
                         }
                         colNum++;
                     }
-                }                
+                }
                 if (tbl.Part == null)
                 {
                     var id = tbl.Id;
@@ -3337,7 +3355,7 @@ namespace OfficeOpenXml
         //    SetStyleInner(row, col, value);
         //    if(!_values.Exists(row,col)) SetValueInner(row, col, null);
         //}
-        
+
         private void SavePivotTables()
         {
             foreach (var pt in PivotTables)
@@ -3399,7 +3417,7 @@ namespace OfficeOpenXml
                                 : t.Columns[ix++].Name);
                         }
                         if (flds.Contains(fldName))
-                        {                            
+                        {
                             fldName = GetNewName(flds, fldName);
                         }
                         flds.Add(fldName);
@@ -3412,7 +3430,7 @@ namespace OfficeOpenXml
                             string name;
                             if (df.Function == DataFieldFunctions.None)
                             {
-                                name = df.Field.Name; //Name must be set or Excel will crash on rename.                                
+                                name = df.Field.Name; //Name must be set or Excel will crash on rename.
                             }
                             else
                             {
@@ -3567,7 +3585,7 @@ namespace OfficeOpenXml
             StringBuilder breaks=new StringBuilder();
             int count = 0;
             var cse = new CellsStoreEnumerator<ExcelCoreValue>(_values, 0, 0, ExcelPackage.MaxRows, 0);
-            //foreach(ExcelRow row in _rows)            
+            //foreach(ExcelRow row in _rows)
             while(cse.Next())
             {
                 var row=cse.Value._value as RowInternal;
@@ -3579,7 +3597,7 @@ namespace OfficeOpenXml
             }
             if (count>0)
             {
-                sw.Write(string.Format("<rowBreaks count=\"{0}\" manualBreakCount=\"{0}\">{1}</rowBreaks>", count, breaks.ToString()));                
+                sw.Write(string.Format("<rowBreaks count=\"{0}\" manualBreakCount=\"{0}\">{1}</rowBreaks>", count, breaks.ToString()));
             }
         }
         /// <summary>
@@ -3611,7 +3629,7 @@ namespace OfficeOpenXml
                 sw.Write(string.Format(CultureInfo.InvariantCulture, " width=\"{0}\" customWidth=\"1\"", col.Width));
 
                 if (col.OutlineLevel > 0)
-                {                    
+                {
                     sw.Write(" outlineLevel=\"{0}\" ", col.OutlineLevel);
                     if (col.Collapsed)
                     {
@@ -3648,7 +3666,7 @@ namespace OfficeOpenXml
         private void UpdateRowCellData(StreamWriter sw)
         {
             ExcelStyleCollection<ExcelXfs> cellXfs = _package.Workbook.Styles.CellXfs;
-            
+
             int row = -1;
 
             StringBuilder sbXml = new StringBuilder();
@@ -3656,7 +3674,7 @@ namespace OfficeOpenXml
             var styles = _package.Workbook.Styles;
             var cache = new StringBuilder();
             cache.Append("<sheetData>");
-            
+
             ////Set a value for cells with style and no value set.
             //var cseStyle = new CellsStoreEnumerator<ExcelCoreValue>(_values, 0, 0, ExcelPackage.MaxRows, ExcelPackage.MaxColumns);
             //foreach (var s in cseStyle)
@@ -3749,7 +3767,13 @@ namespace OfficeOpenXml
                               else
                                 v = string.Empty;
                             }
-                            if ((v.GetType().IsPrimitive || v is double || v is decimal || v is DateTime || v is TimeSpan))
+                            if ((
+#if COREFX
+                        v.GetType().GetTypeInfo().IsPrimitive
+#else
+                        v.GetType().IsPrimitive
+#endif
+                                || v is double || v is decimal || v is DateTime || v is TimeSpan))
                             {
                                 //string sv = GetValueForXml(v);
                                 cache.AppendFormat("<c r=\"{0}\" s=\"{1}\"{2}>", cse.CellAddress, styleID < 0 ? 0 : styleID, GetCellType(v));
@@ -3847,11 +3871,11 @@ namespace OfficeOpenXml
         private object GetFormulaValue(object v)
         {
             //if (_package.Workbook._isCalculated)
-            //{                    
+            //{
             if (v != null && v.ToString()!="")
             {
                 return "<v>" + ConvertUtil.ExcelEscapeString(GetValueForXml(v)) + "</v>"; //Fixes issue 15071
-            }            
+            }
             else
             {
                 return "";
@@ -3868,7 +3892,13 @@ namespace OfficeOpenXml
             {
                 return " t=\"e\"";
             }
-            else if(allowStr && v!=null && !(v.GetType().IsPrimitive || v is double || v is decimal || v is DateTime || v is TimeSpan))
+            else if(allowStr && v!=null && !(
+#if COREFX
+                        v.GetType().GetTypeInfo().IsPrimitive
+#else
+                        v.GetType().IsPrimitive
+#endif
+                || v is double || v is decimal || v is DateTime || v is TimeSpan))
             {
                 return " t=\"str\"";
             }
@@ -3896,9 +3926,15 @@ namespace OfficeOpenXml
                 }
                 else if (v is TimeSpan)
                 {
-                    s = DateTime.FromOADate(0).Add(((TimeSpan)v)).ToOADate().ToString(CultureInfo.InvariantCulture);
+                    s = DateTimeExtensions.FromOADate(0).Add(((TimeSpan)v)).ToOADate().ToString(CultureInfo.InvariantCulture);
                 }
-                else if(v.GetType().IsPrimitive || v is double || v is decimal)
+                else if(
+#if COREFX
+                        v.GetType().GetTypeInfo().IsPrimitive
+#else
+                        v.GetType().IsPrimitive
+#endif
+                    || v is double || v is decimal)
                 {
                     if (v is double && double.IsNaN((double)v))
                     {
@@ -4027,7 +4063,7 @@ namespace OfficeOpenXml
         }
 
         /// <summary>
-        /// Update xml with hyperlinks 
+        /// Update xml with hyperlinks
         /// </summary>
         /// <param name="sw">The stream</param>
         private void UpdateHyperLinks(StreamWriter sw)
@@ -4050,7 +4086,7 @@ namespace OfficeOpenXml
                     {
                         ExcelHyperLink hl = uri as ExcelHyperLink;
                         sw.Write("<hyperlink ref=\"{0}\" location=\"{1}\"{2}{3}/>",
-                                Cells[cse.Row, cse.Column, cse.Row + hl.RowSpann, cse.Column + hl.ColSpann].Address, 
+                                Cells[cse.Row, cse.Column, cse.Row + hl.RowSpann, cse.Column + hl.ColSpann].Address,
                                 ExcelCellBase.GetFullAddress(SecurityElement.Escape(Name), SecurityElement.Escape(hl.ReferenceAddress)),
                                     string.IsNullOrEmpty(hl.Display) ? "" : " display=\"" + SecurityElement.Escape(hl.Display) + "\"",
                                     string.IsNullOrEmpty(hl.ToolTip) ? "" : " tooltip=\"" + SecurityElement.Escape(hl.ToolTip) + "\"");
@@ -4077,7 +4113,7 @@ namespace OfficeOpenXml
                             if (uri is ExcelHyperLink)
                             {
                                 ExcelHyperLink hl = uri as ExcelHyperLink;
-                                sw.Write("<hyperlink ref=\"{0}\"{2}{3} r:id=\"{1}\"/>", ExcelCellBase.GetAddress(cse.Row, cse.Column), relationship.Id,                                
+                                sw.Write("<hyperlink ref=\"{0}\"{2}{3} r:id=\"{1}\"/>", ExcelCellBase.GetAddress(cse.Row, cse.Column), relationship.Id,
                                     string.IsNullOrEmpty(hl.Display) ? "" : " display=\"" + SecurityElement.Escape(hl.Display) + "\"",
                                     string.IsNullOrEmpty(hl.ToolTip) ? "" : " tooltip=\"" + SecurityElement.Escape(hl.ToolTip) + "\"");
                             }
@@ -4114,7 +4150,7 @@ namespace OfficeOpenXml
             return _worksheetXml.DocumentElement.InsertAfter(hl, prevNode);
         }
         /// <summary>
-        /// Dimension address for the worksheet. 
+        /// Dimension address for the worksheet.
         /// Top left cell to Bottom right.
         /// If the worksheet has no cells, null is returned
         /// </summary>
@@ -4163,7 +4199,7 @@ namespace OfficeOpenXml
             }
         }
 
-        #region Drawing
+#region Drawing
         ExcelDrawings _drawings = null;
         /// <summary>
         /// Collection of drawing-objects like shapes, images and charts
@@ -4179,7 +4215,7 @@ namespace OfficeOpenXml
                 return _drawings;
             }
         }
-        #endregion
+#endregion
         ExcelTableCollection _tables = null;
         /// <summary>
         /// Tables defined in the worksheet.
@@ -4272,7 +4308,7 @@ namespace OfficeOpenXml
             }
         }
         /// <summary>
-		/// Returns the style ID given a style name.  
+		/// Returns the style ID given a style name.
 		/// The style ID will be created if not found, but only if the style name exists!
 		/// </summary>
 		/// <param name="StyleName"></param>
@@ -4297,12 +4333,12 @@ namespace OfficeOpenXml
                 return _package.Workbook;
             }
         }
-		#endregion
-        #endregion  // END Worksheet Private Methods
+#endregion
+#endregion  // END Worksheet Private Methods
 
         /// <summary>
         /// Get the next ID from a shared formula or an Array formula
-        /// Sharedforumlas will have an id from 0-x. Array formula ids start from 0x4000001-. 
+        /// Sharedforumlas will have an id from 0-x. Array formula ids start from 0x4000001-.
         /// </summary>
         /// <param name="isArray">If the formula is an array formula</param>
         /// <returns></returns>
@@ -4344,8 +4380,8 @@ namespace OfficeOpenXml
                         double sdv = ((DateTime)cse.Value._value).ToOADate();
                         sdv += offset;
 
-                        //cse.Value._value = DateTime.FromOADate(sdv);
-                        SetValueInner(cse.Row, cse.Column, DateTime.FromOADate(sdv));
+                        //cse.Value._value = DateTimeExtensions.FromOADate(sdv);
+                        SetValueInner(cse.Row, cse.Column, DateTimeExtensions.FromOADate(sdv));
                     }
                     catch
                     {
@@ -4464,7 +4500,7 @@ namespace OfficeOpenXml
             return obj.WorksheetXml.OuterXml.GetHashCode();
         }
 
-        #region Worksheet internal Accessor
+#region Worksheet internal Accessor
         /// <summary>
         /// Get accessor of sheet value
         /// </summary>
@@ -4588,6 +4624,6 @@ namespace OfficeOpenXml
             styleId = _values.GetValue(row, col)._styleId;
             return (styleId != 0);
         }
-        #endregion
+#endregion
     }  // END class Worksheet
 }

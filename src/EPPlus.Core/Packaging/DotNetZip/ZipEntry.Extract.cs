@@ -787,7 +787,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
                 if (targetFileName != null)
                 {
-                    output.Close();
+                    output.Dispose();
                     output = null;
 
                     // workitem 10639
@@ -876,7 +876,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                     {
                         try
                         {
-                            if (output != null) output.Close();
+                            if (output != null) output.Dispose();
                             // An exception has occurred. If the file exists, check
                             // to see if it existed before we tried extracting.  If
                             // it did not, attempt to remove the target file. There

@@ -13,17 +13,17 @@
 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
  * The GNU Lesser General Public License can be viewed at http://www.opensource.org/licenses/lgpl-license.php
  * If you unfamiliar with this license or have questions about it, here is an http://www.gnu.org/licenses/gpl-faq.html
  *
- * All code and executables are provided "as is" with no warranty either express or implied. 
+ * All code and executables are provided "as is" with no warranty either express or implied.
  * The author accepts no liability for any damage or loss of business that this product may cause.
  *
  * Code change notes:
- * 
+ *
  * Author							Change						Date
  * ******************************************************************************
  * Jan Källman		Added		30-AUG-2010
@@ -43,8 +43,8 @@ namespace OfficeOpenXml.Table
     public class ExcelTableCollection : IEnumerable<ExcelTable>
     {
         List<ExcelTable> _tables = new List<ExcelTable>();
-        internal Dictionary<string, int> _tableNames = new Dictionary<string, int>(StringComparer.InvariantCultureIgnoreCase);
-        ExcelWorksheet _ws;        
+        internal Dictionary<string, int> _tableNames = new Dictionary<string, int>(StringComparerEx.InvariantCultureIgnoreCase);
+        ExcelWorksheet _ws;
         internal ExcelTableCollection(ExcelWorksheet ws)
         {
             var pck = ws._package.Package;
@@ -80,7 +80,7 @@ namespace OfficeOpenXml.Table
             {
                 throw new ArgumentException("Range does not belong to worksheet", "Range");
             }
-            
+
             if (string.IsNullOrEmpty(Name))
             {
                 Name = GetNewTableName();

@@ -19,8 +19,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
             ValidateArguments(arguments, 2);
             var numDate1 = ArgToDecimal(arguments, 0);
             var numDate2 = ArgToDecimal(arguments, 1);
-            var dt1 = System.DateTime.FromOADate(numDate1);
-            var dt2 = System.DateTime.FromOADate(numDate2);
+            var dt1 = DateTimeExtensions.FromOADate(numDate1);
+            var dt2 = DateTimeExtensions.FromOADate(numDate2);
 
             var calcType = Days360Calctype.Us;
             if (arguments.Count() > 2)
@@ -45,7 +45,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
             {
                 var calendar = new GregorianCalendar();
                 var nDaysInFeb = calendar.IsLeapYear(dt1.Year) ? 29 : 28;
-               
+
                  // If the investment is EOM and (Date1 is the last day of February) and (Date2 is the last day of February), then change D2 to 30.
                 if (startMonth == 2 && startDay == nDaysInFeb && endMonth == 2 && endDay == nDaysInFeb)
                 {

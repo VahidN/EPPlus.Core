@@ -299,8 +299,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             _z = null;
         }
 
-
+#if !COREFX
         public override void Close()
+#else
+        public  void Close()
+#endif
         {
             if (_stream == null) return;
             try
@@ -310,10 +313,23 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib
             finally
             {
                 end();
-                if (!_leaveOpen) _stream.Close();
+#if !COREFX
+                if (!_leaveOpen)
+                {
+                    _stream.Close();
+                }
+#else
+                if (!_leaveOpen)
+                {
+                    _stream.Dispose();
+                }
+#endif
                 _stream = null;
             }
         }
+
+
+
 
         public override void Flush()
         {

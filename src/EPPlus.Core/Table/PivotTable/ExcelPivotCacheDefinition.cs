@@ -13,17 +13,17 @@
 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
  * The GNU Lesser General Public License can be viewed at http://www.opensource.org/licenses/lgpl-license.php
  * If you unfamiliar with this license or have questions about it, here is an http://www.gnu.org/licenses/gpl-faq.html
  *
- * All code and executables are provided "as is" with no warranty either express or implied. 
+ * All code and executables are provided "as is" with no warranty either express or implied.
  * The author accepts no liability for any damage or loss of business that this product may cause.
  *
  * Code change notes:
- * 
+ *
  * Author							Change						Date
  * ******************************************************************************
  * Jan Källman		Added		21-MAR-2011
@@ -31,7 +31,11 @@
  *******************************************************************************/
 using System;
 using System.Collections.Generic;
+
+#if !COREFX
 using System.Data.SqlClient;
+#endif
+
 using System.Text;
 using System.Xml;
 using System.Linq;
@@ -93,16 +97,16 @@ namespace OfficeOpenXml.Table.PivotTable
             PivotTable = pivotTable;
 
             var pck = pivotTable.WorkSheet._package.Package;
-            
+
             //CacheDefinition
             CacheDefinitionXml = new XmlDocument();
             LoadXmlSafe(CacheDefinitionXml, GetStartXml(sourceAddress), Encoding.UTF8);
-            CacheDefinitionUri = GetNewUri(pck, "/xl/pivotCache/pivotCacheDefinition{0}.xml", ref tblId); 
+            CacheDefinitionUri = GetNewUri(pck, "/xl/pivotCache/pivotCacheDefinition{0}.xml", ref tblId);
             Part = pck.CreatePart(CacheDefinitionUri, ExcelPackage.schemaPivotCacheDefinition);
             TopNode = CacheDefinitionXml.DocumentElement;
 
             //CacheRecord. Create an empty one.
-            CacheRecordUri = GetNewUri(pck, "/xl/pivotCache/pivotCacheRecords{0}.xml", ref tblId); 
+            CacheRecordUri = GetNewUri(pck, "/xl/pivotCache/pivotCacheRecords{0}.xml", ref tblId);
             var cacheRecord = new XmlDocument();
             cacheRecord.LoadXml("<pivotCacheRecords xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" count=\"0\" />");
             var recPart = pck.CreatePart(CacheRecordUri, ExcelPackage.schemaPivotCacheRecords);
@@ -112,7 +116,7 @@ namespace OfficeOpenXml.Table.PivotTable
             RecordRelationshipID = RecordRelationship.Id;
 
             CacheDefinitionXml.Save(Part.GetStream());
-        }        
+        }
         /// <summary>
         /// Reference to the internal package part
         /// </summary>
@@ -148,7 +152,7 @@ namespace OfficeOpenXml.Table.PivotTable
             get;
             set;
         }
-        internal string RecordRelationshipID 
+        internal string RecordRelationshipID
         {
             get
             {
@@ -167,13 +171,13 @@ namespace OfficeOpenXml.Table.PivotTable
             get;
             private set;
         }
-        
+
         const string _sourceWorksheetPath="d:cacheSource/d:worksheetSource/@sheet";
         const string _sourceNamePath = "d:cacheSource/d:worksheetSource/@name";
         internal const string _sourceAddressPath = "d:cacheSource/d:worksheetSource/@ref";
         internal ExcelRangeBase _sourceRange = null;
         /// <summary>
-        /// The source data range when the pivottable has a worksheet datasource. 
+        /// The source data range when the pivottable has a worksheet datasource.
         /// The number of columns in the range must be intact if this property is changed.
         /// The range must be in the same workbook as the pivottable.
         /// </summary>
@@ -191,7 +195,7 @@ namespace OfficeOpenXml.Table.PivotTable
                             var name = GetXmlNodeString(_sourceNamePath);
                             foreach (var n in PivotTable.WorkSheet.Workbook.Names)
                             {
-                                if(name.Equals(n.Name,StringComparison.InvariantCultureIgnoreCase))
+                                if(name.Equals(n.Name,StringComparisonEx.InvariantCultureIgnoreCase))
                                 {
                                     _sourceRange = n;
                                     return _sourceRange;
@@ -206,7 +210,7 @@ namespace OfficeOpenXml.Table.PivotTable
                                 }
                                 foreach (var n in w.Names)
                                 {
-                                    if (name.Equals(n.Name, StringComparison.InvariantCultureIgnoreCase))
+                                if(name.Equals(n.Name,StringComparisonEx.InvariantCultureIgnoreCase))
                                     {
                                         _sourceRange = n;
                                         break;
