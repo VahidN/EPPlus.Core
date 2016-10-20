@@ -1,0 +1,24 @@
+﻿{
+  "version": "1.0.0-*",
+
+    "testRunner": "mstest",
+    "dependencies": {
+        "dotnet-test-mstest": "1.1.1-preview",
+        "EPPlus.Core": "1.0.0-*",
+        "Microsoft.NETCore.App": {
+            "version": "1.0.1",
+            "type": "platform"
+        },
+        "MSTest.TestFramework": "1.0.1-preview",
+        "NETStandard.Library": "1.6.0"
+    },
+
+    "frameworks": {
+        "netcoreapp1.0": {
+            "imports": [
+                "dnxcore50",
+                "portable-net45+win8"
+            ]
+        }
+    }
+}
