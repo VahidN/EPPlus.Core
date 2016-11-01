@@ -27,7 +27,7 @@
  *
  * Author							Change						Date
  *******************************************************************************
- * Jan Kنllman		Added		21 Mar 2010
+ * Jan Källman		Added		21 Mar 2010
  *******************************************************************************/
 
 using System.Drawing;
@@ -130,14 +130,14 @@ namespace EPPlus.Core.Tests.SampleApp
 
                 // set some document properties
                 package.Workbook.Properties.Title = "Invertory";
-                package.Workbook.Properties.Author = "Jan Kنllman";
+                package.Workbook.Properties.Author = "Jan Källman";
                 package.Workbook.Properties.Comments = "This sample demonstrates how to create an Excel 2007 workbook using EPPlus";
 
                 // set some extended property values
                 package.Workbook.Properties.Company = "AdventureWorks Inc.";
 
                 // set some custom property values
-                package.Workbook.Properties.SetCustomPropertyValue("Checked by", "Jan Kنllman");
+                package.Workbook.Properties.SetCustomPropertyValue("Checked by", "Jan Källman");
                 package.Workbook.Properties.SetCustomPropertyValue("AssemblyName", "EPPlus");
                 // save our new workbook and we are done!
                 package.Save();
