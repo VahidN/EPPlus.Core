@@ -1,10 +1,10 @@
-/*******************************************************************************
+﻿/*******************************************************************************
  * You may amend and distribute as you like, but don't remove this header!
  *
  * EPPlus provides server-side generation of Excel 2007/2010 spreadsheets.
  * See http://www.codeplex.com/EPPlus for details.
  *
- * Copyright (C) 2011  Jan K?llman
+ * Copyright (C) 2011  Jan Källman
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -13,22 +13,22 @@
 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
  * The GNU Lesser General Public License can be viewed at http://www.opensource.org/licenses/lgpl-license.php
  * If you unfamiliar with this license or have questions about it, here is an http://www.gnu.org/licenses/gpl-faq.html
  *
- * All code and executables are provided "as is" with no warranty either express or implied. 
+ * All code and executables are provided "as is" with no warranty either express or implied.
  * The author accepts no liability for any damage or loss of business that this product may cause.
  *
  * Code change notes:
- * 
+ *
  * Author							Change						Date
  * ******************************************************************************
- * Jan K?llman		                Initial Release		        2009-10-01
- * Jan K?llman                      Total rewrite               2010-03-01
- * Jan K?llman		    License changed GPL-->LGPL  2011-12-27
+ * Jan Källman		                Initial Release		        2009-10-01
+ * Jan Källman                      Total rewrite               2010-03-01
+ * Jan Källman		    License changed GPL-->LGPL  2011-12-27
  * Raziq York                       Added Created & Modified    2014-08-20
  *******************************************************************************/
 using System;
@@ -78,7 +78,7 @@ namespace OfficeOpenXml
         #endregion
         #region CorePropertiesXml
         /// <summary>
-        /// Provides access to the XML document that holds all the code 
+        /// Provides access to the XML document that holds all the code
         /// document properties.
         /// </summary>
         public XmlDocument CorePropertiesXml
@@ -335,7 +335,7 @@ namespace OfficeOpenXml
 
         #region Get and Set Extended Properties
         /// <summary>
-        /// Get the value of an extended property 
+        /// Get the value of an extended property
         /// </summary>
         /// <param name="propertyName">The name of the property</param>
         /// <returns>The value</returns>
@@ -377,7 +377,7 @@ namespace OfficeOpenXml
                     _xmlPropertiesCustom = GetXmlDocument(string.Format("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?><Properties xmlns:vt=\"{0}\" xmlns=\"{1}\"></Properties>",
                             ExcelPackage.schemaVt,
                             ExcelPackage.schemaCustom),
-                         _uriPropertiesCustom, 
+                         _uriPropertiesCustom,
                          @"application/vnd.openxmlformats-officedocument.custom-properties+xml",
                          @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties");
                 }
@@ -455,7 +455,7 @@ namespace OfficeOpenXml
         }
 
         /// <summary>
-        /// Allows you to set the value of a current custom property or create your own custom property.  
+        /// Allows you to set the value of a current custom property or create your own custom property.
         /// </summary>
         /// <param name="propertyName">The name of the property</param>
         /// <param name="value">The value of the property</param>

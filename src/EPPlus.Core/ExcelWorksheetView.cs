@@ -1,10 +1,10 @@
-/*******************************************************************************
+﻿/*******************************************************************************
  * You may amend and distribute as you like, but don't remove this header!
  *
  * EPPlus provides server-side generation of Excel 2007/2010 spreadsheets.
  * See http://www.codeplex.com/EPPlus for details.
  *
- * Copyright (C) 2011  Jan K?llman
+ * Copyright (C) 2011  Jan Källman
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -13,21 +13,21 @@
 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
  * The GNU Lesser General Public License can be viewed at http://www.opensource.org/licenses/lgpl-license.php
  * If you unfamiliar with this license or have questions about it, here is an http://www.gnu.org/licenses/gpl-faq.html
  *
- * All code and executables are provided "as is" with no warranty either express or implied. 
+ * All code and executables are provided "as is" with no warranty either express or implied.
  * The author accepts no liability for any damage or loss of business that this product may cause.
  *
  * Code change notes:
- * 
+ *
  * Author							Change						Date
  * ******************************************************************************
- * Jan K?llman		    Initial Release		       2009-10-01
- * Jan K?llman		    License changed GPL-->LGPL 2011-12-27
+ * Jan Källman		    Initial Release		       2009-10-01
+ * Jan Källman		    License changed GPL-->LGPL 2011-12-27
  *******************************************************************************/
 using System;
 using System.Xml;
@@ -91,12 +91,12 @@ namespace OfficeOpenXml
             {
  	            _selectionNode=TopNode.OwnerDocument.CreateElement("selection", ExcelPackage.schemaMain);
                 TopNode.AppendChild(_selectionNode);
-                TopNode=_selectionNode;             
+                TopNode=_selectionNode;
             }
             const string _selectionRangePath = "@sqref";
             /// <summary>
             /// Selected Cells.Used in combination with ActiveCell
-            /// </summary>        
+            /// </summary>
             public string SelectedRange
             {
                 get
@@ -140,7 +140,7 @@ namespace OfficeOpenXml
 		{
             _worksheet = xlWorksheet;
             SchemaNodeOrder = new string[] { "sheetViews", "sheetView", "pane", "selection" };
-            Panes = LoadPanes(); 
+            Panes = LoadPanes();
 		}
 
 		#endregion
@@ -168,7 +168,7 @@ namespace OfficeOpenXml
 		/// </summary>
 		protected internal XmlElement SheetViewElement
 		{
-			get 
+			get
 			{
 				return (XmlElement)TopNode;
 			}
@@ -192,7 +192,7 @@ namespace OfficeOpenXml
         #endregion
         #region Public Methods & Properties
         /// <summary>
-        /// The active cell. Single Cell address.                
+        /// The active cell. Single Cell address.
         /// This cell must be inside the selected range. If not, the selected range is set to the active cell address
         /// </summary>
         public string ActiveCell
@@ -336,7 +336,7 @@ namespace OfficeOpenXml
         /// <summary>
         /// Show gridlines in the worksheet
         /// </summary>
-        public bool ShowGridLines 
+        public bool ShowGridLines
         {
             get
             {
@@ -393,7 +393,7 @@ namespace OfficeOpenXml
                 SetXmlNodeString("@rightToLeft", value == true ? "1" : "0");
             }
         }
-        internal bool WindowProtection 
+        internal bool WindowProtection
         {
             get
             {
@@ -424,7 +424,7 @@ namespace OfficeOpenXml
             //TODO:fix this method to handle splits as well.
             if (Row == 1 && Column == 1) UnFreezePanes();
             string sqRef = SelectedRange, activeCell = ActiveCell;
-            
+
             XmlElement paneNode = TopNode.SelectSingleNode(_paneNodePath, NameSpaceManager) as XmlElement;
             if (paneNode == null)
             {
@@ -477,7 +477,7 @@ namespace OfficeOpenXml
 
                 XmlElement sel3 = TopNode.OwnerDocument.CreateElement("selection", ExcelPackage.schemaMain);
                 sel3.SetAttribute("pane", "bottomRight");
-                if(activeCell!="") sel3.SetAttribute("activeCell", activeCell);                
+                if(activeCell!="") sel3.SetAttribute("activeCell", activeCell);
                 if(sqRef!="") sel3.SetAttribute("sqref", sqRef);
                 sel2.ParentNode.InsertAfter(sel3, sel2);
 
@@ -486,7 +486,7 @@ namespace OfficeOpenXml
         }
         private void RemoveSelection()
         {
-            //Find selection nodes and remove them            
+            //Find selection nodes and remove them
             XmlNodeList selections = TopNode.SelectNodes(_selectionNodePath, NameSpaceManager);
             foreach (XmlNode sel in selections)
             {

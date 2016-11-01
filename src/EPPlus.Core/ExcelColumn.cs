@@ -1,10 +1,10 @@
-/*******************************************************************************
+﻿/*******************************************************************************
  * You may amend and distribute as you like, but don't remove this header!
  *
  * EPPlus provides server-side generation of Excel 2007/2010 spreadsheets.
  * See http://www.codeplex.com/EPPlus for details.
  *
- * Copyright (C) 2011  Jan K?llman
+ * Copyright (C) 2011  Jan Källman
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -13,21 +13,21 @@
 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
  * The GNU Lesser General Public License can be viewed at http://www.opensource.org/licenses/lgpl-license.php
  * If you unfamiliar with this license or have questions about it, here is an http://www.gnu.org/licenses/gpl-faq.html
  *
- * All code and executables are provided "as is" with no warranty either express or implied. 
+ * All code and executables are provided "as is" with no warranty either express or implied.
  * The author accepts no liability for any damage or loss of business that this product may cause.
  *
  * Code change notes:
- * 
+ *
  * Author							Change						Date
  *******************************************************************************
- * Jan K?llman		Initial Release		        2009-10-01
- * Jan K?llman		License changed GPL-->LGPL 2011-12-27
+ * Jan Källman		Initial Release		        2009-10-01
+ * Jan Källman		License changed GPL-->LGPL 2011-12-27
  *******************************************************************************/
 using System;
 using System.Xml;
@@ -44,7 +44,7 @@ namespace OfficeOpenXml
 
 		#region ExcelColumn Constructor
 		/// <summary>
-		/// Creates a new instance of the ExcelColumn class.  
+		/// Creates a new instance of the ExcelColumn class.
 		/// For internal use only!
 		/// </summary>
 		/// <param name="Worksheet"></param>
@@ -57,24 +57,24 @@ namespace OfficeOpenXml
             _width = _worksheet.DefaultColWidth;
         }
 		#endregion
-        internal int _columnMin;		
+        internal int _columnMin;
 		/// <summary>
 		/// Sets the first column the definition refers to.
 		/// </summary>
-		public int ColumnMin 
+		public int ColumnMin
 		{
             get { return _columnMin; }
-			//set { _columnMin=value; } 
+			//set { _columnMin=value; }
 		}
 
         internal int _columnMax;
         /// <summary>
 		/// Sets the last column the definition refers to.
 		/// </summary>
-        public int ColumnMax 
-		{ 
+        public int ColumnMax
+		{
             get { return _columnMax; }
-			set 
+			set
             {
                 if (value < _columnMin && value > ExcelPackage.MaxColumns)
                 {
@@ -90,8 +90,8 @@ namespace OfficeOpenXml
                         throw new Exception(string.Format("ColumnMax can not span over existing column {0}.",c.ColumnMin));
                     }
                 }
-                _columnMax = value; 
-            } 
+                _columnMax = value;
+            }
 		}
         /// <summary>
         /// Internal range id for the column
@@ -155,7 +155,7 @@ namespace OfficeOpenXml
 			{
                 return _width;
 			}
-			set	
+			set
             {
                 if (_worksheet._package.DoAdjustDrawings)
                 {
@@ -175,7 +175,7 @@ namespace OfficeOpenXml
             }
 		}
         /// <summary>
-        /// If set to true a column automaticlly resize(grow wider) when a user inputs numbers in a cell. 
+        /// If set to true a column automaticlly resize(grow wider) when a user inputs numbers in a cell.
         /// </summary>
         public bool BestFit
         {
@@ -198,7 +198,7 @@ namespace OfficeOpenXml
 
 		#region ExcelColumn Style
         /// <summary>
-        /// The Style applied to the whole column. Only effects cells with no individual style set. 
+        /// The Style applied to the whole column. Only effects cells with no individual style set.
         /// Use Range object if you want to set specific styles.
         /// </summary>
         public ExcelStyle Style
@@ -228,7 +228,7 @@ namespace OfficeOpenXml
 		}
         //internal int _styleID = 0;
         /// <summary>
-        /// Sets the style for the entire column using the style ID.  
+        /// Sets the style for the entire column using the style ID.
         /// </summary>
         public int StyleID
         {
