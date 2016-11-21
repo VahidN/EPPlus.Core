@@ -34,7 +34,7 @@
         "System.Xml.XPath.XmlDocument": "4.3.0"
     },
     "frameworks": {
-        "netstandard1.6": {
+        "netstandard1.3": {
             "imports": "dnxcore50"
         }
     },
