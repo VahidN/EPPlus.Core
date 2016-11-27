@@ -12,3 +12,10 @@ PM> Install-Package EPPlus.Core
 ```
 
 You can also view the [package page](http://www.nuget.org/packages/EPPlus.Core/) on NuGet.
+
+Note:
+-----------------
+To run this project on Linux, you will need to install `libgdiplus` too:
+```
+sudo apt-get updatesudo apt-get install libgdiplus
+```
