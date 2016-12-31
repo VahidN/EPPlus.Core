@@ -26,8 +26,8 @@
  *
  * Author							Change						Date
  * ******************************************************************************
- * Jan Källman		    Initial Release		        2009-10-01
- * Jan Källman		    License changed GPL-->LGPL 2011-12-27
+ * Jan K�llman		    Initial Release		        2009-10-01
+ * Jan K�llman		    License changed GPL-->LGPL 2011-12-27
  *******************************************************************************/
 using System;
 using System.Xml;
@@ -310,7 +310,7 @@ namespace OfficeOpenXml
                     while (cse.Next())
                     {
                         if (cse.Value._styleId == 0) continue;
-                        for (int c = address._fromRow; c <= address._toCol; c++)
+                        for (int c = address._fromCol; c <= address._toCol; c++)
                         {
                             if (!ws.ExistsStyleInner(cse.Row, c))
                             {

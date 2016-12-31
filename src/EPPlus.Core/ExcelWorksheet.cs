@@ -59,6 +59,7 @@ using System.Reflection;
 using XmlTextReader = System.Xml.XmlReader;
 #endif
 
+
 namespace OfficeOpenXml
 {
   /// <summary>
@@ -308,23 +309,23 @@ namespace OfficeOpenXml
             {
                 _list.Remove(Item);
             }
-#region IEnumerable<string> Members
+            #region IEnumerable<string> Members
 
             public IEnumerator<string> GetEnumerator()
             {
                 return _list.GetEnumerator();
             }
 
-#endregion
+            #endregion
 
-#region IEnumerable Members
+            #region IEnumerable Members
 
             System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
             {
                 return _list.GetEnumerator();
             }
 
-#endregion
+            #endregion
             internal void Clear(ExcelAddressBase Destination)
             {
                 var cse = new CellsStoreEnumerator<int>(_cells, Destination._fromRow, Destination._fromCol, Destination._toRow, Destination._toCol);
@@ -364,7 +365,7 @@ namespace OfficeOpenXml
         internal Dictionary<int, Formulas> _sharedFormulas = new Dictionary<int, Formulas>();
         internal int _minCol = ExcelPackage.MaxColumns;
         internal int _maxCol = 0;
-#region Worksheet Private Properties
+        #region Worksheet Private Properties
         internal ExcelPackage _package;
         private Uri _worksheetUri;
         private string _name;
@@ -374,8 +375,8 @@ namespace OfficeOpenXml
         private XmlDocument _worksheetXml;
         internal ExcelWorksheetView _sheetView;
         internal ExcelHeaderFooter _headerFooter;
-#endregion
-#region ExcelWorksheet Constructor
+        #endregion
+        #region ExcelWorksheet Constructor
         /// <summary>
         /// A worksheet
         /// </summary>
@@ -416,7 +417,7 @@ namespace OfficeOpenXml
             TopNode = _worksheetXml.DocumentElement;
         }
 
-#endregion
+        #endregion
         /// <summary>
         /// The Uri to the worksheet within the package
         /// </summary>
@@ -437,7 +438,7 @@ namespace OfficeOpenXml
         /// The position of the worksheet.
         /// </summary>
         internal int PositionID { get { return (_positionID); } set { _positionID = value; } }
-#region Worksheet Public Properties
+        #region Worksheet Public Properties
         /// <summary>
         /// The index in the worksheets collection
         /// </summary>
@@ -802,7 +803,7 @@ namespace OfficeOpenXml
                 }
             }
         }
-#region WorksheetXml
+        #region WorksheetXml
         /// <summary>
         /// The XML document holding the worksheet data.
         /// All column, row, cell, pagebreak, merged cell and hyperlink-data are loaded into memory and removed from the document when loading the document.
@@ -885,7 +886,6 @@ namespace OfficeOpenXml
             xr.ProhibitDtd = true;
             xr.WhitespaceHandling = WhitespaceHandling.None;
 #endif
-
             LoadColumns(xr);    //columnXml
             long start = stream.Position;
             LoadCells(xr);
@@ -901,6 +901,9 @@ namespace OfficeOpenXml
             xml = GetWorkSheetXml(stream, start, end, out encoding);
 
             // now release stream buffer (already converted whole Xml into XmlDocument Object and String)
+#if !COREFX
+            stream.Close();
+#endif
             stream.Dispose();
             packPart.Stream = new MemoryStream();
 
@@ -1937,6 +1940,17 @@ namespace OfficeOpenXml
                     ptbl.Address = ptbl.Address.AddRow(rowFrom, rows);
                     ptbl.CacheDefinition.SourceRange.Address = ptbl.CacheDefinition.SourceRange.AddRow(rowFrom, rows).Address;
                 }
+
+                //Issue 15573
+                foreach (ExcelDataValidation dv in DataValidations)
+                {
+                    var addr=dv.Address;
+                    var newAddr =addr.AddRow(rowFrom, rows).Address;
+                    if (addr.Address != newAddr)
+                    {
+                        dv.SetAddress(newAddr);
+                    }
+                }
             }
 
             // Update cross-sheet references.
@@ -2127,6 +2141,18 @@ namespace OfficeOpenXml
                         }
                     }
                 }
+
+                //Issue 15573
+                foreach (ExcelDataValidation dv in DataValidations)
+                {
+                    var addr = dv.Address;
+                    var newAddr = addr.AddColumn(columnFrom, columns).Address;
+                    if (addr.Address != newAddr)
+                    {
+                        dv.SetAddress(newAddr);
+                    }
+                }
+
                 // Update cross-sheet references.
                 foreach (var sheet in Workbook.Worksheets.Where(sheet => sheet != this))
                 {
@@ -2518,6 +2544,19 @@ namespace OfficeOpenXml
                         ptbl.Address = ptbl.Address.DeleteRow(rowFrom, rows);
                     }
                 }
+                //Issue 15573
+                foreach (ExcelDataValidation dv in DataValidations)
+                {
+                    var addr = dv.Address;
+                    if (addr.Start.Row > rowFrom + rows)
+                    {
+                        var newAddr = addr.DeleteRow(rowFrom, rows).Address;
+                        if (addr.Address != newAddr)
+                        {
+                            dv.SetAddress(newAddr);
+                        }
+                    }
+                }
             }
         }
         /// <summary>
@@ -2615,7 +2654,20 @@ namespace OfficeOpenXml
                             ptbl.CacheDefinition.SourceRange.Address = ptbl.CacheDefinition.SourceRange.DeleteColumn(columnFrom, columns).Address;
                         }
                     }
+                }
 
+                //Issue 15573
+                foreach (ExcelDataValidation dv in DataValidations)
+                {
+                    var addr = dv.Address;
+                    if (addr.Start.Column > columnFrom + columns)
+                    {
+                        var newAddr = addr.DeleteColumn(columnFrom, columns).Address;
+                        if (addr.Address != newAddr)
+                        {
+                            dv.SetAddress(newAddr);
+                        }
+                    }
                 }
             }
         }
@@ -3392,13 +3444,13 @@ namespace OfficeOpenXml
 
                 //Rewrite the pivottable address again if any rows or columns have been inserted or deleted
                 pt.SetXmlNodeString("d:location/@ref", pt.Address.Address);
-                if (pt.CacheDefinition.SourceRange!=null && !pt.CacheDefinition.SourceRange.IsName)
+                var ws = Workbook.Worksheets[pt.CacheDefinition.SourceRange.WorkSheet];
+                var t = ws.Tables.GetFromRange(pt.CacheDefinition.SourceRange);
+                if (pt.CacheDefinition.SourceRange!=null && !pt.CacheDefinition.SourceRange.IsName && t==null)
                 {
                     pt.CacheDefinition.SetXmlNodeString(ExcelPivotCacheDefinition._sourceAddressPath, pt.CacheDefinition.SourceRange.Address);
                 }
 
-                var ws = Workbook.Worksheets[pt.CacheDefinition.SourceRange.WorkSheet];
-                var t = ws.Tables.GetFromRange(pt.CacheDefinition.SourceRange);
                 var fields =
                     pt.CacheDefinition.CacheDefinitionXml.SelectNodes(
                         "d:pivotCacheDefinition/d:cacheFields/d:cacheField", NameSpaceManager);
@@ -3739,7 +3791,7 @@ namespace OfficeOpenXml
                             }
                             else
                             {
-                                cache.AppendFormat("<c r=\"{0}\" s=\"{1}\">", f.Address, styleID < 0 ? 0 : styleID);
+                                cache.AppendFormat("<c r=\"{0}\" s=\"{1}\"{2}>", f.Address, styleID < 0 ? 0 : styleID, GetCellType(v, true));
                                 cache.AppendFormat("<f>{0}</f>{1}</c>", ConvertUtil.ExcelEscapeString(f.Formula), GetFormulaValue(v));
                             }
                         }
@@ -3773,7 +3825,7 @@ namespace OfficeOpenXml
 #else
                         v.GetType().IsPrimitive
 #endif
-                                || v is double || v is decimal || v is DateTime || v is TimeSpan))
+                        || v is double || v is decimal || v is DateTime || v is TimeSpan))
                             {
                                 //string sv = GetValueForXml(v);
                                 cache.AppendFormat("<c r=\"{0}\" s=\"{1}\"{2}>", cse.CellAddress, styleID < 0 ? 0 : styleID, GetCellType(v));
@@ -3898,7 +3950,7 @@ namespace OfficeOpenXml
 #else
                         v.GetType().IsPrimitive
 #endif
-                || v is double || v is decimal || v is DateTime || v is TimeSpan))
+                        || v is double || v is decimal || v is DateTime || v is TimeSpan))
             {
                 return " t=\"str\"";
             }
@@ -3928,13 +3980,13 @@ namespace OfficeOpenXml
                 {
                     s = DateTimeExtensions.FromOADate(0).Add(((TimeSpan)v)).ToOADate().ToString(CultureInfo.InvariantCulture);
                 }
-                else if(
+                else if (
 #if COREFX
                         v.GetType().GetTypeInfo().IsPrimitive
 #else
                         v.GetType().IsPrimitive
 #endif
-                    || v is double || v is decimal)
+                        || v is double || v is decimal)
                 {
                     if (v is double && double.IsNaN((double)v))
                     {
@@ -4380,7 +4432,7 @@ namespace OfficeOpenXml
                         double sdv = ((DateTime)cse.Value._value).ToOADate();
                         sdv += offset;
 
-                        //cse.Value._value = DateTimeExtensions.FromOADate(sdv);
+                        //cse.Value._value = DateTime.FromOADate(sdv);
                         SetValueInner(cse.Row, cse.Column, DateTimeExtensions.FromOADate(sdv));
                     }
                     catch

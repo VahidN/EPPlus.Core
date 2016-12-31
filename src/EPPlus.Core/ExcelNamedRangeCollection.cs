@@ -13,17 +13,17 @@
 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
  * The GNU Lesser General Public License can be viewed at http://www.opensource.org/licenses/lgpl-license.php
  * If you unfamiliar with this license or have questions about it, here is an http://www.gnu.org/licenses/gpl-faq.html
  *
- * All code and executables are provided "as is" with no warranty either express or implied. 
+ * All code and executables are provided "as is" with no warranty either express or implied.
  * The author accepts no liability for any damage or loss of business that this product may cause.
  *
  * Code change notes:
- * 
+ *
  * Author							Change						Date
  * ******************************************************************************
  * Jan Källman		Added this class		        2010-01-28
@@ -151,7 +151,7 @@ namespace OfficeOpenXml
             foreach (var namedRange in namedRanges)
             {
                 ExcelAddressBase adr;
-                if (rows==0)
+                if (cols > 0 && rowFrom == 0 && rows >= ExcelPackage.MaxRows)   //Issue 15554. Check
                 {
                     adr = namedRange.DeleteColumn(colFrom, cols);
                 }
@@ -169,7 +169,6 @@ namespace OfficeOpenXml
                 }
             }
         }
-
         private void InsertColumns(int colFrom, int cols, ExcelNamedRange namedRange)
         {
             if (colFrom > 0)
@@ -205,7 +204,7 @@ namespace OfficeOpenXml
                 if (rowFrom <= namedRange.Start.Row)
                 {
                     var newAddress = ExcelCellBase.GetAddress(namedRange.Start.Row + rows, namedRange.Start.Column, namedRange.End.Row + rows, namedRange.End.Column);
-                    namedRange.Address = BuildNewAddress(namedRange, newAddress); 
+                    namedRange.Address = BuildNewAddress(namedRange, newAddress);
                 }
                 else if (rowFrom <= namedRange.End.Row)
                 {
