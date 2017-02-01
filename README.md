@@ -1,6 +1,6 @@
 EPPlus.Core
 ===========
-`EPPlus.Core` is an **unofficial** port of the [EPPlus library](http://epplus.codeplex.com) to .NET Core. It's based on the [1/8/2017, change set#67eadd18f55a](http://epplus.codeplex.com/SourceControl/list/changesets).
+`EPPlus.Core` is an **unofficial** port of the [EPPlus library](http://epplus.codeplex.com) to .NET Core. It's based on the [1/31/2017, change set#b1c3afd19338](http://epplus.codeplex.com/SourceControl/list/changesets).
 
 
 Install via NuGet

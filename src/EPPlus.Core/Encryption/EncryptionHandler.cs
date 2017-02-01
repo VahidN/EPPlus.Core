@@ -167,7 +167,7 @@ namespace OfficeOpenXml.Encryption
             encr.KeyValue = new byte[encr.KeyBits / 8];
             rnd.GetBytes(encr.KeyValue);
 
-            //Get the passwork key.
+            //Get the password key.
             var hashProvider = GetHashProvider(encryptionInfo.KeyEncryptors[0]);
             var baseHash = GetPasswordHash(hashProvider, encr.SaltValue, encryption.Password, encr.SpinCount, encr.HashSize);
             var hashFinal = GetFinalHash(hashProvider, encr, BlockKey_KeyValue, baseHash);
@@ -819,12 +819,12 @@ namespace OfficeOpenXml.Encryption
             decryptKey.BlockSize = encr.BlockSize << 3;
             decryptKey.KeySize = encr.KeyBits;
 #if COREFX
-            if (encr.ChiptherChaining == eChainingMode.ChainingModeCBC)
+            if (encr.CipherChaining == eChainingMode.ChainingModeCBC)
                 decryptKey.Mode = CipherMode.CBC;
             else
                 throw new NotSupportedException("CipherMode.CFB is not supported yet.");
 #else
-                decryptKey.Mode = encr.ChiptherChaining == eChainingMode.ChainingModeCBC ? CipherMode.CBC : CipherMode.CFB;
+                decryptKey.Mode = encr.CipherChaining == eChainingMode.ChainingModeCBC ? CipherMode.CBC : CipherMode.CFB;
 #endif
 
 
@@ -886,12 +886,12 @@ namespace OfficeOpenXml.Encryption
             encryptKey.BlockSize = encr.BlockSize << 3;
             encryptKey.KeySize = encr.KeyBits;
 #if COREFX
-            if (encr.ChiptherChaining == eChainingMode.ChainingModeCBC)
+            if (encr.CipherChaining == eChainingMode.ChainingModeCBC)
                 encryptKey.Mode = CipherMode.CBC;
             else
                 throw new NotSupportedException("CipherMode.CFB is not supported yet.");
 #else
-                encryptKey.Mode = encr.ChiptherChaining==eChainingMode.ChainingModeCBC ? CipherMode.CBC : CipherMode.CFB;
+                encryptKey.Mode = encr.CipherChaining==eChainingMode.ChainingModeCBC ? CipherMode.CBC : CipherMode.CFB;
 #endif
             encryptKey.Padding = PaddingMode.Zeros;
 

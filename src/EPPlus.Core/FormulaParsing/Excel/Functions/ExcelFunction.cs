@@ -313,7 +313,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
 #else
                         val.GetType().IsPrimitive
 #endif
-                        || val is double || val is decimal  || val is System.DateTime || val is TimeSpan);
+                         || val is double || val is decimal  || val is System.DateTime || val is TimeSpan);
         }
 
         //protected virtual bool IsNumber(object obj)
