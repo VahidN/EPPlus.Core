@@ -33,6 +33,8 @@ using OfficeOpenXml.FormulaParsing.Utilities;
 using OfficeOpenXml.FormulaParsing.Exceptions;
 using System.Collections;
 using System.Reflection;
+using static OfficeOpenXml.FormulaParsing.EpplusExcelDataProvider;
+using static OfficeOpenXml.FormulaParsing.ExcelDataProvider;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions
 {
@@ -173,6 +175,10 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions
                     }
                     return true;
                 }, "Expecting at least {0} arguments", minLength.ToString());
+        }
+        protected string ArgToAddress(IEnumerable<FunctionArgument> arguments, int index)
+        {
+            return arguments.ElementAt(index).IsExcelRange ? arguments.ElementAt(index).ValueAsRangeInfo.Address.FullAddress : ArgToString(arguments, index);
         }
 
         /// <summary>

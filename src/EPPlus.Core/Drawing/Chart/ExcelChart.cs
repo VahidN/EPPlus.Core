@@ -13,17 +13,17 @@
 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
  * See the GNU Lesser General Public License for more details.
  *
  * The GNU Lesser General Public License can be viewed at http://www.opensource.org/licenses/lgpl-license.php
  * If you unfamiliar with this license or have questions about it, here is an http://www.gnu.org/licenses/gpl-faq.html
  *
- * All code and executables are provided "as is" with no warranty either express or implied.
+ * All code and executables are provided "as is" with no warranty either express or implied. 
  * The author accepts no liability for any damage or loss of business that this product may cause.
  *
  * Code change notes:
- *
+ * 
  * Author							Change						Date
  *******************************************************************************
  * Jan Källman		Added		2009-10-01
@@ -38,7 +38,6 @@ using System.IO;
 using OfficeOpenXml.Table.PivotTable;
 using OfficeOpenXml.Utils;
 using OfficeOpenXml.Packaging;
-
 namespace OfficeOpenXml.Drawing.Chart
 {
     #region "Chart Enums"
@@ -172,7 +171,7 @@ namespace OfficeOpenXml.Drawing.Chart
         /// <summary>
         /// Specifies that the radar chart shall have lines but no markers and no fill.
         /// </summary>
-        Standard
+        Standard 
     }
     /// <summary>
     /// Bar or pie
@@ -211,7 +210,7 @@ namespace OfficeOpenXml.Drawing.Chart
     /// Markerstyle
     /// </summary>
     public enum eMarkerStyle
-    {
+    {        
         Circle,
         Dash,
         Diamond,
@@ -228,7 +227,7 @@ namespace OfficeOpenXml.Drawing.Chart
     /// The time unit of major and minor datetime axis values
     /// </summary>
     public enum eTimeUnit
-    {
+    {        
         Years,
         Months,
         Days,
@@ -310,7 +309,7 @@ namespace OfficeOpenXml.Drawing.Chart
         /// </summary>
         MovingAvgerage,
         /// <summary>
-        /// Specifies the trendline shall be a polynomial curve of order Order in the form
+        /// Specifies the trendline shall be a polynomial curve of order Order in the form 
         /// </summary>
         Polynomial,
         /// <summary>
@@ -348,8 +347,6 @@ namespace OfficeOpenXml.Drawing.Chart
         Width
     }
     #endregion
-
-
     /// <summary>
    /// Base class for Chart object.
    /// </summary>
@@ -456,7 +453,7 @@ namespace OfficeOpenXml.Drawing.Chart
            }
 
            /***** 3D Perspective *****/
-           if (IsType3D())
+           if (IsType3D())             
            {
                View3D.RotY = 20;
                View3D.Perspective = 30;    //Default to 30
@@ -476,7 +473,7 @@ namespace OfficeOpenXml.Drawing.Chart
            {
                XmlElement graphFrame = TopNode.OwnerDocument.CreateElement("graphicFrame", ExcelPackage.schemaSheetDrawings);
                graphFrame.SetAttribute("macro", "");
-               TopNode.AppendChild(graphFrame);
+               TopNode.AppendChild(graphFrame); 
                graphFrame.InnerXml = string.Format("<xdr:nvGraphicFramePr><xdr:cNvPr id=\"{0}\" name=\"Chart 1\" /><xdr:cNvGraphicFramePr /></xdr:nvGraphicFramePr><xdr:xfrm><a:off x=\"0\" y=\"0\" /> <a:ext cx=\"0\" cy=\"0\" /></xdr:xfrm><a:graphic><a:graphicData uri=\"http://schemas.openxmlformats.org/drawingml/2006/chart\"><c:chart xmlns:c=\"http://schemas.openxmlformats.org/drawingml/2006/chart\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" r:id=\"rId1\" />   </a:graphicData>  </a:graphic>",_id);
                TopNode.AppendChild(TopNode.OwnerDocument.CreateElement("clientData", ExcelPackage.schemaSheetDrawings));
 
@@ -577,7 +574,7 @@ namespace OfficeOpenXml.Drawing.Chart
        //}
        internal virtual eChartType GetChartType(string name)
        {
-
+           
            switch (name)
            {
                case "area3DChart":
@@ -623,7 +620,7 @@ namespace OfficeOpenXml.Drawing.Chart
                    return eChartType.StockHLC;
                default:
                    return 0;
-           }
+           }           
        }
        #region "Xml init Functions"
        private string ChartStartXml(eChartType type)
@@ -634,7 +631,7 @@ namespace OfficeOpenXml.Drawing.Chart
            int serAxID = IsTypeSurface() ? 3 : -1;
 
            xml.Append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>");
-           xml.AppendFormat("<c:chartSpace xmlns:c=\"{0}\" xmlns:a=\"{1}\" xmlns:r=\"{2}\">", ExcelPackage.schemaChart, ExcelPackage.schemaDrawings, ExcelPackage.schemaRelationships);
+           xml.AppendFormat("<c:chartSpace xmlns:c=\"{0}\" xmlns:a=\"{1}\" xmlns:r=\"{2}\">", ExcelPackage.schemaChart, ExcelPackage.schemaDrawings, ExcelPackage.schemaRelationships);       
            xml.Append("<c:chart>");
            xml.AppendFormat("{0}{1}<c:plotArea><c:layout/>",AddPerspectiveXml(type), AddSurfaceXml(type));
 
@@ -663,7 +660,7 @@ namespace OfficeOpenXml.Drawing.Chart
 
            xml.AppendFormat("</c:plotArea><c:legend><c:legendPos val=\"r\"/><c:layout/><c:overlay val=\"0\" /></c:legend><c:plotVisOnly val=\"1\"/></c:chart>", axID, xAxID);
 
-           xml.Append("<c:printSettings><c:headerFooter/><c:pageMargins b=\"0.75\" l=\"0.7\" r=\"0.7\" t=\"0.75\" header=\"0.3\" footer=\"0.3\"/><c:pageSetup/></c:printSettings></c:chartSpace>");
+           xml.Append("<c:printSettings><c:headerFooter/><c:pageMargins b=\"0.75\" l=\"0.7\" r=\"0.7\" t=\"0.75\" header=\"0.3\" footer=\"0.3\"/><c:pageSetup/></c:printSettings></c:chartSpace>");          
            return xml.ToString();
        }
 
@@ -680,7 +677,7 @@ namespace OfficeOpenXml.Drawing.Chart
            xml.Append(AddShape(type));
            xml.Append(AddFirstSliceAng(type));
            xml.Append(AddHoleSize(type));
-           if (ChartType == eChartType.BarStacked100 ||
+           if (ChartType == eChartType.BarStacked100 || 
                ChartType == eChartType.BarStacked ||
                ChartType == eChartType.ColumnStacked ||
                ChartType == eChartType.ColumnStacked100)
@@ -700,7 +697,7 @@ namespace OfficeOpenXml.Drawing.Chart
            if (!IsTypePieDoughnut())
            {
                if (IsTypeSurface())
-               {
+               {                                      
                    return string.Format("<c:axId val=\"{0}\"/><c:axId val=\"{1}\"/><c:axId val=\"{2}\"/>", axID, xAxID, serAxID);
                }
                else
@@ -759,7 +756,7 @@ namespace OfficeOpenXml.Drawing.Chart
        }
        private string AddGrouping()
        {
-           //IsTypeClustered() || IsTypePercentStacked() || IsTypeStacked() ||
+           //IsTypeClustered() || IsTypePercentStacked() || IsTypeStacked() || 
            if(IsTypeShape() || IsTypeLine())
            {
                return "<c:grouping val=\"standard\"/>";
@@ -1311,7 +1308,7 @@ namespace OfficeOpenXml.Drawing.Chart
             }
         }
         /// <summary>
-        /// The build-in chart styles.
+        /// The build-in chart styles. 
         /// </summary>
         public eChartStyle Style
         {
@@ -1538,7 +1535,7 @@ namespace OfficeOpenXml.Drawing.Chart
             {
                 if (_plotArea == null)
                 {
-                    _plotArea = new ExcelChartPlotArea(NameSpaceManager, ChartXml.SelectSingleNode("c:chartSpace/c:chart/c:plotArea", NameSpaceManager), this);
+                    _plotArea = new ExcelChartPlotArea(NameSpaceManager, ChartXml.SelectSingleNode("c:chartSpace/c:chart/c:plotArea", NameSpaceManager), this); 
                 }
                 return _plotArea;
             }
@@ -1569,7 +1566,7 @@ namespace OfficeOpenXml.Drawing.Chart
             {
                 if (_border == null)
                 {
-                    _border = new ExcelDrawingBorder(NameSpaceManager, ChartXml.SelectSingleNode("c:chartSpace",NameSpaceManager), "c:spPr/a:ln");
+                    _border = new ExcelDrawingBorder(NameSpaceManager, ChartXml.SelectSingleNode("c:chartSpace",NameSpaceManager), "c:spPr/a:ln"); 
                 }
                 return _border;
             }
@@ -1678,9 +1675,9 @@ namespace OfficeOpenXml.Drawing.Chart
                    return eGrouping.Stacked;
                case "percentStacked":
                    return eGrouping.PercentStacked;
-               default: //"clustered":
+               default: //"clustered":               
                    return eGrouping.Clustered;
-           }
+           }         
        }
        #endregion
        internal static ExcelChart GetChart(ExcelDrawings drawings, XmlNode node/*, XmlNode chartTypeNode*/)
@@ -1693,7 +1690,7 @@ namespace OfficeOpenXml.Drawing.Chart
 
                var part = drawings.Part.Package.GetPart(uriChart);
                var chartXml = new XmlDocument();
-               LoadXmlSafe(chartXml, part.GetStream());
+               LoadXmlSafe(chartXml, part.GetStream()); 
 
                ExcelChart topChart = null;
                foreach (XmlElement n in chartXml.SelectSingleNode(rootPath, drawings.NameSpaceManager).ChildNodes)
@@ -1714,13 +1711,13 @@ namespace OfficeOpenXml.Drawing.Chart
                             topChart.PlotArea.ChartTypes.Add(subChart);
                         }
                     }
-                }
+                }               
                 return topChart;
            }
            else
            {
                return null;
-           }
+           }           
        }
        internal static ExcelChart GetChart(XmlElement chartNode, ExcelDrawings drawings, XmlNode node,  Uri uriChart, Packaging.ZipPackagePart part, XmlDocument chartXml, ExcelChart topChart)
        {
@@ -1824,7 +1821,7 @@ namespace OfficeOpenXml.Drawing.Chart
                    }
                default:
                    return null;
-           }
+           }       
        }
        internal static ExcelChart GetNewChart(ExcelDrawings drawings, XmlNode drawNode, eChartType chartType, ExcelChart topChart, ExcelPivotTable PivotTableSource)
        {

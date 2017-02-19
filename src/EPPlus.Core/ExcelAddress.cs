@@ -13,17 +13,17 @@
 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
  * See the GNU Lesser General Public License for more details.
  *
  * The GNU Lesser General Public License can be viewed at http://www.opensource.org/licenses/lgpl-license.php
  * If you unfamiliar with this license or have questions about it, here is an http://www.gnu.org/licenses/gpl-faq.html
  *
- * All code and executables are provided "as is" with no warranty either express or implied.
+ * All code and executables are provided "as is" with no warranty either express or implied. 
  * The author accepts no liability for any damage or loss of business that this product may cause.
  *
  * Code change notes:
- *
+ * 
  * Author							Change						Date
  *******************************************************************************
  * Jan Källman		Added		18-MAR-2010
@@ -65,7 +65,7 @@ namespace OfficeOpenXml
             Partly,
             Inside,
             Equal
-        }
+        }        
         internal enum eShiftType
         {
             Right,
@@ -234,7 +234,7 @@ namespace OfficeOpenXml
                 }
             }
         }
-
+        
         /// <summary>
         /// Address is an defined name
         /// </summary>
@@ -305,7 +305,7 @@ namespace OfficeOpenXml
             if (address[0] == '[')
             {
                 pos = address.IndexOf("]");
-                _wb = address.Substring(1, pos - 1);
+                _wb = address.Substring(1, pos - 1);                
                 _ws = address.Substring(pos + 1);
             }
             else
@@ -314,7 +314,13 @@ namespace OfficeOpenXml
                 _ws = address;
             }
             pos = _ws.IndexOf("!");
-            if (pos > -1)
+            if(pos==0)
+            {
+                _address = _ws.Substring(1);
+                _ws = _wb;
+                _wb = "";
+            }
+            else if (pos > -1)
             {
                 _address = _ws.Substring(pos + 1);
                 _ws = _ws.Substring(0, pos);
@@ -324,7 +330,7 @@ namespace OfficeOpenXml
         {
             if (_ws == wsName) _ws = newWs;
             var fullAddress = GetAddress();
-
+            
             if (Addresses != null)
             {
                 foreach (var a in Addresses)
@@ -412,7 +418,7 @@ namespace OfficeOpenXml
             {
                 return _address;
             }
-        }
+        }        
         internal string FullAddress
         {
             get
@@ -609,7 +615,7 @@ namespace OfficeOpenXml
                 {
                     if(s.IndexOf("[")<0)
                     {
-                        switch(s.ToLower(CultureInfo.InvariantCulture))
+                        switch(s.ToLower(CultureInfo.InvariantCulture))                
                         {
                             case "#all":
                                 _table.IsAll = true;
@@ -636,7 +642,7 @@ namespace OfficeOpenXml
                                     _table.ColumnSpan += ":" + s;
                                 }
                                 break;
-                        }
+                        }                
                     }
                 }
             }
@@ -688,7 +694,7 @@ namespace OfficeOpenXml
             if (row > _toRow) //After
             {
                 return this;
-            }
+            }            
             else if (row+rows <= _fromRow) //Before
             {
                 return new ExcelAddressBase((setFixed && _fromRowFixed ? _fromRow : _fromRow - rows), _fromCol, (setFixed && _toRowFixed ? _toRow : _toRow - rows), _toCol, _fromRowFixed, _fromColFixed, _toRowFixed, _toColFixed);
@@ -753,7 +759,7 @@ namespace OfficeOpenXml
         internal ExcelAddressBase Insert(ExcelAddressBase address, eShiftType Shift/*, out ExcelAddressBase topAddress, out ExcelAddressBase leftAddress, out ExcelAddressBase rightAddress, out ExcelAddressBase bottomAddress*/)
         {
             //Before or after, no change
-            //if ((_toRow > address._fromRow && _toCol > address.column) ||
+            //if ((_toRow > address._fromRow && _toCol > address.column) || 
             //    (_fromRow > address._toRow && column > address._toCol))
             if(_toRow < address._fromRow || _toCol < address._fromCol || (_fromRow > address._toRow && _fromCol > address._toCol))
             {
@@ -881,7 +887,7 @@ namespace OfficeOpenXml
             }
             //ExcelAddress a = new ExcelAddress(Address);
             //if (Address.IndexOf('!') > 0)
-            //{
+            //{                
             //    string[] split = Address.Split('!');
             //    if (split.Length == 2)
             //    {
@@ -904,7 +910,7 @@ namespace OfficeOpenXml
             //    else
             //    {
             //        return AddressType.Invalid;
-            //    }
+            //    }            
             //}
             //int _fromRow, column, _toRow, _toCol;
             //if (ExcelAddressBase.GetRowColFromAddress(Address, out _fromRow, out column, out _toRow, out _toCol))
@@ -948,7 +954,7 @@ namespace OfficeOpenXml
 
         private static bool IsAddress(string intAddress)
         {
-            if(string.IsNullOrEmpty(intAddress)) return false;
+            if(string.IsNullOrEmpty(intAddress)) return false;            
             var cells = intAddress.Split(':');
             int fromRow,toRow, fromCol, toCol;
 
@@ -968,11 +974,11 @@ namespace OfficeOpenXml
                 toRow = fromRow;
                 toCol = fromCol;
             }
-            if( fromRow <= toRow &&
-                fromCol <= toCol &&
-                fromCol > -1 &&
-                toCol <= ExcelPackage.MaxColumns &&
-                fromRow > -1 &&
+            if( fromRow <= toRow && 
+                fromCol <= toCol && 
+                fromCol > -1 && 
+                toCol <= ExcelPackage.MaxColumns && 
+                fromRow > -1 && 
                 toRow <= ExcelPackage.MaxRows)
             {
                 return true;
@@ -1090,7 +1096,7 @@ namespace OfficeOpenXml
             }
         }
 
-        public int Rows
+        public int Rows 
         {
             get
             {
@@ -1208,7 +1214,7 @@ namespace OfficeOpenXml
         {
             var strIx = address.IndexOf("''");
             var prevStrIx = ix;
-            while(strIx > -1)
+            while(strIx > -1) 
             {
                 prevStrIx = strIx;
                 strIx = address.IndexOf("''");
@@ -1247,7 +1253,7 @@ namespace OfficeOpenXml
             : base(address)
         {
         }
-
+        
         internal ExcelAddress(string ws, string address)
             : base(address)
         {
@@ -1279,7 +1285,7 @@ namespace OfficeOpenXml
                 return _address;
             }
             set
-            {
+            {                
                 SetAddress(value);
                 ChangeAddress();
             }
@@ -1302,7 +1308,7 @@ namespace OfficeOpenXml
         {
             SetFixed();
         }
-
+        
         internal ExcelFormulaAddress(string ws, string address)
             : base(address)
         {
@@ -1334,7 +1340,7 @@ namespace OfficeOpenXml
         }
 
         private void GetFixed(string address, out bool rowFixed, out bool colFixed)
-        {
+        {            
             rowFixed=colFixed=false;
             var ix=address.IndexOf('$');
             while(ix>-1)
@@ -1370,7 +1376,7 @@ namespace OfficeOpenXml
                 return _address;
             }
             set
-            {
+            {                
                 SetAddress(value);
                 ChangeAddress();
                 SetFixed();
