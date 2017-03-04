@@ -106,17 +106,14 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
 #if !COREFX
         public override void Close()
+        {
+            base.Close();
+        }
 #else
         public void Close()
         {
-#if !COREFX
-            base.Close();
-#else
             base.Dispose();
-#endif
-
         }
 #endif
     }
-
 }

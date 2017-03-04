@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if COREFX
+using System;
 using System.Collections;
 using System.Globalization;
 using System.IO;
@@ -7,7 +8,6 @@ using System.Text;
 
 namespace System.Security
 {
-
     public sealed class SecurityElement
     {
         private delegate void ToStringHelperFunc(object obj, string str);
@@ -412,3 +412,4 @@ namespace System.Security
 
     }
 }
+#endif

@@ -59,7 +59,9 @@ using wm = System.Windows.Media;
 #endif
 using w = System.Windows;
 using OfficeOpenXml.Utils;
+#if COREFX
 using System.Security.Claims;
+#endif
 
 namespace OfficeOpenXml
 {
@@ -89,7 +91,7 @@ namespace OfficeOpenXml
             internal ExcelComment Comment { get; set; }
             internal Byte Flag { get; set; }
         }
-        #region Constructors
+#region Constructors
 		internal ExcelRangeBase(ExcelWorksheet xlWorksheet)
 		{
 			_worksheet = xlWorksheet;
@@ -126,8 +128,8 @@ namespace OfficeOpenXml
 			if (string.IsNullOrEmpty(_ws)) _ws = (xlWorksheet == null ? null : xlWorksheet.Name);
             SetDelegate();
         }
-		#endregion
-		#region Set Value Delegates
+#endregion
+#region Set Value Delegates
 		private static _changeProp _setUnknownProp = SetUnknown;
 		private static _changeProp _setSingleProp = SetSingle;
 		private static _changeProp _setRangeProp = SetRange;
@@ -236,8 +238,8 @@ namespace OfficeOpenXml
                 }
 			}
         }
-		#endregion
-		#region Set property methods
+#endregion
+#region Set property methods
 		private static _setValue _setStyleIdDelegate = Set_StyleID;
 		private static _setValue _setValueDelegate = Set_Value;
 		private static _setValue _setHyperLinkDelegate = Set_HyperLink;
@@ -361,7 +363,7 @@ namespace OfficeOpenXml
 			string[] v = (string[])value;
 			range._worksheet.Comments.Add(new ExcelRangeBase(range._worksheet, GetAddress(range._fromRow, range._fromCol)), v[0], v[1]);
 		}
-		#endregion
+#endregion
 		private void SetToSelectedRange()
 		{
 			if (_worksheet.View.SelectedRange == "")
@@ -399,7 +401,7 @@ namespace OfficeOpenXml
             throw new NotImplementedException();
         }
 
-        #region Public Properties
+#region Public Properties
         /// <summary>
         /// The styleobject for the range.
         /// </summary>
@@ -1482,8 +1484,8 @@ namespace OfficeOpenXml
                 return fullAddress;
             }
         }
-		#endregion
-		#region Private Methods
+#endregion
+#region Private Methods
 		/// <summary>
 		/// Set the value without altering the richtext property
 		/// </summary>
@@ -1751,9 +1753,9 @@ namespace OfficeOpenXml
 				}
 			}
 		}
-		#endregion
-		#region Public Methods
-		#region ConditionalFormatting
+#endregion
+#region Public Methods
+#region ConditionalFormatting
 		/// <summary>
 		/// Conditional Formatting for this range.
 		/// </summary>
@@ -1764,8 +1766,8 @@ namespace OfficeOpenXml
 				return new RangeConditionalFormatting(_worksheet, new ExcelAddress(Address));
 			}
 		}
-		#endregion
-		#region DataValidation
+#endregion
+#region DataValidation
 		/// <summary>
 		/// Data validation for this range.
 		/// </summary>
@@ -1776,8 +1778,8 @@ namespace OfficeOpenXml
                 return new RangeDataValidation(_worksheet, Address);
 			}
 		}
-		#endregion
-        #region LoadFromDataReader
+#endregion
+#region LoadFromDataReader
 	    /// <summary>
 	    /// Load the data from the datareader starting from the top left cell of the range
 	    /// </summary>
@@ -1836,7 +1838,7 @@ namespace OfficeOpenXml
 	        }
 	        return _worksheet.Cells[_fromRow, _fromCol, row - 1, _fromCol + fieldCount - 1];
 	    }
-        #endregion
+#endregion
 
 #if !COREFX
 #region LoadFromDataTable

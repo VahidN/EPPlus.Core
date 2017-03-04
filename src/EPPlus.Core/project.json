@@ -1,5 +1,5 @@
 {
-    "version": "1.3.0-*",
+    "version": "1.3.1-*",
 
     "authors": [ "Vahid Nasiri" ],
     "packOptions": {
@@ -18,29 +18,69 @@
     },
     "description": "EPPlus.Core is an unofficial port of the EPPlus library to .NET Core.",
 
-
-    "dependencies": {
-        "CoreCompat.System.Drawing": "1.0.0-beta006",
-        "NETStandard.Library": "1.6.1",
-        "System.Collections.NonGeneric": "4.3.0",
-        "System.Data.Common": "4.3.0",
-        "System.Reflection": "4.3.0",
-        "System.Security.Claims": "4.3.0",
-        "System.Security.Cryptography.Pkcs": "4.3.0",
-        "System.Security.Cryptography.X509Certificates": "4.3.0",
-        "System.Threading.Thread": "4.3.0",
-        "System.Threading.ThreadPool": "4.3.0",
-        "System.Xml.XmlDocument": "4.3.0",
-        "System.Xml.XPath.XmlDocument": "4.3.0"
-    },
     "frameworks": {
+        "net40": {
+            "frameworkAssemblies": {
+                "System": "",
+                "System.Core": "",
+                "System.Xml": "",
+                "System.Security": "",
+                "System.Drawing": "",
+                "System.Data": "",
+                "PresentationCore": "",
+                "System.Web": ""
+            }
+        },
+
+        "net45": {
+            "frameworkAssemblies": {
+                "System": "",
+                "System.Core": "",
+                "System.Xml": "",
+                "System.Security": "",
+                "System.Drawing": "",
+                "System.Data": "",
+                "PresentationCore": "",
+                "System.Web": ""
+            }
+        },
+
+        "net46": {
+            "frameworkAssemblies": {
+                "System": "",
+                "System.Core": "",
+                "System.Xml": "",
+                "System.Security": "",
+                "System.Drawing": "",
+                "System.Data": "",
+                "PresentationCore": "",
+                "System.Web": ""
+            }
+        },
         "netstandard1.3": {
-            "imports": "dnxcore50"
+            "imports": "dnxcore50",
+            "dependencies": {
+                "CoreCompat.System.Drawing": "1.0.0-beta006",
+                "NETStandard.Library": "1.6.1",
+                "System.Collections.NonGeneric": "4.3.0",
+                "System.Data.Common": "4.3.0",
+                "System.Reflection": "4.3.0",
+                "System.Security.Claims": "4.3.0",
+                "System.Security.Cryptography.Pkcs": "4.3.0",
+                "System.Security.Cryptography.X509Certificates": "4.3.0",
+                "System.Threading.Thread": "4.3.0",
+                "System.Threading.ThreadPool": "4.3.0",
+                "System.Xml.XmlDocument": "4.3.0",
+                "System.Xml.XPath.XmlDocument": "4.3.0"
+            },
+            "buildOptions": {
+                "define": [ "COREFX" ]
+            }
         }
     },
     "buildOptions": {
         "xmlDoc": true,
-        "define": [ "COREFX", "NO_SFX" ],
+        "define": [ "NO_SFX" ],
         "nowarn": [ "1591" ] // 1591: missing xml comment for publicly visible type or member
     },
     "configurations": {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if COREFX
+using System;
 
 namespace System.Security
 {
@@ -9,3 +10,4 @@ namespace System.Security
         Comment
     }
 }
+#endif

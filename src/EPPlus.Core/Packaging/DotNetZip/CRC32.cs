@@ -804,21 +804,18 @@ namespace OfficeOpenXml.Packaging.Ionic.Crc
         /// </summary>
 #if !COREFX
         public override void Close()
-#else
-        public void Close()
         {
-#if !COREFX
             base.Close();
             if (!_leaveOpen)
                 _innerStream.Close();
+        }
 #else
+        public void Close()
+        {
             base.Dispose();
             if (!_leaveOpen)
                 _innerStream.Dispose();
-#endif
-
         }
 #endif
     }
-
-    }
+}
