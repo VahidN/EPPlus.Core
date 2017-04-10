@@ -26,7 +26,7 @@
  * ******************************************************************************
  * Jan Källman                      Added       		        2011-05-03
  *******************************************************************************/
-
+/*
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -39,7 +39,6 @@ using OfficeOpenXml.Table;
 
 // Note: .NET Core doesn't support DataTable's yet.
 
-/*
 namespace EPPlus.Core.Tests.SampleApp
 {
     /// <summary>

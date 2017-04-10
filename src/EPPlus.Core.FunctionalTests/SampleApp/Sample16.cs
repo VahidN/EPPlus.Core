@@ -1,4 +1,5 @@
-﻿using System;
+﻿/*
+using System;
 using System.Data;
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -7,7 +8,6 @@ using OfficeOpenXml.Table;
 
 // Note: .NET Core doesn't support DataTable's yet.
 
-/*
 namespace EPPlus.Core.Tests.SampleApp
 {
     [TestClass]

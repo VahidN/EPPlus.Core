@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Description>EPPlus.Core is an unofficial port of the EPPlus library to .NET Core.</Description>
-    <VersionPrefix>1.3.1</VersionPrefix>
+    <VersionPrefix>1.3.2</VersionPrefix>
     <Authors>Vahid Nasiri</Authors>
     <TargetFrameworks>net40;net45;net46;netstandard1.3</TargetFrameworks>
     <DefineConstants>$(DefineConstants);NO_SFX</DefineConstants>
@@ -81,5 +81,4 @@
     <PackageReference Include="System.Xml.XmlDocument" Version="4.3.0" />
     <PackageReference Include="System.Xml.XPath.XmlDocument" Version="4.3.0" />
   </ItemGroup>
-
 </Project>
