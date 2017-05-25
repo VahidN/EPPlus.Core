@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EPPlus.Core", "src\EPPlus.C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EPPlus.Core.FunctionalTests", "src\EPPlus.Core.FunctionalTests\EPPlus.Core.FunctionalTests.csproj", "{B3F95982-4924-42B0-A23A-D5CA7895F92C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EPPlus.Core.SampleWebApp", "src\EPPlus.Core.SampleWebApp\EPPlus.Core.SampleWebApp.csproj", "{A8F18944-DEDA-413B-AEA4-F4FC1227D374}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{B3F95982-4924-42B0-A23A-D5CA7895F92C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3F95982-4924-42B0-A23A-D5CA7895F92C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B3F95982-4924-42B0-A23A-D5CA7895F92C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8F18944-DEDA-413B-AEA4-F4FC1227D374}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8F18944-DEDA-413B-AEA4-F4FC1227D374}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8F18944-DEDA-413B-AEA4-F4FC1227D374}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8F18944-DEDA-413B-AEA4-F4FC1227D374}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -36,5 +42,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{C3EB7AEC-CCF7-42B8-B137-0A8AE146FBC1} = {210E96E3-E4A7-41EE-B074-59FCDAE0B1EC}
 		{B3F95982-4924-42B0-A23A-D5CA7895F92C} = {210E96E3-E4A7-41EE-B074-59FCDAE0B1EC}
+		{A8F18944-DEDA-413B-AEA4-F4FC1227D374} = {210E96E3-E4A7-41EE-B074-59FCDAE0B1EC}
 	EndGlobalSection
 EndGlobal
