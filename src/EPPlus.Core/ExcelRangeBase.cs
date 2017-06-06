@@ -54,7 +54,7 @@ using System.Security;
 using OfficeOpenXml.ConditionalFormatting;
 using OfficeOpenXml.ConditionalFormatting.Contracts;
 using OfficeOpenXml.FormulaParsing.LexicalAnalysis;
-#if !COREFX
+#if !COREFX && !NETSTANDARD2_0
 using wm = System.Windows.Media;
 #endif
 using w = System.Windows;

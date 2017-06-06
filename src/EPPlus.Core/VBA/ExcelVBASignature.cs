@@ -37,7 +37,7 @@ using System.Security.Cryptography.Pkcs;
 using OfficeOpenXml.Utils;
 using System.IO;
 
-#if COREFX
+#if COREFX || NETSTANDARD2_0
 using System.Security.Cryptography;
 #endif
 
@@ -58,7 +58,7 @@ namespace OfficeOpenXml.VBA
 
         private void GetSignature()
         {
-#if COREFX
+#if COREFX || NETSTANDARD2_0
             throw new NotSupportedException(".NET Core doesn't support SignedCms yet.");
 #else
 
@@ -158,7 +158,7 @@ namespace OfficeOpenXml.VBA
                 return;
             }
 
-            if (Certificate.HasPrivateKey==false)    //No signature. Remove any Signature part
+            if (Certificate.HasPrivateKey == false)    //No signature. Remove any Signature part
             {
                 var storeCert = GetCertFromStore(StoreLocation.CurrentUser);
                 if (storeCert == null)
@@ -226,7 +226,7 @@ namespace OfficeOpenXml.VBA
 
         private X509Certificate2 GetCertFromStore(StoreLocation loc)
         {
-#if COREFX
+#if COREFX || NETSTANDARD2_0
             throw new NotSupportedException();
 #else
             try
@@ -286,7 +286,7 @@ namespace OfficeOpenXml.VBA
         }
         internal byte[] SignProject(ExcelVbaProject proj)
         {
-#if COREFX
+#if COREFX || NETSTANDARD2_0
             throw new NotSupportedException();
 #else
             if (!Certificate.HasPrivateKey)
@@ -378,7 +378,7 @@ namespace OfficeOpenXml.VBA
                 }
             }
             var buffer = (bw.BaseStream as MemoryStream).ToArray();
-#if !COREFX
+#if !COREFX && !NETSTANDARD2_0
             var hp = System.Security.Cryptography.MD5CryptoServiceProvider.Create();
 #else
             var hp = MD5.Create();
@@ -394,7 +394,7 @@ namespace OfficeOpenXml.VBA
         /// </summary>
         public X509Certificate2 Certificate { get; set; }
 
-#if !COREFX
+#if !COREFX && !NETSTANDARD2_0
         /// <summary>
         /// The verifier
         /// </summary>
