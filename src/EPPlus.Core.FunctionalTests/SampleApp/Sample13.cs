@@ -26,7 +26,7 @@
  * ******************************************************************************
  * Jan Källman                      Added       		        2011-05-03
  *******************************************************************************/
-/*
+
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -75,7 +75,7 @@ namespace EPPlus.Core.Tests.SampleApp
             ExcelPackage pck = new ExcelPackage();
 
             //Create a datatable with the directories and files from the root directory...
-            DataTable dt = GetDataTable(outputDir.Root);
+            DataTable dt = GetDataTable(new DirectoryInfo(Directory.GetCurrentDirectory()));
 
             var wsDt = pck.Workbook.Worksheets.Add("FromDataTable");
 
@@ -149,7 +149,7 @@ namespace EPPlus.Core.Tests.SampleApp
             wsList.Cells[wsList.Dimension.Address].AutoFitColumns();
 
             //...and save
-            var fi = new FileInfo(outputDir.FullName + @"\Sample13.xlsx");
+            var fi = new FileInfo(Path.Combine("bin", "Sample13.xlsx"));
             if (fi.Exists)
             {
                 fi.Delete();
@@ -187,4 +187,3 @@ namespace EPPlus.Core.Tests.SampleApp
         }
     }
 }
-*/

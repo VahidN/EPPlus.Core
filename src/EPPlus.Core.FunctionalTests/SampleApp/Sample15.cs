@@ -134,12 +134,12 @@ namespace EPPlus.Core.Tests.SampleApp
             pck.Workbook.VbaProject.Protection.SetPassword("EPPlus");
 
             //Add all the code from the textfiles in the Vba-Code sub-folder.
-            pck.Workbook.CodeModule.Code = File.ReadAllText("SampleApp/VBA-Code/ThisWorkbook.txt");
+            pck.Workbook.CodeModule.Code = File.ReadAllText("../../../SampleApp/VBA-Code/ThisWorkbook.txt");
 
             //Add the sheet code
-            ws.CodeModule.Code = File.ReadAllText("SampleApp/VBA-Code/BattleshipSheet.txt");
+            ws.CodeModule.Code = File.ReadAllText("../../../SampleApp/VBA-Code/BattleshipSheet.txt");
             var m1=pck.Workbook.VbaProject.Modules.AddModule("Code");
-            string code = File.ReadAllText("SampleApp/VBA-Code/CodeModule.txt");
+            string code = File.ReadAllText("../../../SampleApp/VBA-Code/CodeModule.txt");
 
             //Insert your ships on the right board. you can changes these, but don't cheat ;)
             var ships = new string[]{
@@ -163,10 +163,10 @@ namespace EPPlus.Core.Tests.SampleApp
             ws.Cells[shipsaddress].Style.Fill.BackgroundColor.SetColor(Color.Black);
 
             var m2 = pck.Workbook.VbaProject.Modules.AddModule("ComputerPlay");
-            m2.Code = File.ReadAllText("SampleApp/VBA-Code/ComputerPlayModule.txt");
+            m2.Code = File.ReadAllText("../../../SampleApp/VBA-Code/ComputerPlayModule.txt");
 
             var c1 = pck.Workbook.VbaProject.Modules.AddClass("Ship",false);
-            c1.Code = File.ReadAllText("SampleApp/VBA-Code/ShipClass.txt");
+            c1.Code = File.ReadAllText("../../../SampleApp/VBA-Code/ShipClass.txt");
 
             //Add the info text shape.
             var tb = ws.Drawings.AddShape("txtInfo", eShapeStyle.Rect);

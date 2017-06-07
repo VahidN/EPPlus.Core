@@ -1,5 +1,4 @@
-﻿/*
-using System;
+﻿using System;
 using System.Data;
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -34,7 +33,7 @@ namespace EPPlus.Core.Tests.SampleApp
                 worksheet.Protection.AllowAutoFilter = true;
                 worksheet.Protection.AllowEditObject = true;
                 worksheet.Protection.IsProtected = true;
-                var r1=worksheet.ProtectedRanges.Add("Range1", new ExcelAddress(1, 1, worksheet.Dimension.End.Row, 4));
+                var r1 = worksheet.ProtectedRanges.Add("Range1", new ExcelAddress(1, 1, worksheet.Dimension.End.Row, 4));
                 worksheet.ProtectedRanges.Remove(r1);
                 var r2 = worksheet.ProtectedRanges.Add("Range2", new ExcelAddress("F3:T12,F15:T30"));
                 r2.SetPassword("EPPlus");
@@ -63,4 +62,3 @@ namespace EPPlus.Core.Tests.SampleApp
         }
     }
 }
-*/

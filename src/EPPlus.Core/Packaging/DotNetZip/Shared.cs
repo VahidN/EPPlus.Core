@@ -37,6 +37,13 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
     /// </summary>
     internal static class SharedUtilities
     {
+#if NETSTANDARD2_0 || COREFX        
+        static SharedUtilities()
+        {
+            // Adds missing code pages
+           System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+        }
+#endif        
         /// private null constructor
         //private SharedUtilities() { }
 
@@ -163,11 +170,8 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
 
         static System.Text.Encoding ibm437 =
-#if COREFX
-            System.Text.Encoding.GetEncoding("UTF-8");
-#else
             System.Text.Encoding.GetEncoding("IBM437");
-#endif
+
         static System.Text.Encoding utf8 = System.Text.Encoding.GetEncoding("UTF-8");
 
         internal static byte[] StringToByteArray(string value, System.Text.Encoding encoding)

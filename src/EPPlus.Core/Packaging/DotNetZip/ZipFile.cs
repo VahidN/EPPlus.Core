@@ -133,6 +133,13 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
     System.Collections.Generic.IEnumerable<ZipEntry>,
     IDisposable
     {
+#if NETSTANDARD2_0 || COREFX        
+        static ZipFile()
+        {
+            // Adds missing code pages
+           System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+        }
+#endif                        
 
         #region public properties
 
@@ -2389,9 +2396,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         }
 
 
-#endregion
+        #endregion
 
-#region Constructors
+        #region Constructors
 
         /// <summary>
         ///   Creates a new <c>ZipFile</c> instance, using the specified filename.
@@ -2863,11 +2870,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
             return;
         }
-#endregion
+        #endregion
 
 
 
-#region Indexers and Collections
+        #region Indexers and Collections
 
         private List<ZipEntry> ZipEntriesAsList
         {
@@ -3421,9 +3428,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         }
 
 
-#endregion
+        #endregion
 
-#region Destructors and Disposers
+        #region Destructors and Disposers
 
         //         /// <summary>
         //         /// This is the class Destructor, which gets called implicitly when the instance
@@ -3544,10 +3551,10 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 this._disposed = true;
             }
         }
-#endregion
+        #endregion
 
 
-#region private properties
+        #region private properties
 
         internal Stream ReadStream
         {
@@ -3555,7 +3562,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             {
                 if (_readstream == null)
                 {
-                    if (_readName != null || _name !=null)
+                    if (_readName != null || _name != null)
                     {
                         _readstream = File.Open(_readName ?? _name,
                                                 FileMode.Open,
@@ -3596,9 +3603,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 _writestream = null;
             }
         }
-#endregion
+        #endregion
 
-#region private fields
+        #region private fields
         private TextWriter _StatusMessageTextWriter;
         private bool _CaseSensitiveRetrieval;
         private Stream _readstream;
@@ -3639,20 +3646,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         private Nullable<bool> _OutputUsesZip64;
         internal bool _inExtractAll;
         private System.Text.Encoding _alternateEncoding =
-#if COREFX
-            System.Text.Encoding.GetEncoding("UTF-8");
-#else
             System.Text.Encoding.GetEncoding("IBM437");
-#endif
 
         private ZipOption _alternateEncodingUsage = ZipOption.Never;
         private static System.Text.Encoding _defaultEncoding =
-#if COREFX
-            System.Text.Encoding.GetEncoding("UTF-8");
-#else
             System.Text.Encoding.GetEncoding("IBM437");
-#endif
-
 
         private int _BufferSize = BufferSizeDefault;
 
@@ -3672,7 +3670,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </summary>
         public static readonly int BufferSizeDefault = 32768;
 
-#endregion
+        #endregion
     }
 
     /// <summary>

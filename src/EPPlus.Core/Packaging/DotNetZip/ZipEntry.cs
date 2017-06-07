@@ -44,6 +44,13 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 #endif
     internal partial class ZipEntry
     {
+#if NETSTANDARD2_0 || COREFX        
+        static ZipEntry()
+        {
+            // Adds missing code pages
+           System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+        }
+#endif                
         /// <summary>
         /// Default constructor.
         /// </summary>
@@ -57,13 +64,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             _CompressionLevel = Ionic.Zlib.CompressionLevel.Default;
             _Encryption = EncryptionAlgorithm.None;
             _Source = ZipEntrySource.None;
-            AlternateEncoding =
-#if COREFX
-            System.Text.Encoding.GetEncoding("UTF-8");
-#else
-            System.Text.Encoding.GetEncoding("IBM437");
-#endif
-
+            AlternateEncoding = System.Text.Encoding.GetEncoding("IBM437");
             AlternateEncodingUsage = ZipOption.Never;
         }
 
@@ -1457,7 +1458,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             {
                 if (_CompressionMethod != (short)CompressionMethod.Deflate &&
                     _CompressionMethod != (short)CompressionMethod.None)
-                    return ; // no effect
+                    return; // no effect
 
                 if (value == OfficeOpenXml.Packaging.Ionic.Zlib.CompressionLevel.Default &&
                     _CompressionMethod == (short)CompressionMethod.Deflate) return; // nothing to do
@@ -1776,7 +1777,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
                 _Encryption = value;
                 _restreamRequiredOnSave = true;
-                if (_container.ZipFile!=null)
+                if (_container.ZipFile != null)
                     _container.ZipFile.NotifyEntryChanged();
             }
         }
@@ -2724,11 +2725,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         private UInt32 _diskNumber;
 
         private static System.Text.Encoding ibm437 =
-#if COREFX
-            System.Text.Encoding.GetEncoding("UTF-8");
-#else
             System.Text.Encoding.GetEncoding("IBM437");
-#endif
 
         //private System.Text.Encoding _provisionalAlternateEncoding = System.Text.Encoding.GetEncoding("IBM437");
         private System.Text.Encoding _actualEncoding;

@@ -49,7 +49,7 @@ namespace EPPlus.Core.Tests.SampleApp
         [TestMethod]
         public void RunSample4()
         {
-            using (ExcelPackage p = new ExcelPackage(new FileInfo("SampleApp/GraphTemplate.xlsx"), true))
+            using (ExcelPackage p = new ExcelPackage(new FileInfo("../../../SampleApp/GraphTemplate.xlsx"), true))
             {
                 //Set up the headers
                 ExcelWorksheet ws = p.Workbook.Worksheets[1];
@@ -85,7 +85,7 @@ namespace EPPlus.Core.Tests.SampleApp
                 int row = startRow;
                 // get the data and fill rows 22 onwards
                 var rnd = new Random();
-                while (row<50)
+                while (row < 50)
                 {
                     ws.Cells[row, 1].Value = rnd.Next();
                     ws.Cells[row, 2].Value = rnd.Next();
