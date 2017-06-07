@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Text;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
@@ -24,7 +26,7 @@ namespace EPPlus.Core.SampleWebApp.Controllers
             var fileDownloadName = "report.xlsx";
             var reportsFolder = "reports";
 
-            using (var package = getExcelPackage())
+            using (var package = createExcelPackage())
             {
                 package.SaveAs(new FileInfo(Path.Combine(_hostingEnvironment.WebRootPath, reportsFolder, fileDownloadName)));
             }
@@ -37,7 +39,7 @@ namespace EPPlus.Core.SampleWebApp.Controllers
         public IActionResult Index()
         {
             byte[] reportBytes;
-            using (var package = getExcelPackage())
+            using (var package = createExcelPackage())
             {
                 reportBytes = package.GetAsByteArray();
             }
@@ -45,7 +47,47 @@ namespace EPPlus.Core.SampleWebApp.Controllers
             return File(reportBytes, XlsxContentType, "report.xlsx");
         }
 
-        private ExcelPackage getExcelPackage()
+        /// <summary>
+        /// /Home/ReadFile
+        /// </summary>
+        public IActionResult ReadFile()
+        {
+            var fileDownloadName = "report.xlsx";
+            var reportsFolder = "reports";
+            var fileInfo = new FileInfo(Path.Combine(_hostingEnvironment.WebRootPath, reportsFolder, fileDownloadName));
+            if (!fileInfo.Exists)
+            {
+                using (var package = createExcelPackage())
+                {
+                    package.SaveAs(fileInfo);
+                }
+            }
+
+            return Content(readExcelPackage(fileInfo, worksheetName: "Employee"));
+        }
+
+        private string readExcelPackage(FileInfo fileInfo, string worksheetName)
+        {
+            using (var package = new ExcelPackage(fileInfo))
+            {
+                var worksheet = package.Workbook.Worksheets[worksheetName];
+                int rowCount = worksheet.Dimension.Rows;
+                int ColCount = worksheet.Dimension.Columns;
+
+                var sb = new StringBuilder();
+                for (int row = 1; row <= rowCount; row++)
+                {
+                    for (int col = 1; col <= ColCount; col++)
+                    {
+                        sb.AppendFormat("{0}\t", worksheet.Cells[row, col].Value);
+                    }
+                    sb.Append(Environment.NewLine);
+                }
+                return sb.ToString();
+            }
+        }
+
+        private ExcelPackage createExcelPackage()
         {
             var package = new ExcelPackage();
             package.Workbook.Properties.Title = "Salary Report";
