@@ -141,6 +141,10 @@ namespace EPPlus.Core.SampleWebApp.Controllers
             // AutoFitColumns
             worksheet.Cells[1, 1, 4, 4].AutoFitColumns();
 
+            worksheet.HeaderFooter.OddFooter.InsertPicture(
+                new FileInfo(Path.Combine(_hostingEnvironment.WebRootPath, "images", "captcha.jpg")),
+                PictureAlignment.Right);
+
             return package;
         }
     }
