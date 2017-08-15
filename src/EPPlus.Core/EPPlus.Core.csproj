@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>EPPlus.Core is an unofficial port of the EPPlus library to .NET Core.</Description>
-    <VersionPrefix>1.5.1</VersionPrefix>
+    <VersionPrefix>1.5.2</VersionPrefix>
     <Authors>Vahid Nasiri</Authors>
-    <TargetFrameworks>net40;net45;net46;netstandard1.3;netstandard2.0</TargetFrameworks>    
+    <TargetFrameworks>net40;net45;net46;netstandard1.3;netstandard2.0</TargetFrameworks>
     <NoWarn>$(NoWarn);1591</NoWarn>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>EPPlus.Core</AssemblyName>
@@ -17,11 +17,9 @@
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
   </PropertyGroup>
-
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <PlatformTarget>anycpu</PlatformTarget>
-  </PropertyGroup>  
-
+  </PropertyGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net40' ">
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -34,9 +32,8 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <PropertyGroup Condition="'$(TargetFramework)' == 'net40'">
-    <DefineConstants>NO_SFX</DefineConstants>    
-  </PropertyGroup>    
-
+    <DefineConstants>NO_SFX</DefineConstants>
+  </PropertyGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -49,9 +46,8 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <PropertyGroup Condition="'$(TargetFramework)' == 'net45'">
-    <DefineConstants>NO_SFX</DefineConstants>    
-  </PropertyGroup>  
-
+    <DefineConstants>NO_SFX</DefineConstants>
+  </PropertyGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net46' ">
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -64,9 +60,8 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <PropertyGroup Condition="'$(TargetFramework)' == 'net46'">
-    <DefineConstants>NO_SFX</DefineConstants>    
-  </PropertyGroup>  
-
+    <DefineConstants>NO_SFX</DefineConstants>
+  </PropertyGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
     <PackageReference Include="CoreCompat.System.Drawing" Version="1.0.0-beta006" />
     <PackageReference Include="System.Collections.NonGeneric" Version="4.3.0" />
@@ -78,13 +73,12 @@
     <PackageReference Include="System.Threading.Thread" Version="4.3.0" />
     <PackageReference Include="System.Threading.ThreadPool" Version="4.3.0" />
     <PackageReference Include="System.Xml.XmlDocument" Version="4.3.0" />
-    <PackageReference Include="System.Xml.XPath.XmlDocument" Version="4.3.0" />    
+    <PackageReference Include="System.Xml.XPath.XmlDocument" Version="4.3.0" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="4.3.0" />
   </ItemGroup>
   <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
-    <DefineConstants>COREFX;NO_SFX</DefineConstants>    
+    <DefineConstants>COREFX;NO_SFX</DefineConstants>
   </PropertyGroup>
-
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
     <PackageReference Include="CoreCompat.System.Drawing.v2" Version="5.2.0-preview1-r131" />
     <PackageReference Include="System.Collections.NonGeneric" Version="4.3.0" />
@@ -97,10 +91,10 @@
     <PackageReference Include="System.Threading.ThreadPool" Version="4.3.0" />
     <PackageReference Include="System.Xml.XmlDocument" Version="4.3.0" />
     <PackageReference Include="System.Xml.XPath.XmlDocument" Version="4.3.0" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.4.0-preview1-25305-02" />  
-    <PackageReference Include="System.Text.Encoding.CodePages" Version="4.4.0-preview1-25305-02" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.4.0" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="4.4.0" />
   </ItemGroup>
   <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <DefineConstants>NETSTANDARD2_0;NO_SFX</DefineConstants>
-  </PropertyGroup>  
+  </PropertyGroup>
 </Project>
