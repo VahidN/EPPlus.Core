@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
 using OfficeOpenXml.Table;
@@ -33,10 +35,15 @@ namespace EPPlus.Core.SampleWebApp.Controllers
             return File($"~/{reportsFolder}/{fileDownloadName}", XlsxContentType, fileDownloadName);
         }
 
+        public IActionResult Index()
+        {
+            return View();
+        }
+
         /// <summary>
         /// An in-memory report
         /// </summary>
-        public IActionResult Index()
+        public IActionResult InMemoryReport()
         {
             byte[] reportBytes;
             using (var package = createExcelPackage())
@@ -66,25 +73,48 @@ namespace EPPlus.Core.SampleWebApp.Controllers
             return Content(readExcelPackage(fileInfo, worksheetName: "Employee"));
         }
 
+        public async Task<IActionResult> FileUpload(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return RedirectToAction("Index");
+            }
+
+            using (var memoryStream = new MemoryStream())
+            {
+                await file.CopyToAsync(memoryStream).ConfigureAwait(false);
+
+                using (var package = new ExcelPackage(memoryStream))
+                {
+                    return Content(readExcelPackageToString(package, worksheetName: "Employee"));
+                }
+            }
+        }
+
         private string readExcelPackage(FileInfo fileInfo, string worksheetName)
         {
             using (var package = new ExcelPackage(fileInfo))
             {
-                var worksheet = package.Workbook.Worksheets[worksheetName];
-                int rowCount = worksheet.Dimension.Rows;
-                int ColCount = worksheet.Dimension.Columns;
-
-                var sb = new StringBuilder();
-                for (int row = 1; row <= rowCount; row++)
-                {
-                    for (int col = 1; col <= ColCount; col++)
-                    {
-                        sb.AppendFormat("{0}\t", worksheet.Cells[row, col].Value);
-                    }
-                    sb.Append(Environment.NewLine);
-                }
-                return sb.ToString();
+                return readExcelPackageToString(package, worksheetName);
             }
+        }
+
+        private string readExcelPackageToString(ExcelPackage package, string worksheetName)
+        {
+            var worksheet = package.Workbook.Worksheets[worksheetName];
+            int rowCount = worksheet.Dimension.Rows;
+            int ColCount = worksheet.Dimension.Columns;
+
+            var sb = new StringBuilder();
+            for (int row = 1; row <= rowCount; row++)
+            {
+                for (int col = 1; col <= ColCount; col++)
+                {
+                    sb.AppendFormat("{0}\t", worksheet.Cells[row, col].Value);
+                }
+                sb.Append(Environment.NewLine);
+            }
+            return sb.ToString();
         }
 
         private ExcelPackage createExcelPackage()
