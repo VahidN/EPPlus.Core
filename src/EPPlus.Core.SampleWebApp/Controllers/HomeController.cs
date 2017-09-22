@@ -101,7 +101,7 @@ namespace EPPlus.Core.SampleWebApp.Controllers
 
         private string readExcelPackageToString(ExcelPackage package, string worksheetName)
         {
-            var worksheet = package.Workbook.Worksheets[worksheetName];
+            var worksheet = package.Workbook.Worksheets[worksheetName]; // Tip: To access the first worksheet, try index 1, not 0 -> package.Workbook.Worksheets[1]
             int rowCount = worksheet.Dimension.Rows;
             int ColCount = worksheet.Dimension.Columns;
 
