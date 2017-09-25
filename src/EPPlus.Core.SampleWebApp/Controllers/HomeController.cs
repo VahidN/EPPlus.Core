@@ -86,7 +86,8 @@ namespace EPPlus.Core.SampleWebApp.Controllers
 
                 using (var package = new ExcelPackage(memoryStream))
                 {
-                    return Content(readExcelPackageToString(package, worksheetName: "Employee"));
+                    var worksheet = package.Workbook.Worksheets[1]; // Tip: To access the first worksheet, try index 1, not 0
+                    return Content(readExcelPackageToString(package, worksheet));
                 }
             }
         }
@@ -95,13 +96,12 @@ namespace EPPlus.Core.SampleWebApp.Controllers
         {
             using (var package = new ExcelPackage(fileInfo))
             {
-                return readExcelPackageToString(package, worksheetName);
+                return readExcelPackageToString(package, package.Workbook.Worksheets[worksheetName]);
             }
         }
 
-        private string readExcelPackageToString(ExcelPackage package, string worksheetName)
+        private string readExcelPackageToString(ExcelPackage package, ExcelWorksheet worksheet)
         {
-            var worksheet = package.Workbook.Worksheets[worksheetName]; // Tip: To access the first worksheet, try index 1, not 0 -> package.Workbook.Worksheets[1]
             int rowCount = worksheet.Dimension.Rows;
             int ColCount = worksheet.Dimension.Columns;
 
