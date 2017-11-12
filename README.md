@@ -29,3 +29,8 @@ sudo apt-get install libgdiplus
 ```
 
 - The original EPPlus project has been [moved to Github](https://github.com/JanKallman/EPPlus/). Please post its development related issues/pull requests at there. The main purpose of the current project is just providing an existing EPPlus for .NET Standard. There will be no further developments here.
+
+
+News:
+-----------------
+[EPPlus 4.5.0-beta Added .NET Core Support](https://github.com/VahidN/EPPlus.Core/issues/37)
