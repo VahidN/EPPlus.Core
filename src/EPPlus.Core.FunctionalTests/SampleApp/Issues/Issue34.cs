@@ -3,7 +3,7 @@ using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeOpenXml;
 
-namespace EPPlus.Core.FunctionalTests.SampleApp
+namespace EPPlus.Core.FunctionalTests.SampleApp.Issues
 {
     [TestClass]
     public class Issue34

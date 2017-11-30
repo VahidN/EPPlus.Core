@@ -471,11 +471,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             while (j + 3 < extra.Length)
             {
                 UInt16 headerId = (UInt16)(extra[j++] + extra[j++] * 256);
-                if (headerId == targetHeaderId) return j-2;
+                if (headerId == targetHeaderId) return j - 2;
 
                 // else advance to next segment
                 Int16 dataSize = (short)(extra[j++] + extra[j++] * 256);
-                j+= dataSize;
+                j += dataSize;
             }
 
             return -1;
@@ -644,14 +644,15 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                                                          dataSize, posn));
             int remainingData = dataSize;
 
-            var slurp = new Func<Int64>( () => {
-                    if (remainingData < 8)
-                        throw new BadReadException(String.Format("  Missing data for ZIP64 extra field, position 0x{0:X16}", posn));
-                    var x = BitConverter.ToInt64(buffer, j);
-                    j+= 8;
-                    remainingData -= 8;
-                    return x;
-                });
+            var slurp = new Func<Int64>(() =>
+            {
+                if (remainingData < 8)
+                    throw new BadReadException(String.Format("  Missing data for ZIP64 extra field, position 0x{0:X16}", posn));
+                var x = BitConverter.ToInt64(buffer, j);
+                j += 8;
+                remainingData -= 8;
+                return x;
+            });
 
             if (this._UncompressedSize == 0xFFFFFFFF)
                 this._UncompressedSize = slurp();
@@ -700,12 +701,13 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
 
             int remainingData = dataSize;
 
-            var slurp = new Func<DateTime>( () => {
-                    Int32 timet = BitConverter.ToInt32(buffer, j);
-                    j += 4;
-                    remainingData -= 4;
-                    return _unixEpoch.AddSeconds(timet);
-                });
+            var slurp = new Func<DateTime>(() =>
+            {
+                Int32 timet = BitConverter.ToInt32(buffer, j);
+                j += 4;
+                remainingData -= 4;
+                return _unixEpoch.AddSeconds(timet);
+            });
 
             if (dataSize == 13 || _readExtraDepth > 0)
             {
@@ -715,13 +717,13 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 if ((flag & 0x0001) != 0 && remainingData >= 4)
                     this._Mtime = slurp();
 
-                 this._Atime = ((flag & 0x0002) != 0 && remainingData >= 4)
-                     ? slurp()
-                     : DateTime.UtcNow;
+                this._Atime = ((flag & 0x0002) != 0 && remainingData >= 4)
+                    ? slurp()
+                    : DateTime.UtcNow;
 
-                 this._Ctime =  ((flag & 0x0004) != 0 && remainingData >= 4)
-                     ? slurp()
-                     :DateTime.UtcNow;
+                this._Ctime = ((flag & 0x0004) != 0 && remainingData >= 4)
+                    ? slurp()
+                    : DateTime.UtcNow;
 
                 _timestamp |= ZipEntryTimestamp.Unix;
                 _ntfsTimesAreSet = true;
@@ -750,7 +752,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             // atime      8 bytes    win32 ticks since win32epoch
             // ctime      8 bytes    win32 ticks since win32epoch
 
-            if (dataSize != 32)
+            if (dataSize < 4)
                 throw new BadReadException(String.Format("  Unexpected size (0x{0:X4}) for NTFS times extra field at position 0x{1:X16}", dataSize, posn));
 
             j += 4;  // reserved
@@ -758,7 +760,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             Int16 addlsize = (Int16)(buffer[j + 2] + buffer[j + 3] * 256);
             j += 4;  // tag and size
 
-            if (timetag == 0x0001 && addlsize == 24)
+            if (timetag == 0x0001 && addlsize >= 24)
             {
                 Int64 z = BitConverter.ToInt64(buffer, j);
                 this._Mtime = DateTime.FromFileTimeUtc(z);
@@ -789,6 +791,11 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 _ntfsTimesAreSet = true;
                 _timestamp |= ZipEntryTimestamp.Windows;
                 _emitNtfsTimes = true;
+            }
+            else
+            {
+                // An unknown NTFS tag so simply skip it.
+                j += dataSize;
             }
             return j;
         }

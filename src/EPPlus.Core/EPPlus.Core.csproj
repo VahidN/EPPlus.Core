@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>EPPlus.Core is an unofficial port of the EPPlus library to .NET Core.</Description>
-    <VersionPrefix>1.5.3</VersionPrefix>
+    <VersionPrefix>1.5.4</VersionPrefix>
     <Authors>Vahid Nasiri</Authors>
     <TargetFrameworks>net40;net45;net46;netstandard1.3;netstandard2.0</TargetFrameworks>
     <NoWarn>$(NoWarn);1591</NoWarn>

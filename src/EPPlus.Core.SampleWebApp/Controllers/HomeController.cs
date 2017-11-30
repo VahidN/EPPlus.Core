@@ -102,13 +102,18 @@ namespace EPPlus.Core.SampleWebApp.Controllers
 
         private string readExcelPackageToString(ExcelPackage package, ExcelWorksheet worksheet)
         {
-            int rowCount = worksheet.Dimension.Rows;
-            int ColCount = worksheet.Dimension.Columns;
+            var rowCount = worksheet.Dimension?.Rows;
+            var colCount = worksheet.Dimension?.Columns;
+
+            if (!rowCount.HasValue || !colCount.HasValue)
+            {
+                return string.Empty;
+            }
 
             var sb = new StringBuilder();
-            for (int row = 1; row <= rowCount; row++)
+            for (int row = 1; row <= rowCount.Value; row++)
             {
-                for (int col = 1; col <= ColCount; col++)
+                for (int col = 1; col <= colCount.Value; col++)
                 {
                     sb.AppendFormat("{0}\t", worksheet.Cells[row, col].Value);
                 }

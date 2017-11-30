@@ -1159,7 +1159,7 @@ namespace OfficeOpenXml
                 }
                 catch (Exception ex)
                 {
-#if !MONO
+#if !MONO && !NETSTANDARD2_0 && !COREFX
                     EncryptedPackageHandler eph = new EncryptedPackageHandler();
                     if (Password == null && CompoundDocument.IsStorageILockBytes(CompoundDocument.GetLockbyte((MemoryStream)_stream)) == 0)
                     {
@@ -1169,8 +1169,7 @@ namespace OfficeOpenXml
                     {
                         throw;
                     }
-#endif
-#if MONO
+#else
                     throw;
 #endif
                 }
