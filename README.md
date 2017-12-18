@@ -49,6 +49,7 @@ To run this project on non-Windows-based operating systems, you will need to ins
       && apt-get install -y libgdiplus
 - MacOS
 	- brew install mono-libgdiplus
+
       After installing the [Mono MDK](http://www.mono-project.com/download/#download-mac), Copy Mono MDK Files:
 	   - /Library/Frameworks/Mono.framework/Versions/4.6.2/lib/libgdiplus.0.dylib
 	   - /Library/Frameworks/Mono.framework/Versions/4.6.2/lib/libgdiplus.0.dylib.dSYM
