@@ -22,7 +22,7 @@ Usage
 
 Notes:
 -----------------
-- To run this project on Linux, you will need to install `libgdiplus` too:
+To run this project on non-Windows-based operating systems, you will need to install `libgdiplus` too:
 - Ubuntu 16.04 and above:
 	- apt-get install libgdiplus
 	- cd /usr/lib
@@ -45,18 +45,20 @@ Notes:
 	- ln -s /usr/local/lib/libgdiplus.so gdiplus.dll
 - Docker
 	- RUN apt-get update \\
+
       && apt-get install -y libgdiplus
 - MacOS
-	- brew install mono-libgdiplus	  
-      After installing the Mono MDK, Copy Mono MDK Files:
+	- brew install mono-libgdiplus
+      After installing the [Mono MDK](http://www.mono-project.com/download/#download-mac), Copy Mono MDK Files:
 	   - /Library/Frameworks/Mono.framework/Versions/4.6.2/lib/libgdiplus.0.dylib
 	   - /Library/Frameworks/Mono.framework/Versions/4.6.2/lib/libgdiplus.0.dylib.dSYM
 	   - /Library/Frameworks/Mono.framework/Versions/4.6.2/lib/libgdiplus.dylib
 	   - /Library/Frameworks/Mono.framework/Versions/4.6.2/lib/libgdiplus.la
-      And paste them to: /usr/local/lib
-	
 
-- The original EPPlus project has been [moved to Github](https://github.com/JanKallman/EPPlus/). Please post its development related issues/pull requests at there. The main purpose of the current project is just providing an existing EPPlus for .NET Standard. There will be no further developments here.
+      And paste them to: /usr/local/lib
+
+
+The original EPPlus project has been [moved to Github](https://github.com/JanKallman/EPPlus/). Please post its development related issues/pull requests at there. The main purpose of the current project is just providing an existing EPPlus for .NET Standard. There will be no further developments here.
 
 
 News:
