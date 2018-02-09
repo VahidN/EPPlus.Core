@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -89,6 +90,35 @@ namespace EPPlus.Core.SampleWebApp.Controllers
                     var worksheet = package.Workbook.Worksheets[1]; // Tip: To access the first worksheet, try index 1, not 0
                     return Content(readExcelPackageToString(package, worksheet));
                 }
+            }
+        }
+
+        /// <summary>
+        /// /Home/DataTableReport
+        /// </summary>
+        public IActionResult DataTableReport()
+        {
+            var dataTable = new DataTable("Users");
+            dataTable.Columns.Add("Name", typeof(string));
+            dataTable.Columns.Add("Age", typeof(int));
+            var rnd = new Random();
+            for (var i = 0; i < 100; i++)
+            {
+                var row = dataTable.NewRow();
+                row["Name"] = $"User {i}";
+                row["Age"] = rnd.Next(20, 100);
+                dataTable.Rows.Add(row);
+            }
+
+            using (var package = new ExcelPackage())
+            {
+                var worksheet = package.Workbook.Worksheets.Add("Excel Test");
+                worksheet.Cells["A1"].LoadFromDataTable(dataTable, PrintHeaders: true);
+                for (var col = 1; col < dataTable.Columns.Count + 1; col++)
+                {
+                    worksheet.Column(col).AutoFit();
+                }
+                return File(package.GetAsByteArray(), XlsxContentType, "report.xlsx");
             }
         }
 
