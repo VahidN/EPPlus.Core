@@ -1,16 +1,20 @@
+News
+===========
+
+[This project](https://github.com/VahidN/EPPlus.Core/issues/37) helped EPPlus to add .NET Core support. Please start using the original [EPPlus](https://www.nuget.org/packages/EPPlus/). [It supports](https://github.com/JanKallman/EPPlus) .NETFramework 3.5, .NETFramework 4.0 & .NETStandard 2.0 now.
+
+---------------------------------
+
 EPPlus.Core
 ===========
+
 `EPPlus.Core` is an **unofficial** port of the [EPPlus library](http://epplus.codeplex.com) to .NET Core.
 It's based on the [5/24/2017, change set#fcded570d92e](http://epplus.codeplex.com/SourceControl/list/changesets).
 
 
-News:
------------------
-[EPPlus 4.5.0-beta Added .NET Core Support](https://github.com/VahidN/EPPlus.Core/issues/37)
-
-
 Install via NuGet
 -----------------
+
 To install EPPlus.Core, run the following command in the Package Manager Console:
 
 ```
@@ -22,12 +26,14 @@ You can also view the [package page](http://www.nuget.org/packages/EPPlus.Core/)
 
 Usage
 ------
+
 - [Functional Tests](/src/EPPlus.Core.FunctionalTests)
 - [A sample ASP.NET Core App](/src/EPPlus.Core.SampleWebApp)
 
 
 Notes:
 -----------------
+
 To run this project on non-Windows-based operating systems, you will need to install `libgdiplus` too:
 - Ubuntu 16.04 and above:
 	- apt-get install libgdiplus
